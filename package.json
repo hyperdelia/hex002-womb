@@ -28,7 +28,11 @@
     "babel-preset-env": "^1.6.1",
     "esdoc": "^1.0.4",
     "esdoc-standard-plugin": "^1.0.0",
-    "parcel-bundler": "^1.4.1",
+    "parcel-bundler": "^1.5.1",
     "postcss-modules": "^1.1.0"
+  },
+  "dependencies": {
+    "ios-safe-audio-context": "^1.0.1",
+    "lodash": "^4.17.4"
   }
 }
