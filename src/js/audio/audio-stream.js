@@ -1,5 +1,4 @@
 import AudioBase from './audio-base';
-import _ from 'lodash';
 
 /**
  * AudioStream creates and wraps a standard HTML5 audio tag in
@@ -15,9 +14,13 @@ export default class AudioStream extends AudioBase {
     super(context);
 
     this.audioTag = document.createElement('audio');
+    this.audioTag.preload = 'none';
     this.audioTag.src = url;
     this.audioTag.controls = false;
     this.audioTag.crossOrigin = true;
+    this.audioNode = this.context.createMediaElementSource(this.audioTag);
+
+    this.isPlaying = false;
   }
 
   /**
@@ -28,45 +31,43 @@ export default class AudioStream extends AudioBase {
   load() {
     if (!this.loadPromise) {
       this.loadPromise = new Promise((resolve, reject) => {
-        // TODO(david): Ugly hack for now
-        this.audioTag.addEventListener('error', (err) => { reject(err); });
-
-        this.node = this.context.createMediaElementSource(this.audioTag);
-        resolve();
-
-        /*
         this.audioTag.addEventListener('canplay', () => {
-          const debug = document.createElement('div');
-          debug.innerHTML = 'Ready';
-          document.body.appendChild(debug);
-
-          this.node = this.context.createMediaElementSource(this.audioTag);
           resolve();
         });
 
-        // TODO(david): To call play looks like the only way to get iOS to actually
-        // fire the canplay event.. see if there is another way.
-        this.play();
-        */
-      });
+        this.audioTag.addEventListener('error', (err) => { reject(err); });
 
-      return this.loadPromise;
+        this.audioTag.load();
+      });
     }
+
+    return this.loadPromise;
   }
 
   connect(aNode) {
-    this.node.connect(aNode);
+    this.audioNode.connect(aNode);
   }
 
   disconnect() {
-    this.node.disconnect();
+    this.audioNode.disconnect();
   }
 
   play() {
+    if (this.isPlaying) return;
+    this.isPlaying = true;
     this.audioTag.play();
   }
 
   stop() {
-    this.audioTag.stop();
+    if (!this.isPlaying) return;
+    this.isPlaying = false;
+    this.audioTag.pause();
+    this.audioTag.currentTime = 0;
+  }
+
+  pause() {
+    if (!this.isPlaying) return;
+    this.isPlaying = false;
+    this.audioTag.pause();
   }
 }
