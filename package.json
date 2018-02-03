@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "ios-safe-audio-context": "^1.0.1",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "resonance-audio": "^1.0.0"
   }
 }
