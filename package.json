@@ -4,8 +4,8 @@
   "description": "Experiments with spatial audio in WebGL environments",
   "main": "index.js",
   "scripts": {
-    "start": "parcel -p 3000 ./src/index.html",
-    "build": "parcel build ./src/index.html --out-dir public",
+    "start": "webpack-dev-server",
+    "build": "NODE_ENV=production webpack -p",
     "docs": "./node_modules/.bin/esdoc && open docs/index.html"
   },
   "repository": {
@@ -24,12 +24,20 @@
   },
   "homepage": "https://github.com/adzialocha/spatial-test#readme",
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.39",
+    "@babel/preset-env": "^7.0.0-beta.39",
     "autoprefixer": "^7.2.4",
-    "babel-preset-env": "^1.6.1",
+    "babel-loader": "8.0.0-beta.0",
     "esdoc": "^1.0.4",
     "esdoc-standard-plugin": "^1.0.0",
-    "parcel-bundler": "^1.5.1",
-    "postcss-modules": "^1.1.0"
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "html-webpack-plugin": "^2.30.1",
+    "node-sass": "^4.7.2",
+    "postcss-modules": "^1.1.0",
+    "sass-loader": "^6.0.6",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
     "ios-safe-audio-context": "^1.0.1",
