@@ -9,7 +9,7 @@ module.exports = {
     'sourceType': 'module'
   },
   'rules': {
-    'indent': ['error', 2, {"SwitchCase": 1}],
+    'indent': ['error', 2, {'SwitchCase': 1}],
     'quotes': ['error', 'single'],
     'semi': ['error', 'always'],
     'space-before-function-paren': ['error', 'never'],
@@ -18,5 +18,6 @@ module.exports = {
     'no-unreachable': 'warn',
     'no-console': 'off',
     'no-unused-vars': 'warn',
+    'comma-dangle': ['error', 'always-multiline'],
   }
 };
