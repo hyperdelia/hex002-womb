@@ -23,8 +23,14 @@ export default class Actor {
     );
   }
 
-  start(url, starId) {
+  start(url, starId, position) {
     this.starId = starId;
+
+    this.resonanceSource.setPosition(
+      position.x,
+      position.y,
+      position.z
+    );
 
     this.audioStream.src = url;
     this.audioStream.play();

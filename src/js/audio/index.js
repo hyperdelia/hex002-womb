@@ -1,10 +1,13 @@
 import createAudioContext from 'ios-safe-audio-context';
 import { ResonanceAudio } from 'resonance-audio';
 
+import { normalizeDimension } from '../converters';
+
 import AudioStream from './audio-stream';
 import Actor from './actor';
 
-const NUM_VOICES = 4;
+const NUM_ACTORS = 4;
+const ROOM_SIZE = 500;
 
 export default class Audio {
   constructor() {
@@ -14,9 +17,9 @@ export default class Audio {
     this.scene.output.connect(this.context.destination);
 
     const roomDimensions = {
-      width: 3.1,
-      height: 2.5,
-      depth: 3.4,
+      width: ROOM_SIZE,
+      height: ROOM_SIZE,
+      depth: ROOM_SIZE,
     };
 
     const roomMaterials = {
@@ -36,21 +39,20 @@ export default class Audio {
 
     this.actors = [];
 
-    for (let i=0; i < NUM_VOICES; i++) {
-      const source = this.scene.createSource();
+    for (let i=0; i < NUM_ACTORS; i++) {
+      const resonanceSource = this.scene.createSource();
       const audioStream = new AudioStream(this.context);
 
-      audioStream.connect(source.input);
+      audioStream.connect(resonanceSource.input);
 
-      const actor = new Actor({ source, audioStream });
+      const actor = new Actor({ resonanceSource, audioStream });
       this.actors.push(actor);
     }
+  }
 
-    // source.setPosition(-0.707, -0.707, 0);
-    // audioStream.load().then(() => {
-    //   // audioStream.play();
-    //   console.log('playing..');
-    // });
+  updateListener(matrix) {
+    this.scene.setListenerFromMatrix(normalizeDimension(ROOM_SIZE, matrix));
+    // this.scene.setListenerPosition(normalizeDimension(matrix));
   }
 
   addVoices(voices) {
@@ -60,10 +62,13 @@ export default class Audio {
 
     this.actors.some(actor => {
       if (!actor.isPlaying) {
-        const url = voices[index].sampleUrl;
-        const starId = voices[index].star.id;
+        const voice = voices[index];
+        const {
+          id,
+          position,
+        } = voice.star;
 
-        actor.start(url, starId);
+        actor.start(voice.sampleUrl, id, normalizeDimension(ROOM_SIZE, position));
 
         index += 1;
       }

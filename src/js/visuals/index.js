@@ -9,7 +9,7 @@ import {
   WebGLRenderer,
 } from 'three';
 
-import { objectToVector3 } from '../helpers/converters';
+import { objectToVector3 } from '../converters';
 
 export default class Visuals {
   constructor(options) {
@@ -79,6 +79,7 @@ export default class Visuals {
   animate() {
     requestAnimationFrame(() => { this.animate(); });
 
+    this.camera.position.z -= 3;
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -91,5 +92,9 @@ export default class Visuals {
         distance,
       };
     });
+  }
+
+  get cameraMatrix() {
+    return this.camera.matrixWorld;
   }
 }

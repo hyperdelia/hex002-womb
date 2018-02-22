@@ -30,7 +30,11 @@ export default class Controller {
       return acc;
     }, []);
 
+    console.log('voices', voices);
     this.updateVoices(voices);
+
+    console.log('this.visals.cameraMatrix', this.visuals.cameraMatrix);
+    this.audio.updateListener(this.visuals.cameraMatrix);
   }
 
   updateVoices(voices) {

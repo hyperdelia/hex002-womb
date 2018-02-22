@@ -16,7 +16,7 @@ export default class AudioStream extends AudioBase {
     this.audioTag.preload = 'none';
     // this.audioTag.src = url;
     this.audioTag.controls = false;
-    this.audioTag.crossOrigin = true;
+    this.audioTag.crossOrigin = 'anonymous';
     this.audioNode = this.context.createMediaElementSource(this.audioTag);
 
     this.isPlaying = false;
