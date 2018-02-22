@@ -1,40 +1,45 @@
-import createAudioContext from 'ios-safe-audio-context';
+// import createAudioContext from 'ios-safe-audio-context';
 
-import AudioStream from './audio-stream';
-import audioURL from '../../assets/audio/clark-sample2.mp3';
+// import AudioStream from './audio-stream';
 
-let audioStream = null;
+// import audioURL from '../../assets/audio/clark-sample2.mp3';
 
-const onPlay = () => {
-  const context = createAudioContext();
-  const stream = new AudioStream(context, audioURL);
+export default class Audio {
 
-  stream.load().then(() => {
-    const biquadFilter = context.createBiquadFilter();
-    biquadFilter.type = 'highpass';
-    biquadFilter.frequency.value = 4000;
-    stream.connect(biquadFilter);
+}
 
-    biquadFilter.connect(context.destination);
-    stream.play();
-    console.log('playing..');
-  });
+// let audioStream = null;
 
-  audioStream = stream;
-};
+// const onPlay = () => {
+//   const context = createAudioContext();
+//   const stream = new AudioStream(context, audioURL);
 
-const onStop = () => {
-  if (audioStream) {
-    audioStream.stop();
-  }
-};
+//   stream.load().then(() => {
+//     const biquadFilter = context.createBiquadFilter();
+//     biquadFilter.type = 'highpass';
+//     biquadFilter.frequency.value = 4000;
+//     stream.connect(biquadFilter);
 
-const playButton = document.createElement('button');
-playButton.innerHTML = 'Play';
-playButton.addEventListener('click', onPlay);
-document.body.appendChild(playButton);
+//     biquadFilter.connect(context.destination);
+//     stream.play();
+//     console.log('playing..');
+//   });
 
-const stopButton = document.createElement('button');
-stopButton.innerHTML = 'Stop';
-stopButton.addEventListener('click', onStop);
-document.body.appendChild(stopButton);
+//   audioStream = stream;
+// };
+
+// const onStop = () => {
+//   if (audioStream) {
+//     audioStream.stop();
+//   }
+// };
+
+// const playButton = document.createElement('button');
+// playButton.innerHTML = 'Play';
+// playButton.addEventListener('click', onPlay);
+// document.body.appendChild(playButton);
+
+// const stopButton = document.createElement('button');
+// stopButton.innerHTML = 'Stop';
+// stopButton.addEventListener('click', onStop);
+// document.body.appendChild(stopButton);

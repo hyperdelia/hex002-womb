@@ -1,0 +1,12 @@
+// vendors
+@import "../../node_modules/normalize.css/normalize.css";
+
+// variables
+@import "variables";
+
+// base
+@import "base/global";
+@import "base/layout";
+
+// components
+@import "components/visuals";
