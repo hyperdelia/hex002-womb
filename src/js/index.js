@@ -32,6 +32,7 @@ const controller = new Controller({
 });
 
 controller.init(composition);
+controller.start();
 
 window.addEventListener('resize', () => {
   visuals.resize(window.innerWidth, window.innerHeight);

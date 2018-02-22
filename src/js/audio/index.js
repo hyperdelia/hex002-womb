@@ -1,11 +1,54 @@
-// import createAudioContext from 'ios-safe-audio-context';
+import createAudioContext from 'ios-safe-audio-context';
+import { ResonanceAudio } from 'resonance-audio';
 
-// import AudioStream from './audio-stream';
+import AudioStream from './audio-stream';
 
-// import audioURL from '../../assets/audio/clark-sample2.mp3';
+const audioURL = 'https://s3.eu-central-1.amazonaws.com/hyperdelia/collaborations/hex002/files/DPSTM+135+top+mfb+phase+sweep+hilarity.mp3';
+// const NUM_VOICES = 10;
 
 export default class Audio {
+  constructor() {
+    this.context = createAudioContext();
 
+    this.scene = new ResonanceAudio(this.context);
+    this.scene.output.connect(this.context.destination);
+
+    const roomDimensions = {
+      width: 3.1,
+      height: 2.5,
+      depth: 3.4,
+    };
+
+    const roomMaterials = {
+      // Room wall materials
+      left: 'brick-bare',
+      right: 'curtain-heavy',
+      front: 'marble',
+      back: 'glass-thin',
+      // Room floor
+      down: 'grass',
+      // Room ceiling
+      up: 'transparent',
+    };
+
+    // Add the room definition to the scene.
+    this.scene.setRoomProperties(roomDimensions, roomMaterials);
+
+    const source = this.scene.createSource();
+    const audioStream = new AudioStream(this.context, audioURL);
+
+    audioStream.connect(source.input);
+    source.setPosition(-0.707, -0.707, 0);
+
+    audioStream.load().then(() => {
+      // audioStream.play();
+      console.log('playing..');
+    });
+  }
+
+  update(activeStars) {
+
+  }
 }
 
 // let audioStream = null;

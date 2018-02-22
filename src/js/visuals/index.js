@@ -9,9 +9,13 @@ import {
   WebGLRenderer,
 } from 'three';
 
+import { objectToVector3 } from '../helpers/converters';
+
 export default class Visuals {
   constructor(options) {
     const { width, height, canvas, stars } = options;
+
+    this.stars = stars;
 
     // Create a scene
     this.scene = new Scene();
@@ -42,11 +46,22 @@ export default class Visuals {
       return acc;
     }, []);
 
-    geometry.addAttribute('position', new Float32BufferAttribute(positions, 3));
-    geometry.addAttribute('color', new Float32BufferAttribute(colors, 3));
+    geometry.addAttribute('position', new Float32BufferAttribute(
+      positions,
+      3
+    ));
+
+    geometry.addAttribute('color', new Float32BufferAttribute(
+      colors,
+      3
+    ));
+
     geometry.computeBoundingSphere();
 
-    const material = new PointsMaterial({ size: 15, vertexColors: VertexColors });
+    const material = new PointsMaterial({
+      size: 15,
+      vertexColors: VertexColors,
+    });
     const points = new Points(geometry, material);
 
     this.scene.add(points);
@@ -62,8 +77,19 @@ export default class Visuals {
   }
 
   animate() {
-    requestAnimationFrame(this.animate);
+    requestAnimationFrame(() => { this.animate(); });
 
     this.renderer.render(this.scene, this.camera);
+  }
+
+  get distances() {
+    return this.stars.map(star => {
+      const distance = this.camera.position.distanceTo(objectToVector3(star.position));
+
+      return {
+        star,
+        distance,
+      };
+    });
   }
 }
