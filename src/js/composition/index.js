@@ -1,5 +1,8 @@
 export default class Composition {
   constructor(options) {
-    this.stars = options.stars;
+    const { stars, samples } = options;
+
+    this.stars = stars;
+    this.samples = samples;
   }
 }

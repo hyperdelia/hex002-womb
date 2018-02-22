@@ -6,6 +6,7 @@ import Controller from './controller';
 import Visuals from './visuals';
 
 import stars from '../composition/stars.json';
+import samples from '../composition/samples.json';
 
 const {
   innerHeight: height,
@@ -24,14 +25,15 @@ const visuals = new Visuals({
 
 const composition = new Composition({
   stars,
+  samples,
 });
 
 const controller = new Controller({
   audio,
   visuals,
+  composition,
 });
 
-controller.init(composition);
 controller.start();
 
 window.addEventListener('resize', () => {

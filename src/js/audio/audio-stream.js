@@ -8,19 +8,26 @@ export default class AudioStream extends AudioBase {
   /**
    * Create a new AudioStream instance
    * @param {object} context - Current AudioContext
-   * @param {string} url - Audio file URL
    */
-  constructor(context, url) {
+  constructor(context) {
     super(context);
 
     this.audioTag = document.createElement('audio');
     this.audioTag.preload = 'none';
-    this.audioTag.src = url;
+    // this.audioTag.src = url;
     this.audioTag.controls = false;
     this.audioTag.crossOrigin = true;
     this.audioNode = this.context.createMediaElementSource(this.audioTag);
 
     this.isPlaying = false;
+  }
+
+  set src(url) {
+    this.audioTag.src = url;
+  }
+
+  get src() {
+    return this.audioTag.src;
   }
 
   /**

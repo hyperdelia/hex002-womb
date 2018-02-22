@@ -2,9 +2,9 @@ import createAudioContext from 'ios-safe-audio-context';
 import { ResonanceAudio } from 'resonance-audio';
 
 import AudioStream from './audio-stream';
+import Actor from './actor';
 
-const audioURL = 'https://s3.eu-central-1.amazonaws.com/hyperdelia/collaborations/hex002/files/DPSTM+135+top+mfb+phase+sweep+hilarity.mp3';
-// const NUM_VOICES = 10;
+const NUM_VOICES = 4;
 
 export default class Audio {
   constructor() {
@@ -34,20 +34,56 @@ export default class Audio {
     // Add the room definition to the scene.
     this.scene.setRoomProperties(roomDimensions, roomMaterials);
 
-    const source = this.scene.createSource();
-    const audioStream = new AudioStream(this.context, audioURL);
+    this.actors = [];
 
-    audioStream.connect(source.input);
-    source.setPosition(-0.707, -0.707, 0);
+    for (let i=0; i < NUM_VOICES; i++) {
+      const source = this.scene.createSource();
+      const audioStream = new AudioStream(this.context);
 
-    audioStream.load().then(() => {
-      // audioStream.play();
-      console.log('playing..');
-    });
+      audioStream.connect(source.input);
+
+      const actor = new Actor({ source, audioStream });
+      this.actors.push(actor);
+    }
+
+    // source.setPosition(-0.707, -0.707, 0);
+    // audioStream.load().then(() => {
+    //   // audioStream.play();
+    //   console.log('playing..');
+    // });
   }
 
-  update(activeStars) {
+  addVoices(voices) {
+    if (voices.length === 0) return;
 
+    let index = 0;
+
+    this.actors.some(actor => {
+      if (!actor.isPlaying) {
+        const url = voices[index].sampleUrl;
+        const starId = voices[index].star.id;
+
+        actor.start(url, starId);
+
+        index += 1;
+      }
+
+      return index > voices.length - 1;
+    });
+
+    if (index < (voices.length - 1)) {
+      console.warn('Too few available voices');
+    }
+  }
+
+  removeVoices(voices) {
+    const oldStarIds = voices.map(voice => voice.star.id);
+
+    this.actors.forEach(actor => {
+      if (oldStarIds.includes(actor.starId)) {
+        actor.stop();
+      }
+    });
   }
 }
 
