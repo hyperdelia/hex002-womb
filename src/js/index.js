@@ -19,6 +19,7 @@ const visuals = new Visuals({
   width,
   height,
   canvas,
+  stars,
 });
 
 const composition = new Composition({
