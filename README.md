@@ -1,6 +1,4 @@
-# spatial-test
-
-Experiments with spatial audio in WebGL environments.
+# hex002-womb
 
 ## Setup
 
