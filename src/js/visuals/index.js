@@ -41,9 +41,9 @@ export default class Visuals {
     // Prepare pointer controller
     this.controls = new PointerControls({
       camera: this.camera,
-      moveSpeed: 100.0,
-      rotateSpeed: 0.005,
-      stopSpeed: 5.0,
+      moveSpeed: 25.0,
+      rotateSpeed: 0.004,
+      stopSpeed: 2.0,
     });
 
     this.scene.add(this.controls.yawObject);
