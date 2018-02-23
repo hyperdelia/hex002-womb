@@ -9,7 +9,8 @@ const PI_2 = Math.PI / 2;
 export default class PointerLockControls {
   constructor(options, camera) {
     this.options = options;
-    this.enabled = true;
+
+    this.isEnabled = true;
 
     camera.rotation.set(0, 0, 0);
 
@@ -30,7 +31,7 @@ export default class PointerLockControls {
   }
 
   movePointer(movementX, movementY) {
-    if (!this.enabled) {
+    if (!this.isEnabled) {
       return;
     }
 
@@ -38,10 +39,7 @@ export default class PointerLockControls {
     this.pitchObject.rotation.x -= movementY * 0.002;
     this.pitchObject.rotation.x = Math.max(
       -PI_2,
-      Math.min(
-        PI_2,
-        this.pitchObject.rotation.x
-      )
+      Math.min(PI_2, this.pitchObject.rotation.x)
     );
   }
 
@@ -50,7 +48,7 @@ export default class PointerLockControls {
   }
 
   update(delta) {
-    if (!this.enabled) {
+    if (!this.isEnabled) {
       return;
     }
 
