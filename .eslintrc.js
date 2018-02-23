@@ -14,6 +14,7 @@ module.exports = {
     'indent': ['error', 2, { 'SwitchCase': 1 }],
     'keyword-spacing': ['error', { 'before': true }],
     'no-console': 'off',
+    'no-plusplus': 'error',
     'no-unreachable': 'warn',
     'no-unused-vars': 'warn',
     'object-curly-spacing': ['error', 'always'],
