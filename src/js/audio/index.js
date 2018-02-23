@@ -11,16 +11,8 @@ const SOURCE_WIDTH = 180;
 
 const MAX_ACTOR_COUNT = 10;
 
-const ROOM_SIZE = 500;
-
-const ROOM_MATERIALS = {
-  left: 'curtain-heavy',
-  right: 'curtain-heavy',
-  front: 'curtain-heavy',
-  back: 'curtain-heavy',
-  down: 'curtain-heavy',
-  up: 'curtain-heavy',
-};
+const ROOM_DIMENSION = 500;
+const ROOM_MATERIAL = 'curtain-heavy';
 
 export default class Audio {
   constructor(context) {
@@ -31,12 +23,18 @@ export default class Audio {
 
     // Set the room definition for the scene
     const roomDimensions = {
-      width: ROOM_SIZE,
-      height: ROOM_SIZE,
-      depth: ROOM_SIZE,
+      width: ROOM_DIMENSION,
+      height: ROOM_DIMENSION,
+      depth: ROOM_DIMENSION,
     };
 
-    this.scene.setRoomProperties(roomDimensions, ROOM_MATERIALS);
+    const roomMaterials = {
+      left: ROOM_MATERIAL, right: ROOM_MATERIAL,
+      front: ROOM_MATERIAL, back: ROOM_MATERIAL,
+      down: ROOM_MATERIAL, up: ROOM_MATERIAL,
+    };
+
+    this.scene.setRoomProperties(roomDimensions, roomMaterials);
 
     this.actors = [];
 
@@ -58,7 +56,7 @@ export default class Audio {
 
   updateListener(matrix) {
     this.scene.setListenerFromMatrix(
-      normalizeDimension(ROOM_SIZE, matrix)
+      normalizeDimension(ROOM_DIMENSION, matrix)
     );
   }
 
@@ -77,7 +75,7 @@ export default class Audio {
         actor.start(
           voice.sampleUrl,
           id,
-          normalizeDimension(ROOM_SIZE, position)
+          normalizeDimension(ROOM_DIMENSION, position)
         );
 
         index += 1;
