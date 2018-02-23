@@ -6,6 +6,8 @@ export default class Actor {
       starId,
     } = options;
 
+    audioStream.connect(resonanceSource.input);
+
     this.audioStream = audioStream;
     this.resonanceSource = resonanceSource;
     this.starId = starId;

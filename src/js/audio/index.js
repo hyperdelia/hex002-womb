@@ -38,10 +38,11 @@ export default class Audio {
     for (let i = 0; i < MAX_ACTOR_COUNT; i += 1) {
       const resonanceSource = this.scene.createSource();
       const audioStream = new AudioStream(this.context);
+      const actor = new Actor({
+        resonanceSource,
+        audioStream,
+      });
 
-      audioStream.connect(resonanceSource.input);
-
-      const actor = new Actor({ resonanceSource, audioStream });
       this.actors.push(actor);
     }
   }
