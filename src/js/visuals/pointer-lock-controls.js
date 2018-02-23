@@ -27,39 +27,25 @@ export default class PointerLockControls {
       left: false,
       right: false,
     };
-
-    window.addEventListener('mousemove', event => {
-      if (!this.enabled) {
-        return;
-      }
-
-      const movementX = (
-        event.movementX ||
-        event.mozMovementX ||
-        event.webkitMovementX ||
-        0
-      );
-
-      const movementY = (
-        event.movementY ||
-        event.mozMovementY ||
-        event.webkitMovementY ||
-        0
-      );
-
-      this.yawObject.rotation.y -= movementX * 0.002;
-      this.pitchObject.rotation.x -= movementY * 0.002;
-      this.pitchObject.rotation.x = Math.max(
-        -PI_2,
-        Math.min(
-          PI_2,
-          this.pitchObject.rotation.x
-        )
-      );
-    }, false);
   }
 
-  move(directions) {
+  movePointer(movementX, movementY) {
+    if (!this.enabled) {
+      return;
+    }
+
+    this.yawObject.rotation.y -= movementX * 0.002;
+    this.pitchObject.rotation.x -= movementY * 0.002;
+    this.pitchObject.rotation.x = Math.max(
+      -PI_2,
+      Math.min(
+        PI_2,
+        this.pitchObject.rotation.x
+      )
+    );
+  }
+
+  toggleDirections(directions) {
     this.directions = Object.assign({}, this.directions, directions);
   }
 

@@ -14,6 +14,8 @@ import { objectToVector3 } from '../converters';
 import PointerLockControls from './pointer-lock-controls';
 import Starfield from './starfield';
 
+const GRID_HELPER_SIZE = 500;
+
 export default class Visuals {
   constructor(options) {
     const {
@@ -60,8 +62,8 @@ export default class Visuals {
 
     // Add grid for orientation while testing
     const gridHelper = new GridHelper(
-      1000,
-      100,
+      GRID_HELPER_SIZE,
+      10,
       new Color('white'),
       new Color('blue')
     );

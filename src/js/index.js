@@ -51,7 +51,10 @@ function start() {
   });
 
   visuals.animate();
+  visuals.controls.toggleDirections({ forward: true });
+
   controller.start();
+
   isPlaying = true;
 }
 
@@ -61,3 +64,21 @@ window.addEventListener('resize', () => {
 
 window.addEventListener('touchend', start, false);
 window.addEventListener('click', start, false);
+
+window.addEventListener('mousemove', event => {
+  const movementX = (
+    event.movementX ||
+    event.mozMovementX ||
+    event.webkitMovementX ||
+    0
+  );
+
+  const movementY = (
+    event.movementY ||
+    event.mozMovementY ||
+    event.webkitMovementY ||
+    0
+  );
+
+  visuals.controls.movePointer(movementX, movementY);
+}, false);
