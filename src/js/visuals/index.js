@@ -29,10 +29,7 @@ export default class Visuals {
     this.camera.position.z = 2750;
 
     // Initialise the renderer
-    this.renderer = new WebGLRenderer({
-      canvas,
-    });
-
+    this.renderer = new WebGLRenderer({ canvas });
     this.renderer.setPixelRatio(devicePixelRatio);
     this.resize(width, height);
 
