@@ -5,15 +5,21 @@ import { normalizeDimension } from '../converters';
 import Actor from './actor';
 import AudioStream from './audio-stream';
 
-const MAX_ACTOR_COUNT = 4;
+const SOURCE_MAX_DISTANCE = 1;
+const SOURCE_MIN_DISTANCE = 0;
+const SOURCE_WIDTH = 180;
+
+const MAX_ACTOR_COUNT = 10;
+
 const ROOM_SIZE = 500;
+
 const ROOM_MATERIALS = {
-  left: 'brick-bare',
+  left: 'curtain-heavy',
   right: 'curtain-heavy',
-  front: 'marble',
-  back: 'glass-thin',
-  down: 'grass',
-  up: 'transparent',
+  front: 'curtain-heavy',
+  back: 'curtain-heavy',
+  down: 'curtain-heavy',
+  up: 'curtain-heavy',
 };
 
 export default class Audio {
@@ -36,6 +42,10 @@ export default class Audio {
 
     for (let i = 0; i < MAX_ACTOR_COUNT; i += 1) {
       const resonanceSource = this.scene.createSource();
+      resonanceSource.setMaxDistance(SOURCE_MAX_DISTANCE);
+      resonanceSource.setMinDistance(SOURCE_MIN_DISTANCE);
+      resonanceSource.setSourceWidth(SOURCE_WIDTH);
+
       const audioStream = new AudioStream(this.context);
       const actor = new Actor({
         resonanceSource,

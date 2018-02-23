@@ -11,6 +11,7 @@ import samples from '../composition/samples.json';
 import stars from '../composition/stars.json';
 
 const DEBUG_MODE = true;
+const MOVE_INTERVAL = 10;
 
 const {
   devicePixelRatio,
@@ -36,11 +37,12 @@ const composition = new Composition({
 
 let isPlaying = false;
 
-function start() {
-  if (isPlaying) {
-    return;
-  }
+const pointerPosition = {
+  x: 0,
+  y: 0,
+};
 
+function start() {
   const context = createAudioContext();
   const audio = new Audio(context);
 
@@ -52,12 +54,57 @@ function start() {
 
   visuals.animate();
   controller.start();
+
   isPlaying = true;
 }
+
+function startPointerUpdate() {
+  window.setInterval(() => {
+    if (!isPlaying) {
+      return;
+    }
+
+    visuals.controls.movePointer(
+      pointerPosition.x,
+      pointerPosition.y
+    );
+  }, MOVE_INTERVAL);
+}
+
+function onMouseDown() {
+  if (!isPlaying) {
+    start();
+    startPointerUpdate();
+
+    visuals.controls.startMoving();
+  } else {
+    visuals.controls.stopMoving();
+  }
+}
+
+function onMouseUp() {
+  if (isPlaying) {
+    visuals.controls.startMoving();
+  }
+}
+
+function onMouseMove(event) {
+  const { clientX, clientY } = event;
+  const { innerWidth, innerHeight } = event.view;
+
+  const x = (clientX / innerWidth) * 2 - 1;
+  const y = (clientY / innerHeight) * 2 - 1;
+
+  pointerPosition.x = x;
+  pointerPosition.y = y;
+}
+
+window.addEventListener('touchstart', onMouseDown, false);
+window.addEventListener('touchend', onMouseUp, false);
+window.addEventListener('mousedown', onMouseDown, false);
+window.addEventListener('mouseup', onMouseUp, false);
+window.addEventListener('mousemove', onMouseMove, false);
 
 window.addEventListener('resize', () => {
   visuals.resize(window.innerWidth, window.innerHeight);
 });
-
-window.addEventListener('touchend', start, false);
-window.addEventListener('click', start, false);

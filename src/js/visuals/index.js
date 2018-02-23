@@ -1,5 +1,7 @@
 import {
+  Clock,
   Color,
+  GridHelper,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
@@ -9,7 +11,10 @@ import Stats from 'stats.js';
 
 import { objectToVector3 } from '../converters';
 
+import PointerControls from './pointer-controls';
 import Starfield from './starfield';
+
+const GRID_HELPER_SIZE = 500;
 
 export default class Visuals {
   constructor(options) {
@@ -24,12 +29,27 @@ export default class Visuals {
 
     this.stars = stars;
 
+    this.clock = new Clock();
+
     // Create scene
     this.scene = new Scene();
+    this.scene.background = new Color('black');
 
     // Create camera / player and set initial position
     this.camera = new PerspectiveCamera(27, width / height, 5, 3500);
-    this.camera.position.z = 2750;
+
+    // Prepare pointer controller
+    this.controls = new PointerControls({
+      camera: this.camera,
+      moveSpeed: 25.0,
+      rotateSpeed: 0.004,
+      stopSpeed: 2.0,
+    });
+
+    this.scene.add(this.controls.yawObject);
+
+    // Set starting position
+    this.controls.yawObject.position.set(0, 0, 300);
 
     // Initialise the renderer
     this.renderer = new WebGLRenderer({ canvas });
@@ -40,10 +60,19 @@ export default class Visuals {
     const starfield = new Starfield({
       color: new Color('white'),
       positions: stars.map(star => star.position),
-      size: 15,
+      size: 50,
     });
 
     this.scene.add(starfield);
+
+    // Add grid for orientation while testing
+    const gridHelper = new GridHelper(
+      GRID_HELPER_SIZE,
+      10,
+      new Color('white'),
+      new Color('blue')
+    );
+    this.scene.add(gridHelper);
 
     // Add stats monitor when requested
     this.stats = null;
@@ -74,14 +103,16 @@ export default class Visuals {
   }
 
   render() {
-    this.camera.position.z -= 3;
+    this.controls.update(this.clock.getDelta());
 
     this.renderer.render(this.scene, this.camera);
   }
 
   get distances() {
+    const { playerWorldPosition } = this.controls;
+
     return this.stars.map(star => {
-      const distance = this.camera.position.distanceTo(
+      const distance = playerWorldPosition.distanceTo(
         objectToVector3(star.position)
       );
 
@@ -92,7 +123,7 @@ export default class Visuals {
     });
   }
 
-  get cameraMatrix() {
-    return this.camera.matrixWorld;
+  get playerWorldMatrix() {
+    return this.controls.playerWorldMatrix;
   }
 }
