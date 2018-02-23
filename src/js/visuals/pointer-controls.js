@@ -56,7 +56,7 @@ export default class PointerControls {
     }
 
     const { moveSpeed, stopSpeed } = this.options;
-    const { x, y, z } = this.velocity;
+    const { y, z } = this.velocity;
 
     if (this.isMoving) {
       let lat = ThreeMath.radToDeg(this.pitchObject.rotation.x);
@@ -69,11 +69,9 @@ export default class PointerControls {
       this.velocity.z = z + moveSpeed * Math.sin(phi) * Math.sin(theta) * delta;
     }
 
-    this.velocity.x -= x * stopSpeed * delta;
     this.velocity.y -= y * stopSpeed * delta;
     this.velocity.z -= z * stopSpeed * delta;
 
-    this.yawObject.translateX(this.velocity.x * delta);
     this.yawObject.translateY(this.velocity.y * delta);
     this.yawObject.translateZ(this.velocity.z * delta);
   }
