@@ -77,7 +77,7 @@ export default class Audio {
     });
 
     if (index < (voices.length - 1)) {
-      console.warn('Too few available voices.');
+      console.warn('Too few available actors.');
     }
   }
 
