@@ -48,7 +48,7 @@ export default class Visuals {
     this.scene.add(this.controls.yawObject);
 
     // Set starting position
-    this.controls.yawObject.position.set(0, 0, 750);
+    this.controls.yawObject.position.set(0, 0, 300);
 
     // Initialise the renderer
     this.renderer = new WebGLRenderer({ canvas });
