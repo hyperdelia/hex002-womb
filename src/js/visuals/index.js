@@ -40,10 +40,11 @@ export default class Visuals {
 
     // Prepare pointer controller
     this.controls = new PointerControls({
+      camera: this.camera,
       moveSpeed: 100.0,
       rotateSpeed: 0.005,
       stopSpeed: 5.0,
-    }, this.camera);
+    });
 
     this.scene.add(this.controls.yawObject);
 
@@ -108,7 +109,7 @@ export default class Visuals {
   }
 
   get distances() {
-    const playerWorldPosition = this.controls.worldPosition;
+    const { playerWorldPosition } = this.controls;
 
     return this.stars.map(star => {
       const distance = playerWorldPosition.distanceTo(
@@ -122,7 +123,7 @@ export default class Visuals {
     });
   }
 
-  get cameraMatrix() {
-    return this.camera.matrixWorld;
+  get playerWorldMatrix() {
+    return this.controls.playerWorldMatrix;
   }
 }

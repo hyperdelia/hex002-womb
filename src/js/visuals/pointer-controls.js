@@ -7,16 +7,17 @@ import {
 const PI_2 = Math.PI / 2;
 
 export default class PointerControls {
-  constructor(options, camera) {
+  constructor(options) {
     this.options = options;
 
     this.isEnabled = true;
     this.isMoving = false;
 
-    camera.rotation.set(0, 0, 0);
+    this.camera = this.options.camera;
+    this.camera.rotation.set(0, 0, 0);
 
     this.pitchObject = new Object3D();
-    this.pitchObject.add(camera);
+    this.pitchObject.add(this.camera);
 
     this.yawObject = new Object3D();
     this.yawObject.add(this.pitchObject);
@@ -31,11 +32,12 @@ export default class PointerControls {
 
     const { rotateSpeed } = this.options;
 
-    const x = movementX > 0 ? rotateSpeed : -rotateSpeed;
-    const y = movementY > 0 ? rotateSpeed : -rotateSpeed;
+    const x = (movementX > 0) ? rotateSpeed : -rotateSpeed;
+    const y = (movementY > 0) ? rotateSpeed : -rotateSpeed;
 
-    this.yawObject.rotation.y -= movementX !== 0 ? x : 0;
-    this.pitchObject.rotation.x -= movementY !== 0 ? y : 0;
+    this.yawObject.rotation.y -= (movementX !== 0) ? x : 0;
+
+    this.pitchObject.rotation.x -= (movementY !== 0) ? y : 0;
     this.pitchObject.rotation.x = Math.max(
       -PI_2,
       Math.min(PI_2, this.pitchObject.rotation.x)
@@ -76,7 +78,11 @@ export default class PointerControls {
     this.yawObject.translateZ(this.velocity.z * delta);
   }
 
-  get worldPosition() {
+  get playerWorldPosition() {
     return this.yawObject.getWorldPosition();
+  }
+
+  get playerWorldMatrix() {
+    return this.camera.matrixWorld;
   }
 }

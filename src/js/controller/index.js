@@ -34,7 +34,7 @@ export default class Controller {
     this.updateVoices(voices);
 
     // Update the player / listener position
-    this.audio.updateListener(this.visuals.cameraMatrix);
+    this.audio.updateListener(this.visuals.playerWorldMatrix);
   }
 
   updateVoices(voices) {
