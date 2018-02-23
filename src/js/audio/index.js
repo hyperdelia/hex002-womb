@@ -7,12 +7,12 @@ import AudioStream from './audio-stream';
 
 const SOURCE_MAX_DISTANCE = 1;
 const SOURCE_MIN_DISTANCE = 0;
-const SOURCE_WIDTH = 180;
+const SOURCE_WIDTH = 0;
 
 const MAX_ACTOR_COUNT = 10;
 
 const ROOM_DIMENSION = 500;
-const ROOM_MATERIAL = 'curtain-heavy';
+const ROOM_MATERIAL = 'uniform';
 
 export default class Audio {
   constructor(context) {
