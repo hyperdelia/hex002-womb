@@ -11,6 +11,7 @@ export default class PointerLockControls {
     this.options = options;
 
     this.isEnabled = true;
+    this.isMoving = false;
 
     camera.rotation.set(0, 0, 0);
 
@@ -21,13 +22,6 @@ export default class PointerLockControls {
     this.yawObject.add(this.pitchObject);
 
     this.velocity = new Vector3();
-
-    this.directions = {
-      backward: false,
-      forward: false,
-      left: false,
-      right: false,
-    };
   }
 
   movePointer(movementX, movementY) {
@@ -35,16 +29,25 @@ export default class PointerLockControls {
       return;
     }
 
-    this.yawObject.rotation.y -= movementX * 0.002;
-    this.pitchObject.rotation.x -= movementY * 0.002;
+    const { rotateSpeed } = this.options;
+
+    const x = movementX > 0 ? rotateSpeed : -rotateSpeed;
+    const y = movementY > 0 ? rotateSpeed : -rotateSpeed;
+
+    this.yawObject.rotation.y -= movementX !== 0 ? x : 0;
+    this.pitchObject.rotation.x -= movementY !== 0 ? y : 0;
     this.pitchObject.rotation.x = Math.max(
       -PI_2,
       Math.min(PI_2, this.pitchObject.rotation.x)
     );
   }
 
-  toggleDirections(directions) {
-    this.directions = Object.assign({}, this.directions, directions);
+  startMoving() {
+    this.isMoving = true;
+  }
+
+  stopMoving() {
+    this.isMoving = false;
   }
 
   update(delta) {
@@ -54,27 +57,16 @@ export default class PointerLockControls {
 
     const { moveSpeed, stopSpeed } = this.options;
     const { x, y, z } = this.velocity;
-    const { forward, backward, left, right } = this.directions;
 
-    if (forward || backward) {
-      let lat = ThreeMath.radToDeg(
-        this.pitchObject.rotation.x
-      ) * (forward ? 1 : -1);
+    if (this.isMoving) {
+      let lat = ThreeMath.radToDeg(this.pitchObject.rotation.x);
       lat = Math.max(-85, Math.min(85, lat));
 
       const phi = ThreeMath.degToRad(90 - lat);
-      const theta = ThreeMath.degToRad(forward ? -90 : 90);
+      const theta = ThreeMath.degToRad(-90);
 
       this.velocity.y = y + moveSpeed * Math.cos(phi) * delta;
       this.velocity.z = z + moveSpeed * Math.sin(phi) * Math.sin(theta) * delta;
-    }
-
-    if (left) {
-      this.velocity.x -= moveSpeed * delta;
-    }
-
-    if (right) {
-      this.velocity.x += moveSpeed * delta;
     }
 
     this.velocity.x -= x * stopSpeed * delta;

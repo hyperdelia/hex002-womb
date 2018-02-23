@@ -37,14 +37,18 @@ export default class Visuals {
 
     // Create camera / player and set initial position
     this.camera = new PerspectiveCamera(27, width / height, 5, 3500);
-    this.camera.position.z = 2750;
 
     // Prepare pointer lock controller
     this.controls = new PointerLockControls({
-      moveSpeed: 250.0,
+      moveSpeed: 100.0,
+      rotateSpeed: 0.005,
       stopSpeed: 5.0,
     }, this.camera);
+
     this.scene.add(this.controls.yawObject);
+
+    // Set starting position
+    this.controls.yawObject.position.set(0, 0, 750);
 
     // Initialise the renderer
     this.renderer = new WebGLRenderer({ canvas });
