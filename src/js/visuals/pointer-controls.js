@@ -25,19 +25,21 @@ export default class PointerControls {
     this.velocity = new Vector3();
   }
 
-  movePointer(movementX, movementY) {
+  /**
+   * Changes the players direction relatively.
+   * @param {float} horizontal - Movement force on X-axis (-1.0 - 1.0)
+   * @param {float} vertical - Movement force on Y-axis (-1.0 - 1.0)
+   */
+  movePointer(horizontal, vertical) {
     if (!this.isEnabled) {
       return;
     }
 
     const { rotateSpeed } = this.options;
 
-    const x = (movementX > 0) ? rotateSpeed : -rotateSpeed;
-    const y = (movementY > 0) ? rotateSpeed : -rotateSpeed;
+    this.yawObject.rotation.y -= horizontal * rotateSpeed;
 
-    this.yawObject.rotation.y -= (movementX !== 0) ? x : 0;
-
-    this.pitchObject.rotation.x -= (movementY !== 0) ? y : 0;
+    this.pitchObject.rotation.x -= vertical * rotateSpeed;
     this.pitchObject.rotation.x = Math.max(
       -PI_2,
       Math.min(PI_2, this.pitchObject.rotation.x)

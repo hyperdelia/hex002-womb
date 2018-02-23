@@ -11,8 +11,6 @@ import samples from '../composition/samples.json';
 import stars from '../composition/stars.json';
 
 const DEBUG_MODE = true;
-
-const ACTIVE_MOVE_CORNERS = 0.5;
 const MOVE_INTERVAL = 10;
 
 const {
@@ -66,11 +64,9 @@ function startPointerUpdate() {
       return;
     }
 
-    const { x, y } = pointerPosition;
-
     visuals.controls.movePointer(
-      x < -ACTIVE_MOVE_CORNERS || x > ACTIVE_MOVE_CORNERS ? x : 0,
-      y < -ACTIVE_MOVE_CORNERS || y > ACTIVE_MOVE_CORNERS ? y : 0
+      pointerPosition.x,
+      pointerPosition.y
     );
   }, MOVE_INTERVAL);
 }
