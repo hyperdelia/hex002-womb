@@ -1,13 +1,13 @@
 export default class Voice {
   constructor(options) {
     const {
-      star,
       distance,
       sampleUrl,
+      star,
     } = options;
 
-    this.star = star;
     this.distance = distance;
     this.sampleUrl = sampleUrl;
+    this.star = star;
   }
 }

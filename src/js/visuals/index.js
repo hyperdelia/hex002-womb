@@ -1,71 +1,50 @@
 import {
-  BufferGeometry,
-  Float32BufferAttribute,
+  Color,
   PerspectiveCamera,
-  Points,
-  PointsMaterial,
   Scene,
-  VertexColors,
   WebGLRenderer,
 } from 'three';
 
 import { objectToVector3 } from '../converters';
 
+import Starfield from './starfield';
+
 export default class Visuals {
   constructor(options) {
-    const { width, height, canvas, stars } = options;
+    const {
+      canvas,
+      devicePixelRatio,
+      height,
+      stars,
+      width,
+    } = options;
 
     this.stars = stars;
 
-    // Create a scene
+    // Create scene
     this.scene = new Scene();
 
-    // Create a camera
-    this.camera = new PerspectiveCamera(
-      27,
-      width / height,
-      5,
-      3500
-    );
-
+    // Create camera / player and set initial position
+    this.camera = new PerspectiveCamera(27, width / height, 5, 3500);
     this.camera.position.z = 2750;
 
     // Initialise the renderer
     this.renderer = new WebGLRenderer({
       canvas,
     });
+
+    this.renderer.setPixelRatio(devicePixelRatio);
     this.resize(width, height);
 
-    // Create stars
-    const colors = [];
-    const geometry = new BufferGeometry();
-    const positions = stars.reduce((acc, star) => {
-      const { x, y, z } = star.position;
-      colors.push(1, 1, 1);
-      acc.push(x, y, z);
-      return acc;
-    }, []);
-
-    geometry.addAttribute('position', new Float32BufferAttribute(
-      positions,
-      3
-    ));
-
-    geometry.addAttribute('color', new Float32BufferAttribute(
-      colors,
-      3
-    ));
-
-    geometry.computeBoundingSphere();
-
-    const material = new PointsMaterial({
-      size: 15,
-      vertexColors: VertexColors,
+    // Add objects to scenery
+    const starfield = new Starfield({
+      positions: stars.map(star => star.position),
+      color: new Color('white'),
     });
-    const points = new Points(geometry, material);
 
-    this.scene.add(points);
+    this.scene.add(starfield);
 
+    // Start render loop
     this.animate();
   }
 
@@ -80,12 +59,15 @@ export default class Visuals {
     requestAnimationFrame(() => { this.animate(); });
 
     this.camera.position.z -= 3;
+
     this.renderer.render(this.scene, this.camera);
   }
 
   get distances() {
     return this.stars.map(star => {
-      const distance = this.camera.position.distanceTo(objectToVector3(star.position));
+      const distance = this.camera.position.distanceTo(
+        objectToVector3(star.position)
+      );
 
       return {
         star,

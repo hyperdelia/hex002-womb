@@ -5,10 +5,11 @@ import Composition from './composition';
 import Controller from './controller';
 import Visuals from './visuals';
 
-import stars from '../composition/stars.json';
 import samples from '../composition/samples.json';
+import stars from '../composition/stars.json';
 
 const {
+  devicePixelRatio,
   innerHeight: height,
   innerWidth: width,
 } = window;
@@ -16,22 +17,24 @@ const {
 const canvas = document.getElementById('visuals');
 
 const audio = new Audio();
+
 const visuals = new Visuals({
-  width,
-  height,
   canvas,
+  devicePixelRatio,
+  height,
   stars,
+  width,
 });
 
 const composition = new Composition({
-  stars,
   samples,
+  stars,
 });
 
 const controller = new Controller({
   audio,
-  visuals,
   composition,
+  visuals,
 });
 
 controller.start();

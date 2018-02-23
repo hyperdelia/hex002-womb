@@ -2,38 +2,38 @@ import { randomItem } from '../utils';
 
 import Voice from '../composition/voice';
 
+const ACTIVATION_DISTANCE_THRESHOLD = 5000;
 const UPDATE_FREQUENCY = 1 * 1000;
-const DISTANCE_THRESHOLD = 5000;
 
 export default class Controller {
   constructor(options) {
     const {
       audio,
-      visuals,
       composition,
+      visuals,
     } = options;
 
     this.audio = audio;
-    this.visuals = visuals;
     this.composition = composition;
+    this.visuals = visuals;
 
     this.interval = null;
     this.voices = [];
   }
 
   update() {
+    // Check for stars which are close enough to be played
     const voices = this.visuals.distances.reduce((acc, obj) => {
-      if (obj.distance < DISTANCE_THRESHOLD) {
+      if (obj.distance < ACTIVATION_DISTANCE_THRESHOLD) {
         acc.push(new Voice(obj));
       }
 
       return acc;
     }, []);
 
-    console.log('voices', voices);
     this.updateVoices(voices);
 
-    console.log('this.visals.cameraMatrix', this.visuals.cameraMatrix);
+    // Update the player / listener position
     this.audio.updateListener(this.visuals.cameraMatrix);
   }
 
@@ -41,36 +41,35 @@ export default class Controller {
     const starIds = voices.map(voice => voice.star.id);
     const activeStarIds = this.voices.map(voice => voice.star.id);
 
-    console.log('starIds', starIds);
-    console.log('activeStarIds', activeStarIds);
-
-    const removeVoices = this.voices.reduce((acc, voice, idx) => {
+    // Find voices which are not used anymore
+    const removeVoices = this.voices.reduce((acc, voice, index) => {
       if (!starIds.includes(voice.star.id)) {
-        this.voices.splice(idx, 1);
+        this.voices.splice(index, 1);
         acc.push(voice);
       }
-
       return acc;
     }, []);
 
+    this.audio.removeVoices(removeVoices);
+
+    // Find new voices to be added to scene
     const addVoices = voices.reduce((acc, voice) => {
       if (!activeStarIds.includes(voice.star.id)) {
         voice.sampleUrl = randomItem(this.composition.samples.stars);
         this.voices.push(voice);
         acc.push(voice);
       }
-
       return acc;
     }, []);
 
-    console.log('removeVoices', removeVoices);
-    console.log('addVoices', addVoices);
-
-    this.audio.removeVoices(removeVoices);
     this.audio.addVoices(addVoices);
   }
 
   start() {
+    if (this.interval) {
+      return;
+    }
+
     this.interval = setInterval(() => {
       this.update();
     }, UPDATE_FREQUENCY);
@@ -78,5 +77,6 @@ export default class Controller {
 
   stop() {
     clearInterval(this.interval);
+    this.interval = null;
   }
 }
