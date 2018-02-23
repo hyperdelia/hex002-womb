@@ -1,5 +1,7 @@
 import {
+  Clock,
   Color,
+  GridHelper,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
@@ -9,6 +11,7 @@ import Stats from 'stats.js';
 
 import { objectToVector3 } from '../converters';
 
+import PointerLockControls from './pointer-lock-controls';
 import Starfield from './starfield';
 
 export default class Visuals {
@@ -24,12 +27,22 @@ export default class Visuals {
 
     this.stars = stars;
 
+    this.clock = new Clock();
+
     // Create scene
     this.scene = new Scene();
+    this.scene.background = new Color('black');
 
     // Create camera / player and set initial position
     this.camera = new PerspectiveCamera(27, width / height, 5, 3500);
     this.camera.position.z = 2750;
+
+    // Prepare pointer lock controller
+    this.controls = new PointerLockControls({
+      moveSpeed: 10.0,
+      stopSpeed: 5.0,
+    }, this.camera);
+    this.scene.add(this.controls.yawObject);
 
     // Initialise the renderer
     this.renderer = new WebGLRenderer({ canvas });
@@ -40,10 +53,19 @@ export default class Visuals {
     const starfield = new Starfield({
       color: new Color('white'),
       positions: stars.map(star => star.position),
-      size: 15,
+      size: 50,
     });
 
     this.scene.add(starfield);
+
+    // Add grid for orientation while testing
+    const gridHelper = new GridHelper(
+      1000,
+      100,
+      new Color('white'),
+      new Color('blue')
+    );
+    this.scene.add(gridHelper);
 
     // Add stats monitor when requested
     this.stats = null;
@@ -74,14 +96,16 @@ export default class Visuals {
   }
 
   render() {
-    this.camera.position.z -= 3;
+    this.controls.update(this.clock.getDelta());
 
     this.renderer.render(this.scene, this.camera);
   }
 
   get distances() {
+    const playerWorldPosition = this.controls.worldPosition;
+
     return this.stars.map(star => {
-      const distance = this.camera.position.distanceTo(
+      const distance = playerWorldPosition.distanceTo(
         objectToVector3(star.position)
       );
 
