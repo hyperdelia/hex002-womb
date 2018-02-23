@@ -2,22 +2,24 @@ module.exports = {
   'extends': ['eslint:recommended'],
   'env': {
     'browser': true,
-    'node': true,
     'es6': true,
+    'node': true,
   },
   'parserOptions': {
     'sourceType': 'module'
   },
   'rules': {
-    'indent': ['error', 2, {'SwitchCase': 1}],
+    'comma-dangle': ['error', 'always-multiline'],
+    'curly': 'error',
+    'indent': ['error', 2, { 'SwitchCase': 1 }],
+    'keyword-spacing': ['error', { 'before': true }],
+    'no-console': 'off',
+    'no-unreachable': 'warn',
+    'no-unused-vars': 'warn',
+    'object-curly-spacing': ['error', 'always'],
     'quotes': ['error', 'single'],
     'semi': ['error', 'always'],
     'space-before-function-paren': ['error', 'never'],
-    'object-curly-spacing': ['error', 'always'],
-    'keyword-spacing': ['error', { 'before': true }],
-    'no-unreachable': 'warn',
-    'no-console': 'off',
-    'no-unused-vars': 'warn',
-    'comma-dangle': ['error', 'always-multiline'],
+    'space-infix-ops': 'error',
   }
 };

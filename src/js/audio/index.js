@@ -35,7 +35,7 @@ export default class Audio {
 
     this.actors = [];
 
-    for (let i=0; i < MAX_ACTOR_COUNT; i++) {
+    for (let i = 0; i < MAX_ACTOR_COUNT; i++) {
       const resonanceSource = this.scene.createSource();
       const audioStream = new AudioStream(this.context);
 
