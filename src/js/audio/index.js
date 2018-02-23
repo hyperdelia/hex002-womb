@@ -1,4 +1,3 @@
-import createAudioContext from 'ios-safe-audio-context';
 import { ResonanceAudio } from 'resonance-audio';
 
 import { normalizeDimension } from '../converters';
@@ -18,8 +17,8 @@ const ROOM_MATERIALS = {
 };
 
 export default class Audio {
-  constructor() {
-    this.context = createAudioContext();
+  constructor(context) {
+    this.context = context;
 
     this.scene = new ResonanceAudio(this.context);
     this.scene.output.connect(this.context.destination);

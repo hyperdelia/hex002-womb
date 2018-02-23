@@ -1,3 +1,5 @@
+import createAudioContext from 'ios-safe-audio-context';
+
 import '../scss/app.scss';
 
 import Audio from './audio';
@@ -18,8 +20,6 @@ const {
 
 const canvas = document.getElementById('visuals');
 
-const audio = new Audio();
-
 const visuals = new Visuals({
   canvas,
   devicePixelRatio,
@@ -34,14 +34,30 @@ const composition = new Composition({
   stars,
 });
 
-const controller = new Controller({
-  audio,
-  composition,
-  visuals,
-});
+let isPlaying = false;
 
-controller.start();
+function start() {
+  if (isPlaying) {
+    return;
+  }
+
+  const context = createAudioContext();
+  const audio = new Audio(context);
+
+  const controller = new Controller({
+    audio,
+    composition,
+    visuals,
+  });
+
+  visuals.animate();
+  controller.start();
+  isPlaying = true;
+}
 
 window.addEventListener('resize', () => {
   visuals.resize(window.innerWidth, window.innerHeight);
 });
+
+window.addEventListener('touchend', start, false);
+window.addEventListener('click', start, false);

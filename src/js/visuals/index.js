@@ -53,8 +53,8 @@ export default class Visuals {
       document.body.appendChild(this.stats.dom);
     }
 
-    // Start render loop
-    this.animate();
+    // Render scene
+    this.render();
   }
 
   resize(width, height) {
