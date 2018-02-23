@@ -41,7 +41,7 @@ export default class Visuals {
 
     // Prepare pointer lock controller
     this.controls = new PointerLockControls({
-      moveSpeed: 10.0,
+      moveSpeed: 250.0,
       stopSpeed: 5.0,
     }, this.camera);
     this.scene.add(this.controls.yawObject);
