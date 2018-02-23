@@ -51,6 +51,7 @@
     "lodash": "^4.17.4",
     "normalize.css": "^8.0.0",
     "resonance-audio": "^1.0.0",
+    "stats.js": "^0.17.0",
     "three": "^0.90.0"
   }
 }

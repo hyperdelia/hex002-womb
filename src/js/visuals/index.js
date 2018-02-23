@@ -5,6 +5,8 @@ import {
   WebGLRenderer,
 } from 'three';
 
+import Stats from 'stats.js';
+
 import { objectToVector3 } from '../converters';
 
 import Starfield from './starfield';
@@ -15,6 +17,7 @@ export default class Visuals {
       canvas,
       devicePixelRatio,
       height,
+      isStatsShown,
       stars,
       width,
     } = options;
@@ -42,6 +45,14 @@ export default class Visuals {
 
     this.scene.add(starfield);
 
+    // Add stats monitor when requested
+    this.stats = null;
+
+    if (isStatsShown) {
+      this.stats = new Stats();
+      document.body.appendChild(this.stats.dom);
+    }
+
     // Start render loop
     this.animate();
   }
@@ -54,8 +65,15 @@ export default class Visuals {
   }
 
   animate() {
-    requestAnimationFrame(() => { this.animate(); });
+    requestAnimationFrame(() => {
+      this.animate();
+    });
 
+    this.render();
+    this.stats.update();
+  }
+
+  render() {
     this.camera.position.z -= 3;
 
     this.renderer.render(this.scene, this.camera);

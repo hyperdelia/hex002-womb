@@ -8,6 +8,8 @@ import Visuals from './visuals';
 import samples from '../composition/samples.json';
 import stars from '../composition/stars.json';
 
+const DEBUG_MODE = true;
+
 const {
   devicePixelRatio,
   innerHeight: height,
@@ -22,6 +24,7 @@ const visuals = new Visuals({
   canvas,
   devicePixelRatio,
   height,
+  isStatsShown: DEBUG_MODE,
   stars,
   width,
 });
