@@ -6,7 +6,7 @@ import {
 
 const PI_2 = Math.PI / 2;
 
-export default class PointerLockControls {
+export default class PointerControls {
   constructor(options, camera) {
     this.options = options;
 

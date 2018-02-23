@@ -11,7 +11,7 @@ import Stats from 'stats.js';
 
 import { objectToVector3 } from '../converters';
 
-import PointerLockControls from './pointer-lock-controls';
+import PointerControls from './pointer-controls';
 import Starfield from './starfield';
 
 const GRID_HELPER_SIZE = 500;
@@ -38,8 +38,8 @@ export default class Visuals {
     // Create camera / player and set initial position
     this.camera = new PerspectiveCamera(27, width / height, 5, 3500);
 
-    // Prepare pointer lock controller
-    this.controls = new PointerLockControls({
+    // Prepare pointer controller
+    this.controls = new PointerControls({
       moveSpeed: 100.0,
       rotateSpeed: 0.005,
       stopSpeed: 5.0,
