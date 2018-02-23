@@ -38,8 +38,9 @@ export default class Visuals {
 
     // Add objects to scenery
     const starfield = new Starfield({
-      positions: stars.map(star => star.position),
       color: new Color('white'),
+      positions: stars.map(star => star.position),
+      size: 15,
     });
 
     this.scene.add(starfield);

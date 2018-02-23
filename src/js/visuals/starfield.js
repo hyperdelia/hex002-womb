@@ -11,7 +11,7 @@ export default class Starfield extends Object3D {
   constructor(options) {
     super();
 
-    const { positions, color } = options;
+    const { positions, color, size } = options;
 
     // Prepare positions and colors for BufferGeometry
     const convertedPositions = positions.reduce((acc, position) => {
@@ -42,7 +42,7 @@ export default class Starfield extends Object3D {
 
     // Define material
     const material = new PointsMaterial({
-      size: 15,
+      size,
       vertexColors: VertexColors,
     });
 
