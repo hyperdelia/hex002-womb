@@ -50,7 +50,7 @@ export default class DeviceOrientationControls {
     const zee = new Vector3(0, 0, 1);
     const euler = new Euler();
     const q0 = new Quaternion();
-    const q1 = new Quaternion(-Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 )); // - PI/2 around the x-axis
+    const q1 = new Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5)); // - PI/2 around the x-axis
 
     return (quaternion, alpha, beta, gamma, orient) => {
       euler.set(beta, alpha, - gamma, 'YXZ'); // 'ZXY' for the device, but 'YXZ' for us
@@ -71,15 +71,15 @@ export default class DeviceOrientationControls {
   connect() {
     this.onScreenOrientationChangeEvent(); // run once on load
 
-    window.addEventListener('orientationchange', this.onScreenOrientationChangeEvent, false);
-    window.addEventListener('deviceorientation', this.onDeviceOrientationChangeEvent, false);
+    window.addEventListener('orientationchange', this.onScreenOrientationChangeEvent.bind(this), false);
+    window.addEventListener('deviceorientation', this.onDeviceOrientationChangeEvent.bind(this), false);
 
     this.isEnabled = true;
   }
 
   disconnect() {
-    window.removeEventListener('orientationchange', this.onScreenOrientationChangeEvent, false);
-    window.removeEventListener('deviceorientation', this.onDeviceOrientationChangeEvent, false);
+    window.removeEventListener('orientationchange', this.onScreenOrientationChangeEvent.bind(this), false);
+    window.removeEventListener('deviceorientation', this.onDeviceOrientationChangeEvent.bind(this), false);
 
     this.isEnabled = false;
   }
@@ -99,10 +99,6 @@ export default class DeviceOrientationControls {
 
       this.setObjectQuaternion(this.camera.quaternion, alpha, beta, gamma, orient);
     }
-  }
-
-  dispose() {
-    this.disconnect();
   }
 
   startMoving() {
