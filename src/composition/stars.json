@@ -1,18 +1,387 @@
 [
   {
-    "id": 0,
+    "constellation": "And",
+    "distance": 400,
+    "id": 4022,
+    "magnitude": 8.88,
     "position": {
-      "x": 0,
-      "y": 0,
-      "z": 0
+      "x": 357.1935,
+      "y": 81.867094,
+      "z": 160.345198
     }
   },
   {
-    "id": 1,
+    "constellation": "Phe",
+    "distance": 609.7561,
+    "id": 4023,
+    "magnitude": 8.66,
     "position": {
-      "x": 120,
-      "y": 90,
-      "z": 150
+      "x": 407.69018,
+      "y": 93.472791,
+      "z": -443.682382
+    }
+  },
+  {
+    "constellation": "Cas",
+    "distance": 328.9474,
+    "id": 4024,
+    "magnitude": 8.12,
+    "position": {
+      "x": 200.90432,
+      "y": 46.074439,
+      "z": 256.361058
+    }
+  },
+  {
+    "constellation": "Phe",
+    "distance": 104.2753,
+    "id": 4025,
+    "magnitude": 8.62,
+    "position": {
+      "x": 65.118455,
+      "y": 14.956454,
+      "z": -80.057664
+    }
+  },
+  {
+    "constellation": "Cet",
+    "distance": 179.5332,
+    "id": 4026,
+    "magnitude": 8.3,
+    "position": {
+      "x": 173.986157,
+      "y": 39.9626,
+      "z": -19.0782
+    }
+  },
+  {
+    "constellation": "Cet",
+    "distance": 177.9359,
+    "id": 4027,
+    "magnitude": 9.88,
+    "position": {
+      "x": 165.772426,
+      "y": 38.095537,
+      "z": -52.243827
+    }
+  },
+  {
+    "constellation": "Cas",
+    "distance": 226.2443,
+    "id": 4028,
+    "magnitude": 7.49,
+    "position": {
+      "x": 147.377086,
+      "y": 33.878584,
+      "z": 168.281667
+    }
+  },
+  {
+    "constellation": "Cas",
+    "distance": 152.6718,
+    "id": 4029,
+    "magnitude": 9.77,
+    "position": {
+      "x": 39.826635,
+      "y": 9.160588,
+      "z": 147.10065
+    }
+  },
+  {
+    "constellation": "Cet",
+    "distance": 121.9512,
+    "id": 4030,
+    "magnitude": 8.38,
+    "position": {
+      "x": 118.545355,
+      "y": 27.268404,
+      "z": -8.690696
+    }
+  },
+  {
+    "constellation": "Cep",
+    "distance": 40.4367,
+    "id": 4031,
+    "magnitude": 8.45,
+    "position": {
+      "x": 7.771697,
+      "y": 1.788314,
+      "z": 39.64256
+    }
+  },
+  {
+    "constellation": "Cas",
+    "distance": 291.5452,
+    "id": 4032,
+    "magnitude": 7.54,
+    "position": {
+      "x": 186.460866,
+      "y": 42.906183,
+      "z": 219.977291
+    }
+  },
+  {
+    "constellation": "Scl",
+    "distance": 100000,
+    "id": 4033,
+    "magnitude": 9.36,
+    "position": {
+      "x": 88183.751397,
+      "y": 20292.614328,
+      "z": -42565.664487
+    }
+  },
+  {
+    "constellation": "Cet",
+    "distance": 156.4945,
+    "id": 4034,
+    "magnitude": 8.04,
+    "position": {
+      "x": 150.961546,
+      "y": 34.742703,
+      "z": -22.228014
+    }
+  },
+  {
+    "constellation": "Phe",
+    "distance": 79.8722,
+    "id": 4035,
+    "magnitude": 9.67,
+    "position": {
+      "x": 59.359854,
+      "y": 13.661917,
+      "z": -51.665542
+    }
+  },
+  {
+    "constellation": "Phe",
+    "distance": 115.0748,
+    "id": 4036,
+    "magnitude": 8.13,
+    "position": {
+      "x": 61.768256,
+      "y": 14.217329,
+      "z": -96.045612
+    }
+  },
+  {
+    "constellation": "Psc",
+    "distance": 205.7613,
+    "id": 4037,
+    "magnitude": 8.15,
+    "position": {
+      "x": 170.04734,
+      "y": 39.140745,
+      "z": 109.039519
+    }
+  },
+  {
+    "constellation": "Psc",
+    "distance": 227.2727,
+    "id": 4038,
+    "magnitude": 7.88,
+    "position": {
+      "x": 212.120547,
+      "y": 48.828047,
+      "z": 65.372591
+    }
+  },
+  {
+    "constellation": "Phe",
+    "distance": 95.6023,
+    "id": 4039,
+    "magnitude": 6.89,
+    "position": {
+      "x": 67.344629,
+      "y": 15.507347,
+      "z": -66.060921
+    }
+  },
+  {
+    "constellation": "Psc",
+    "distance": 100000,
+    "id": 4040,
+    "magnitude": 7.82,
+    "position": {
+      "x": 86215.324799,
+      "y": 19867.241528,
+      "z": 46606.979408
+    }
+  },
+  {
+    "constellation": "Cas",
+    "distance": 229.3578,
+    "id": 4041,
+    "magnitude": 7.4,
+    "position": {
+      "x": 141.335229,
+      "y": 32.570155,
+      "z": 177.675374
+    }
+  },
+  {
+    "constellation": "Scl",
+    "distance": 298.5075,
+    "id": 4042,
+    "magnitude": 9.21,
+    "position": {
+      "x": 249.444048,
+      "y": 57.484838,
+      "z": -153.557515
+    }
+  },
+  {
+    "constellation": "Psc",
+    "distance": 591.716,
+    "id": 4043,
+    "magnitude": 7.72,
+    "position": {
+      "x": 487.019486,
+      "y": 112.236085,
+      "z": 316.769485
+    }
+  },
+  {
+    "constellation": "Cet",
+    "distance": 100000,
+    "id": 4044,
+    "magnitude": 8.9,
+    "position": {
+      "x": 96693.047974,
+      "y": 22284.702114,
+      "z": -12403.488429
+    }
+  },
+  {
+    "constellation": "Cep",
+    "distance": 112.9944,
+    "id": 4045,
+    "magnitude": 10.49,
+    "position": {
+      "x": 15.31066,
+      "y": 3.530626,
+      "z": 111.896616
+    }
+  },
+  {
+    "constellation": "Psc",
+    "distance": 105.4852,
+    "id": 4046,
+    "magnitude": 7.86,
+    "position": {
+      "x": 102.530082,
+      "y": 23.641569,
+      "z": 7.469007
+    }
+  },
+  {
+    "constellation": "Phe",
+    "distance": 170.3578,
+    "id": 4047,
+    "magnitude": 8.06,
+    "position": {
+      "x": 122.107818,
+      "y": 28.160677,
+      "z": -115.405534
+    }
+  },
+  {
+    "constellation": "And",
+    "distance": 127.8772,
+    "id": 4048,
+    "magnitude": 6.87,
+    "position": {
+      "x": 103.436495,
+      "y": 23.85715,
+      "z": 71.304322
+    }
+  },
+  {
+    "constellation": "Cas",
+    "distance": 109.0513,
+    "id": 4049,
+    "magnitude": 8.21,
+    "position": {
+      "x": 68.275234,
+      "y": 15.753237,
+      "z": 83.561439
+    }
+  },
+  {
+    "constellation": "Scl",
+    "distance": 162.3377,
+    "id": 4050,
+    "magnitude": 9.08,
+    "position": {
+      "x": 140.148561,
+      "y": 32.34096,
+      "z": -75.272651
+    }
+  },
+  {
+    "constellation": "Psc",
+    "distance": 31.8776,
+    "id": 4051,
+    "magnitude": 11.53,
+    "position": {
+      "x": 29.077786,
+      "y": 6.713273,
+      "z": 11.206948
+    }
+  },
+  {
+    "constellation": "Tuc",
+    "distance": 84.8896,
+    "id": 4052,
+    "magnitude": 8.69,
+    "position": {
+      "x": 21.588597,
+      "y": 4.986617,
+      "z": -81.947405
+    }
+  },
+  {
+    "constellation": "Cet",
+    "distance": 101.7294,
+    "id": 4053,
+    "magnitude": 8.85,
+    "position": {
+      "x": 93.475819,
+      "y": 21.604028,
+      "z": -33.829101
+    }
+  },
+  {
+    "constellation": "Scl",
+    "distance": 900.9009,
+    "id": 4054,
+    "magnitude": 8.65,
+    "position": {
+      "x": 712.353642,
+      "y": 164.802276,
+      "z": -526.322043
+    }
+  },
+  {
+    "constellation": "Psc",
+    "distance": 98.6193,
+    "id": 4055,
+    "magnitude": 8.41,
+    "position": {
+      "x": 94.439587,
+      "y": 21.858072,
+      "z": 18.142642
+    }
+  },
+  {
+    "constellation": "Cet",
+    "distance": 60.9385,
+    "id": 4056,
+    "magnitude": 9.43,
+    "position": {
+      "x": 57.793048,
+      "y": 13.377107,
+      "z": -13.946949
     }
   }
 ]
