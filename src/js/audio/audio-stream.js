@@ -31,6 +31,14 @@ export default class AudioStream extends AudioBase {
     return this.audioTag.src;
   }
 
+  set loop(loop = true) {
+    this.audioTag.loop = loop;
+  }
+
+  get loop() {
+    return this.audioTag.loop;
+  }
+
   /**
    * Begin to load the audio file.
    * This Method has to be called before using any other methods of this class.
