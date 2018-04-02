@@ -70,12 +70,13 @@ export default class Audio {
     this.actors.some(actor => {
       if (!actor.isPlaying) {
         const voice = voices[index];
-        const { id, position } = voice.star;
+        const { id } = voice.star;
+        const [ x, y, z ] = voice.star.p;
 
         actor.start(
           voice.sampleUrl,
           id,
-          normalizeDimension(ROOM_DIMENSION, position)
+          normalizeDimension(ROOM_DIMENSION, { x, y, z })
         );
 
         index += 1;

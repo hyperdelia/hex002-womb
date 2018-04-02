@@ -9,7 +9,7 @@ import {
 
 import Stats from 'stats.js';
 
-import { objectToVector3 } from '../converters';
+import { arrayToVector3 } from '../converters';
 
 import PointerControls from './pointer-controls';
 import Starfield from './starfield';
@@ -59,8 +59,9 @@ export default class Visuals {
     // Add objects to scenery
     const starfield = new Starfield({
       color: new Color('white'),
-      positions: stars.map(star => star.position),
+      magnitude: 3,
       size: 50,
+      stars,
     });
 
     this.scene.add(starfield);
@@ -112,9 +113,7 @@ export default class Visuals {
     const { playerWorldPosition } = this.controls;
 
     return this.stars.map(star => {
-      const distance = playerWorldPosition.distanceTo(
-        objectToVector3(star.position)
-      );
+      const distance = playerWorldPosition.distanceTo(arrayToVector3(star.p));
 
       return {
         star,

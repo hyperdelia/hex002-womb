@@ -1,11 +1,11 @@
 import { Vector3, Matrix4 } from 'three';
 
-export function objectToVector3(obj) {
-  if (obj instanceof Vector3) {
-    return obj;
+export function arrayToVector3(arr) {
+  if (arr instanceof Vector3) {
+    return arr;
   }
 
-  return new Vector3(obj.x, obj.y, obj.z);
+  return new Vector3(arr[0], arr[1], arr[2]);
 }
 
 export function normalizeDimension(roomSize, obj) {
