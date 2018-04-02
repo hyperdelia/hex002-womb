@@ -1,50 +1,71 @@
 {
-  "name": "spatial-test",
+  "name": "hex002-womb",
   "version": "0.1.0",
-  "description": "Experiments with spatial audio in WebGL environments",
-  "main": "index.js",
+  "description": "Kajsa Lindgren - WOMB (2018, HEX 002, Hyperdelia)",
+  "main": "src/js/index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 3100",
-    "build": "rm -rf ./dist ; NODE_ENV=production webpack -p",
-    "docs": "./node_modules/.bin/esdoc && open docs/index.html"
+    "build": "yarn clear && webpack --mode production",
+    "clear": "rimraf dist",
+    "docs": "esdoc",
+    "lint": "yarn lint:scss && yarn lint:js",
+    "lint:js": "eslint ./src/js",
+    "lint:scss": "stylelint ./src/scss",
+    "serve": "webpack-dev-server --mode development",
+    "start": "yarn serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adzialocha/spatial-test.git"
+    "url": "git+https://github.com/hyperdelia/hex002-womb.git"
   },
   "keywords": [
     "Spatial",
     "WebAudio",
     "WebGL"
   ],
-  "author": "",
-  "license": "UNLICENSED",
+  "contributors": [
+    {
+      "name": "David Granström",
+      "url": "https://github.com/davidgranstrom"
+    },
+    {
+      "name": "Andreas Dzialocha",
+      "url": "https://github.com/adzialocha"
+    }
+  ],
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/adzialocha/spatial-test/issues"
+    "url": "https://github.com/hyperdelia/hex002-womb/issues"
   },
-  "homepage": "https://github.com/adzialocha/spatial-test#readme",
+  "homepage": "https://github.com/hyperdelia/hex002-womb#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.39",
-    "@babel/preset-env": "^7.0.0-beta.39",
-    "autoprefixer": "^7.2.4",
-    "babel-loader": "8.0.0-beta.0",
+    "autoprefixer": "^8.2.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "browser-sync": "^2.23.6",
     "browser-sync-webpack-plugin": "^2.0.1",
     "css-loader": "^0.28.9",
     "esdoc": "^1.0.4",
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^4.17.0",
-    "eslint-loader": "^1.9.0",
-    "extract-text-webpack-plugin": "^3.0.2",
+    "eslint-loader": "^2.0.0",
+    "extract-text-webpack-plugin": "v4.0.0-alpha.0",
     "file-loader": "^1.1.6",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-plugin": "^3.1.0",
     "node-sass": "^4.7.2",
     "postcss-loader": "^2.1.0",
     "postcss-modules": "^1.1.0",
+    "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.2",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.1"
+    "stylelint": "^9.2.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-order": "^0.8.1",
+    "webpack": "^4.4.1",
+    "webpack-cli": "^2.0.13",
+    "webpack-dev-server": "^3.1.1"
   },
   "dependencies": {
     "ios-safe-audio-context": "^1.0.1",
@@ -52,6 +73,6 @@
     "normalize.css": "^8.0.0",
     "resonance-audio": "^1.0.0",
     "stats.js": "^0.17.0",
-    "three": "^0.90.0"
+    "three": "^0.91.0"
   }
 }

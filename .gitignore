@@ -1,6 +1,7 @@
-test/
-dist/
-public/
-docs/
-src/assets/audio/
-.cache/
+# dependencies
+node_modules
+.yarn-error.log
+
+# builds
+dist
+docs
