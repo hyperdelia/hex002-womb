@@ -22,12 +22,12 @@ export default class Visuals {
       canvas,
       devicePixelRatio,
       height,
-      isStatsShown,
-      stars,
       width,
     } = options;
 
-    this.stars = stars;
+    this.options = options;
+
+    this.stars = [];
 
     this.clock = new Clock();
 
@@ -56,6 +56,23 @@ export default class Visuals {
     this.renderer.setPixelRatio(devicePixelRatio);
     this.resize(width, height);
 
+    // Add stats monitor when requested
+    this.stats = null;
+
+    if (this.options.isDebugMode) {
+      this.stats = new Stats();
+      document.body.appendChild(this.stats.dom);
+    }
+
+    // Render scene
+    this.render();
+  }
+
+  createScenery(data) {
+    const { stars } = data;
+
+    this.stars = stars;
+
     // Add objects to scenery
     const starfield = new Starfield({
       color: new Color('white'),
@@ -67,24 +84,15 @@ export default class Visuals {
     this.scene.add(starfield);
 
     // Add grid for orientation while testing
-    const gridHelper = new GridHelper(
-      GRID_HELPER_SIZE,
-      10,
-      new Color('white'),
-      new Color('blue')
-    );
-    this.scene.add(gridHelper);
-
-    // Add stats monitor when requested
-    this.stats = null;
-
-    if (isStatsShown) {
-      this.stats = new Stats();
-      document.body.appendChild(this.stats.dom);
+    if (this.options.isDebugMode) {
+      const gridHelper = new GridHelper(
+        GRID_HELPER_SIZE,
+        10,
+        new Color('white'),
+        new Color('blue')
+      );
+      this.scene.add(gridHelper);
     }
-
-    // Render scene
-    this.render();
   }
 
   resize(width, height) {
@@ -94,13 +102,20 @@ export default class Visuals {
     this.renderer.setSize(width, height);
   }
 
+  start() {
+    this.animate();
+  }
+
   animate() {
     requestAnimationFrame(() => {
       this.animate();
     });
 
     this.render();
-    this.stats.update();
+
+    if (this.options.isDebugMode) {
+      this.stats.update();
+    }
   }
 
   render() {
