@@ -14,6 +14,9 @@ export default class VirtualRealityControls {
     }
   }
 
+  setPosition(x, y, z) {
+  }
+
   get playerWorldPosition() {
   }
 

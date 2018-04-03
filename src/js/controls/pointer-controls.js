@@ -17,7 +17,7 @@ export default class PointerControls {
   constructor(options) {
     this.options = options;
 
-    this.isEnabled = true;
+    this.isEnabled = false;
     this.isMoving = false;
 
     this.pointerPosition = {
@@ -67,6 +67,7 @@ export default class PointerControls {
   }
 
   start() {
+    this.isEnabled = true;
     this.startMoving();
 
     window.setInterval(() => {
@@ -128,6 +129,14 @@ export default class PointerControls {
 
     this.yawObject.translateY(this.velocity.y * delta);
     this.yawObject.translateZ(this.velocity.z * delta);
+  }
+
+  setPosition(x, y, z) {
+    this.yawObject.position.set(x, y, z);
+  }
+
+  get sceneObject() {
+    return this.yawObject;
   }
 
   get playerWorldPosition() {

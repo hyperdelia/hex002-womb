@@ -11,17 +11,19 @@
 import {
   Euler,
   Math as ThreeMath,
-  Object3D,
   Quaternion,
   Vector3,
 } from 'three';
+
+const PARAMETERS = {
+  alphaOffset: 0, // radians
+};
 
 export default class DeviceOrientationControls {
   constructor(options) {
     this.options = options;
 
     this.isEnabled = false;
-    this.isMoving = false;
 
     this.camera = this.options.camera;
     this.camera.rotation.set(0, 0, 0);
@@ -29,18 +31,10 @@ export default class DeviceOrientationControls {
 
     this.deviceOrientation = {};
     this.screenOrientation = 0;
-    this.alphaOffset = 0; // radians
-
-    this.pitchObject = new Object3D();
-    this.pitchObject.add(this.camera);
-
-    this.yawObject = new Object3D();
-    this.yawObject.add(this.pitchObject);
-
-    this.velocity = new Vector3();
 
     this.setObjectQuaternion = this.objectQuaternion();
-    this.connect();
+
+    this.registerEvents();
   }
 
   // The angles alpha, beta and gamma form a set of intrinsic Tait-Bryan angles of type Z-X'-Y''
@@ -58,28 +52,32 @@ export default class DeviceOrientationControls {
     };
   }
 
-  onDeviceOrientationChangeEvent(event) {
-    this.deviceOrientation = event;
-  }
-
-  onScreenOrientationChangeEvent() {
-    this.screenOrientation = window.orientation || 0;
-  }
-
-  connect() {
-    this.onScreenOrientationChangeEvent(); // run once on load
-
-    window.addEventListener('orientationchange', this.onScreenOrientationChangeEvent.bind(this), false);
-    window.addEventListener('deviceorientation', this.onDeviceOrientationChangeEvent.bind(this), false);
-
+  start() {
     this.isEnabled = true;
   }
 
-  disconnect() {
-    window.removeEventListener('orientationchange', this.onScreenOrientationChangeEvent.bind(this), false);
-    window.removeEventListener('deviceorientation', this.onDeviceOrientationChangeEvent.bind(this), false);
+  onOrientationChange() {
+    this.screenOrientation = window.orientation || 0;
+  }
 
-    this.isEnabled = false;
+  onDeviceOrientationChange(event) {
+    this.deviceOrientation = event;
+  }
+
+  registerEvents() {
+    // Run once on load
+    this.onOrientationChange();
+
+    window.addEventListener(
+      'orientationchange',
+      this.onOrientationChange.bind(this),
+      false
+    );
+    window.addEventListener(
+      'deviceorientation',
+      this.onDeviceOrientationChange.bind(this),
+      false
+    );
   }
 
   update() {
@@ -87,28 +85,31 @@ export default class DeviceOrientationControls {
       return;
     }
 
+    const { degToRad } = ThreeMath;
+    const { alphaOffset } = PARAMETERS;
+
     const device = this.deviceOrientation;
 
-    if (device) {
-      const alpha = device.alpha ? ThreeMath.degToRad(device.alpha) + this.alphaOffset : 0; // Z
-      const beta = device.beta ? ThreeMath.degToRad(device.beta) : 0; // X'
-      const gamma = device.gamma ? ThreeMath.degToRad(device.gamma) : 0; // Y''
-      const orient = this.screenOrientation ? ThreeMath.degToRad(this.screenOrientation) : 0; // O
+    const alpha = device.alpha ? degToRad(device.alpha) + alphaOffset : 0; // Z
+    const beta = device.beta ? degToRad(device.beta) : 0; // X'
+    const gamma = device.gamma ? degToRad(device.gamma) : 0; // Y''
+    const orient = this.screenOrientation ? degToRad(this.screenOrientation) : 0; // O
 
-      this.setObjectQuaternion(this.camera.quaternion, alpha, beta, gamma, orient);
-    }
+    this.setObjectQuaternion(
+      this.camera.quaternion,
+      alpha,
+      beta,
+      gamma,
+      orient
+    );
   }
 
-  startMoving() {
-    this.isMoving = true;
-  }
-
-  stopMoving() {
-    this.isMoving = false;
+  setPosition(x, y, z) {
+    this.camera.position.set(x, y, z);
   }
 
   get playerWorldPosition() {
-    return this.yawObject.getWorldPosition();
+    return this.camera.getWorldPosition();
   }
 
   get playerWorldMatrix() {

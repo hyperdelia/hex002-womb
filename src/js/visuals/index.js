@@ -43,10 +43,13 @@ export default class Visuals {
     this.controls = new Controls[controlsName]({
       camera: this.camera,
     });
-    this.scene.add(this.controls.yawObject);
+
+    if (this.controls.sceneObject) {
+      this.scene.add(this.controls.sceneObject);
+    }
 
     // Set starting position
-    this.controls.yawObject.position.set(0, 0, 300);
+    this.controls.setPosition(0, 0, 300);
 
     // Initialise the renderer
     this.renderer = new WebGLRenderer({ canvas });
@@ -123,7 +126,8 @@ export default class Visuals {
     const { playerWorldPosition } = this.controls;
 
     return this.stars.map(star => {
-      const distance = playerWorldPosition.distanceTo(arrayToVector3(star.p));
+      const { p: position } = star;
+      const distance = playerWorldPosition.distanceTo(arrayToVector3(position));
 
       return {
         star,

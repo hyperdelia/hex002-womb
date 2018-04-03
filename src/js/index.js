@@ -14,6 +14,7 @@ identifyPlatform()
     const session = new Session({
       canvas,
       isDebugMode,
+      platform,
     });
 
     const view = new View({
