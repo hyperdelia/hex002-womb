@@ -5,7 +5,7 @@ import Voice from '../composition/voice';
 const ACTIVATION_DISTANCE_THRESHOLD = 5000;
 const UPDATE_FREQUENCY = 1 * 1000;
 
-export default class Controller {
+export default class Core {
   constructor(options) {
     const {
       audio,

@@ -11,7 +11,7 @@ import Stats from 'stats.js';
 
 import { arrayToVector3 } from '../utils';
 
-import PointerControls from './pointer-controls';
+import Controls from '../controls';
 import Starfield from './starfield';
 
 const GRID_HELPER_SIZE = 500;
@@ -20,6 +20,7 @@ export default class Visuals {
   constructor(options) {
     const {
       canvas,
+      controlsName,
       devicePixelRatio,
       height,
       width,
@@ -38,14 +39,10 @@ export default class Visuals {
     // Create camera / player and set initial position
     this.camera = new PerspectiveCamera(27, width / height, 5, 3500);
 
-    // Prepare pointer controller
-    this.controls = new PointerControls({
+    // Prepare user controls
+    this.controls = new Controls[controlsName]({
       camera: this.camera,
-      moveSpeed: 25.0,
-      rotateSpeed: 0.004,
-      stopSpeed: 2.0,
     });
-
     this.scene.add(this.controls.yawObject);
 
     // Set starting position
@@ -63,9 +60,6 @@ export default class Visuals {
       this.stats = new Stats();
       document.body.appendChild(this.stats.dom);
     }
-
-    // Render scene
-    this.render();
   }
 
   createScenery(data) {
@@ -103,6 +97,7 @@ export default class Visuals {
   }
 
   start() {
+    this.controls.start();
     this.animate();
   }
 

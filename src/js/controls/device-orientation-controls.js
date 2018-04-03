@@ -1,5 +1,4 @@
 /**
- *
  * Based on:
  * https://github.com/mrdoob/three.js/blob/master/examples/js/controls/DeviceOrientationControls.js
  *
@@ -7,7 +6,6 @@
  *
  * @author richt / http://richt.me
  * @author WestLangley / http://github.com/WestLangley
- *
  */
 
 import {

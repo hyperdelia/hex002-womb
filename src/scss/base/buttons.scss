@@ -1,0 +1,34 @@
+.button,
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  display: inline-block;
+
+  padding-top: 1rem;
+  padding-right: 2rem;
+  padding-bottom: 1rem;
+  padding-left: 2rem;
+
+  border: 2px solid $button-border-color;
+
+  white-space: nowrap;
+
+  color: $button-color;
+
+  background-color: $button-background-color;
+
+  font-weight: $font-weight-bold;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  &[disabled] {
+    color: $text-color;
+
+    background-color: $button-disabled-color;
+
+    cursor: default;
+  }
+}
