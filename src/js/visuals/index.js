@@ -9,7 +9,7 @@ import {
 
 import Stats from 'stats.js';
 
-import { arrayToVector3 } from '../converters';
+import { arrayToVector3 } from '../utils';
 
 import PointerControls from './pointer-controls';
 import Starfield from './starfield';

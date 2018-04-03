@@ -1,6 +1,6 @@
 import { ResonanceAudio } from 'resonance-audio';
 
-import { normalizeDimension } from '../converters';
+import { normalizeDimension } from '../utils';
 
 import Actor from './actor';
 import AudioStream from './audio-stream';
