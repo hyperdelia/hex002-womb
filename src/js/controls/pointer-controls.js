@@ -5,13 +5,27 @@ import {
 } from 'three';
 
 const PI_2 = Math.PI / 2;
+const MOVE_INTERVAL = 10;
+
+const PARAMETERS = {
+  moveSpeed: 25.0,
+  rotateSpeed: 0.004,
+  stopSpeed: 2.0,
+};
 
 export default class PointerControls {
   constructor(options) {
     this.options = options;
 
-    this.isEnabled = true;
+    this.isEnabled = false;
     this.isMoving = false;
+
+    this.pointerPosition = {
+      x: 0,
+      y: 0,
+    };
+
+    this.registerEvents();
 
     this.camera = this.options.camera;
     this.camera.rotation.set(0, 0, 0);
@@ -25,6 +39,43 @@ export default class PointerControls {
     this.velocity = new Vector3();
   }
 
+  registerEvents() {
+    const onMouseDown = () => {
+      this.stopMoving();
+    };
+
+    const onMouseUp = () => {
+      this.startMoving();
+    };
+
+    const onMouseMove = event => {
+      const { clientX, clientY } = event;
+      const { innerWidth, innerHeight } = event.view;
+
+      const x = (clientX / innerWidth) * 2 - 1;
+      const y = (clientY / innerHeight) * 2 - 1;
+
+      this.pointerPosition.x = x;
+      this.pointerPosition.y = y;
+    };
+
+    window.addEventListener('touchstart', onMouseDown, false);
+    window.addEventListener('touchend', onMouseUp, false);
+    window.addEventListener('mousedown', onMouseDown, false);
+    window.addEventListener('mouseup', onMouseUp, false);
+    window.addEventListener('mousemove', onMouseMove, false);
+  }
+
+  start() {
+    this.isEnabled = true;
+    this.startMoving();
+
+    window.setInterval(() => {
+      const { x, y } = this.pointerPosition;
+      this.movePointer(x, y);
+    }, MOVE_INTERVAL);
+  }
+
   /**
    * Changes the players direction relatively.
    * @param {float} horizontal - Movement force on X-axis (-1.0 - 1.0)
@@ -35,7 +86,7 @@ export default class PointerControls {
       return;
     }
 
-    const { rotateSpeed } = this.options;
+    const { rotateSpeed } = PARAMETERS;
 
     this.yawObject.rotation.y -= horizontal * rotateSpeed;
 
@@ -59,7 +110,7 @@ export default class PointerControls {
       return;
     }
 
-    const { moveSpeed, stopSpeed } = this.options;
+    const { moveSpeed, stopSpeed } = PARAMETERS;
     const { y, z } = this.velocity;
 
     if (this.isMoving) {
@@ -78,6 +129,14 @@ export default class PointerControls {
 
     this.yawObject.translateY(this.velocity.y * delta);
     this.yawObject.translateZ(this.velocity.z * delta);
+  }
+
+  setPosition(x, y, z) {
+    this.yawObject.position.set(x, y, z);
+  }
+
+  get sceneObject() {
+    return this.yawObject;
   }
 
   get playerWorldPosition() {

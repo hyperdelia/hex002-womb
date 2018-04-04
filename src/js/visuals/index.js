@@ -9,9 +9,9 @@ import {
 
 import Stats from 'stats.js';
 
-import { arrayToVector3 } from '../converters';
+import { arrayToVector3 } from '../utils';
 
-import PointerControls from './pointer-controls';
+import Controls from '../controls';
 import Starfield from './starfield';
 
 const GRID_HELPER_SIZE = 500;
@@ -20,14 +20,15 @@ export default class Visuals {
   constructor(options) {
     const {
       canvas,
+      controlsName,
       devicePixelRatio,
       height,
-      isStatsShown,
-      stars,
       width,
     } = options;
 
-    this.stars = stars;
+    this.options = options;
+
+    this.stars = [];
 
     this.clock = new Clock();
 
@@ -38,23 +39,36 @@ export default class Visuals {
     // Create camera / player and set initial position
     this.camera = new PerspectiveCamera(27, width / height, 5, 3500);
 
-    // Prepare pointer controller
-    this.controls = new PointerControls({
+    // Prepare user controls
+    this.controls = new Controls[controlsName]({
       camera: this.camera,
-      moveSpeed: 25.0,
-      rotateSpeed: 0.004,
-      stopSpeed: 2.0,
     });
 
-    this.scene.add(this.controls.yawObject);
+    if (this.controls.sceneObject) {
+      this.scene.add(this.controls.sceneObject);
+    }
 
     // Set starting position
-    this.controls.yawObject.position.set(0, 0, 300);
+    this.controls.setPosition(0, 0, 300);
 
     // Initialise the renderer
     this.renderer = new WebGLRenderer({ canvas });
     this.renderer.setPixelRatio(devicePixelRatio);
     this.resize(width, height);
+
+    // Add stats monitor when requested
+    this.stats = null;
+
+    if (this.options.isDebugMode) {
+      this.stats = new Stats();
+      document.body.appendChild(this.stats.dom);
+    }
+  }
+
+  createScenery(data) {
+    const { stars } = data;
+
+    this.stars = stars;
 
     // Add objects to scenery
     const starfield = new Starfield({
@@ -67,24 +81,15 @@ export default class Visuals {
     this.scene.add(starfield);
 
     // Add grid for orientation while testing
-    const gridHelper = new GridHelper(
-      GRID_HELPER_SIZE,
-      10,
-      new Color('white'),
-      new Color('blue')
-    );
-    this.scene.add(gridHelper);
-
-    // Add stats monitor when requested
-    this.stats = null;
-
-    if (isStatsShown) {
-      this.stats = new Stats();
-      document.body.appendChild(this.stats.dom);
+    if (this.options.isDebugMode) {
+      const gridHelper = new GridHelper(
+        GRID_HELPER_SIZE,
+        10,
+        new Color('white'),
+        new Color('blue')
+      );
+      this.scene.add(gridHelper);
     }
-
-    // Render scene
-    this.render();
   }
 
   resize(width, height) {
@@ -94,13 +99,21 @@ export default class Visuals {
     this.renderer.setSize(width, height);
   }
 
+  start() {
+    this.controls.start();
+    this.animate();
+  }
+
   animate() {
     requestAnimationFrame(() => {
       this.animate();
     });
 
     this.render();
-    this.stats.update();
+
+    if (this.options.isDebugMode) {
+      this.stats.update();
+    }
   }
 
   render() {
@@ -113,7 +126,8 @@ export default class Visuals {
     const { playerWorldPosition } = this.controls;
 
     return this.stars.map(star => {
-      const distance = playerWorldPosition.distanceTo(arrayToVector3(star.p));
+      const { p: position } = star;
+      const distance = playerWorldPosition.distanceTo(arrayToVector3(position));
 
       return {
         star,

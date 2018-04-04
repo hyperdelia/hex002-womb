@@ -1,0 +1,52 @@
+// .view {
+// }
+
+.view__container {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  z-index: map-get($z-index, "view");
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.view__error {
+  display: none;
+}
+
+.view__visuals {
+  opacity: 0;
+
+  transition: opacity 2s ease-out;
+}
+
+.view--is-running {
+  .view__start-button {
+    display: none;
+  }
+
+  .view__visuals {
+    opacity: 1;
+  }
+}
+
+.view--is-desktop {
+  cursor: crosshair;
+}
+
+.view--is-error {
+  .view__error {
+    display: block;
+  }
+
+  .view__start-button {
+    display: none;
+  }
+}

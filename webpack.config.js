@@ -93,7 +93,6 @@ module.exports = (env, options) => {
       }),
       new ExtractTextPlugin({
         filename: `${ASSETS_NAME}-[hash].css`,
-        disable: !isProduction,
       }),
     ],
     devtool: isProduction ? false : 'source-map',

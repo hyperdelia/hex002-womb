@@ -27,3 +27,7 @@ export function normalizeDimension(roomSize, obj) {
     obj.z / halfRoomSize
   );
 }
+
+export function randomItem(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
