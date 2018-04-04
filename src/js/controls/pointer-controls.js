@@ -140,7 +140,7 @@ export default class PointerControls {
   }
 
   get playerWorldPosition() {
-    return this.yawObject.getWorldPosition();
+    return this.yawObject.getWorldPosition(new Vector3());
   }
 
   get playerWorldMatrix() {
