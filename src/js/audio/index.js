@@ -5,14 +5,11 @@ import { normalizeDimension } from '../utils';
 import Actor from './actor';
 import AudioStream from './audio-stream';
 
-const SOURCE_MAX_DISTANCE = 1;
-const SOURCE_MIN_DISTANCE = 0;
-const SOURCE_WIDTH = 0;
-
 const MAX_ACTOR_COUNT = 10;
 
-const ROOM_DIMENSION = 500;
-const ROOM_MATERIAL = 'uniform';
+const ROOM_DIMENSION = 1;
+const ROOM_MATERIAL = 'transparent';
+const SOURCE_MAX_DISTANCE = 25;
 
 export default class Audio {
   constructor(context) {
@@ -39,10 +36,10 @@ export default class Audio {
     this.actors = [];
 
     for (let i = 0; i < MAX_ACTOR_COUNT; i += 1) {
-      const resonanceSource = this.scene.createSource();
-      resonanceSource.setMaxDistance(SOURCE_MAX_DISTANCE);
-      resonanceSource.setMinDistance(SOURCE_MIN_DISTANCE);
-      resonanceSource.setSourceWidth(SOURCE_WIDTH);
+      const resonanceSource = this.scene.createSource({
+        maxDistance: SOURCE_MAX_DISTANCE,
+        rolloff: 'linear',
+      });
 
       const audioStream = new AudioStream(this.context);
       const actor = new Actor({
@@ -55,9 +52,7 @@ export default class Audio {
   }
 
   updateListener(matrix) {
-    this.scene.setListenerFromMatrix(
-      normalizeDimension(ROOM_DIMENSION, matrix)
-    );
+    this.scene.setListenerFromMatrix(matrix);
   }
 
   addVoices(voices) {
