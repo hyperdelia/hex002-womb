@@ -7063,9 +7063,9 @@ resolve@^1.1.6, resolve@^1.3.2:
   dependencies:
     path-parse "^1.0.5"
 
-resonance-audio@adzialocha/resonance-audio-web-sdk.git#hex002:
+resonance-audio@adzialocha/resonance-audio-web-sdk.git#e7d34e0:
   version "1.0.0"
-  resolved "https://codeload.github.com/adzialocha/resonance-audio-web-sdk/tar.gz/8e6b271aea10eaa2f8b36961f788d2e1292ebd12"
+  resolved "https://codeload.github.com/adzialocha/resonance-audio-web-sdk/tar.gz/e7d34e0546e4eb820ba4879b658afc3e4daec753"
   dependencies:
     omnitone "^1.0.5"
 
