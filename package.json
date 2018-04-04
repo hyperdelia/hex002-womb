@@ -69,9 +69,8 @@
   },
   "dependencies": {
     "ios-safe-audio-context": "^1.0.1",
-    "lodash": "^4.17.4",
     "normalize.css": "^8.0.0",
-    "resonance-audio": "^1.0.0",
+    "resonance-audio": "adzialocha/resonance-audio-web-sdk.git#hex002",
     "stats.js": "^0.17.0",
     "three": "^0.91.0"
   }
