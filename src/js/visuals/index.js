@@ -49,7 +49,7 @@ export default class Visuals {
     }
 
     // Set starting position
-    this.controls.setPosition(0, 0, 300);
+    this.controls.setPosition(0, 0, 0);
 
     // Initialise the renderer
     this.renderer = new WebGLRenderer({ canvas });

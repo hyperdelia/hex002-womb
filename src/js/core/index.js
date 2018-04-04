@@ -2,8 +2,8 @@ import { randomItem } from '../utils';
 
 import Voice from '../composition/voice';
 
-const ACTIVATION_DISTANCE_THRESHOLD = 5000;
-const UPDATE_FREQUENCY = 1 * 1000;
+const ACTIVATION_DISTANCE_THRESHOLD = 100;
+const UPDATE_FREQUENCY = 100;
 
 export default class Core {
   constructor(options) {

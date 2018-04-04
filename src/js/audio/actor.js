@@ -6,9 +6,6 @@ export default class Actor {
       starId,
     } = options;
 
-    audioStream.loop = true;
-    audioStream.connect(resonanceSource.input);
-
     this.audioStream = audioStream;
     this.resonanceSource = resonanceSource;
     this.starId = starId;
@@ -37,12 +34,19 @@ export default class Actor {
 
     this.audioStream.src = url;
     this.audioStream.play();
+
+    // Hack to avoid "MediaElementAudioSource outputs zeroes
+    // due to CORS access restrictions"
+    setTimeout(() => {
+      this.audioStream.connect(this.resonanceSource.input);
+    }, 10);
   }
 
   stop() {
     this.starId = null;
 
     this.audioStream.stop();
+    this.audioStream.disconnect();
     this.audioStream.src = null;
   }
 }

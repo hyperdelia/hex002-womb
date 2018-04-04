@@ -9,7 +9,7 @@ const MAX_ACTOR_COUNT = 10;
 
 const ROOM_DIMENSION = 1;
 const ROOM_MATERIAL = 'transparent';
-const SOURCE_MAX_DISTANCE = 25;
+const SOURCE_MAX_DISTANCE = 75;
 
 export default class Audio {
   constructor(context) {
@@ -52,7 +52,9 @@ export default class Audio {
   }
 
   updateListener(matrix) {
-    this.scene.setListenerFromMatrix(matrix);
+    this.scene.setListenerFromMatrix(
+      normalizeDimension(ROOM_DIMENSION, matrix)
+    );
   }
 
   addVoices(voices) {
