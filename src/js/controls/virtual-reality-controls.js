@@ -1,25 +1,21 @@
 export default class VirtualRealityControls {
   constructor(options) {
     this.options = options;
-    this.isEnabled = true;
     this.camera = this.options.camera;
+    this.isEnabled = true;
   }
 
-  start() {
-  }
+  start() {}
 
-  update() {
+  update(delta) { // eslint-disable-line no-unused-vars
     if (!this.isEnabled) {
       return;
     }
   }
 
-  setPosition(x, y, z) {
-  }
+  setPosition(x, y, z) {} // eslint-disable-line no-unused-vars
 
-  get playerWorldPosition() {
-  }
+  get playerWorldPosition() {}
 
-  get playerWorldMatrix() {
-  }
+  get playerWorldMatrix() {}
 }
