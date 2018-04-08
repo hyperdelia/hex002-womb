@@ -58,16 +58,20 @@ export default class DeviceOrientationControls {
     this.screenOrientation = window.orientation || 0;
   }
 
-  setObjectQuaternion(quaternion, alpha, beta, gamma, orient) {
+  calculateQuaternion(alpha, beta, gamma, orient) {
     const zee = new Vector3(0, 0, 1);
-    const euler = new Euler();
     const q0 = new Quaternion();
     const q1 = new Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5));
 
+    const euler = new Euler();
     euler.set(beta, alpha, -gamma, 'YXZ');
+
+    const quaternion = new Quaternion();
     quaternion.setFromEuler(euler);
     quaternion.multiply(q1);
     quaternion.multiply(q0.setFromAxisAngle(zee, -orient));
+
+    return quaternion;
   }
 
   update() {
@@ -78,16 +82,14 @@ export default class DeviceOrientationControls {
     const { screenOrientation } = this;
     const { degToRad } = ThreeMath;
     const { alphaOffset, smoothing } = PARAMETERS;
-
     const { alpha: a, beta: b, gamma: g } = this.deviceOrientation;
 
     const alpha = a ? (degToRad(a) + alphaOffset) : 0;
     const beta = b ? degToRad(b) : 0;
     const gamma = g ? degToRad(g) : 0;
     const orient = screenOrientation ? degToRad(screenOrientation) : 0;
+    const rotation = this.calculateQuaternion(alpha, beta, gamma, orient);
 
-    const rotation = new Quaternion();
-    this.setObjectQuaternion(rotation, alpha, beta, gamma, orient);
     this.camera.quaternion.slerp(rotation, smoothing);
   }
 
