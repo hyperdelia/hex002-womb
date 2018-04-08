@@ -106,7 +106,7 @@ export default class DeviceOrientationControls {
   }
 
   get playerWorldPosition() {
-    return this.camera.getWorldPosition();
+    return this.camera.getWorldPosition(new Vector3());
   }
 
   get playerWorldMatrix() {
