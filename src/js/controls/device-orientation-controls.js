@@ -17,6 +17,7 @@ import {
 
 const PARAMETERS = {
   alphaOffset: 0, // radians
+  smoothing: 0.07,
 };
 
 export default class DeviceOrientationControls {
@@ -86,7 +87,7 @@ export default class DeviceOrientationControls {
     }
 
     const { degToRad } = ThreeMath;
-    const { alphaOffset } = PARAMETERS;
+    const { alphaOffset, smoothing } = PARAMETERS;
 
     const device = this.deviceOrientation;
 
@@ -95,13 +96,9 @@ export default class DeviceOrientationControls {
     const gamma = device.gamma ? degToRad(device.gamma) : 0; // Y''
     const orient = this.screenOrientation ? degToRad(this.screenOrientation) : 0; // O
 
-    this.setObjectQuaternion(
-      this.camera.quaternion,
-      alpha,
-      beta,
-      gamma,
-      orient
-    );
+    const rotation = new Quaternion();
+    this.setObjectQuaternion(rotation, alpha, beta, gamma, orient);
+    this.camera.quaternion.slerp(rotation, smoothing);
   }
 
   setPosition(x, y, z) {
