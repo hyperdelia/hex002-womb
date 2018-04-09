@@ -4,6 +4,7 @@ import { normalizeDimension } from '../utils';
 
 import Actor from './actor';
 import AudioStream from './audio-stream';
+import LayerOne from '../composition/layer-one';
 
 const MAX_ACTOR_COUNT = 10;
 
@@ -49,10 +50,19 @@ export default class Audio {
 
       this.actors.push(actor);
     }
+
+    this.layerOne = new LayerOne(this.context, {
+      scene: this.scene,
+      roomDimension: ROOM_DIMENSION,
+    });
   }
 
   updateListener(matrix) {
     this.scene.setListenerFromMatrix(
+      normalizeDimension(ROOM_DIMENSION, matrix)
+    );
+
+    this.layerOne.updatePositions(
       normalizeDimension(ROOM_DIMENSION, matrix)
     );
   }
@@ -95,5 +105,10 @@ export default class Audio {
         actor.stop();
       }
     });
+  }
+
+  start() {
+    console.log('starting layerOne');
+    this.layerOne.start();
   }
 }

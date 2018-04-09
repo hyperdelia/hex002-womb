@@ -82,5 +82,6 @@ export default class Session {
 
     core.start();
     this.visuals.start();
+    audio.start();
   }
 }
