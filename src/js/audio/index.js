@@ -53,16 +53,12 @@ export default class Audio {
 
     this.layerOne = new LayerOne(this.context, {
       scene: this.scene,
-      roomDimension: ROOM_DIMENSION,
+      url: 'http://localhost:8080/synth-acn.wav',
     });
   }
 
   updateListener(matrix) {
     this.scene.setListenerFromMatrix(
-      normalizeDimension(ROOM_DIMENSION, matrix)
-    );
-
-    this.layerOne.updatePositions(
       normalizeDimension(ROOM_DIMENSION, matrix)
     );
   }
