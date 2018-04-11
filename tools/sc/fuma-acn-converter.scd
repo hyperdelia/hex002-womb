@@ -9,7 +9,7 @@
     // get a buffer number from the server
     var bufnum = Server.default.bufferAllocator.alloc(1);
 
-    var inputPath = "~/audio/atk-sounds-1.0.0/b-format/Leonard-Fireworks.wav".standardizePath;
+    var inputPath = "~/audio/atk-sounds-1.0.0/b-format/Hodges-Purcell.wav".standardizePath;
     var outputPath;
 
     SoundFile.use(inputPath, {arg sf;
@@ -25,8 +25,23 @@
     decoder = FoaDecoderMatrix.newAmbix1;
 
     SynthDef(\fuma_acn_converter, {arg buf;
-        var src = PlayBuf.ar(numChannels, buf, BufRateScale.kr(buf));
-        var sig = FoaDecode.ar(src, decoder);
+        var src, sig;
+        // src = PlayBuf.ar(numChannels, buf, BufRateScale.kr(buf));
+
+        // -- synthesized b-format
+        src = [
+            LPF.ar(Saw.ar(110), 3000),
+            LPF.ar(Saw.ar(330), 3000),
+            LPF.ar(Saw.ar(550), 3000),
+            LPF.ar(Saw.ar(770), 3000),
+        ];
+        src = src * { SinOsc.ar(Rand(3.0, 7.0)).range(0, 1) }.dup(src.size);
+        src = src * -12.dbamp;
+        src = FoaEncode.ar(src, FoaEncoderMatrix.newQuad);
+        // --
+
+        sig = FoaDecode.ar(src, decoder);
+
         Out.ar(0, sig);
     }).load;
 
