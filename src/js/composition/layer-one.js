@@ -13,11 +13,11 @@ export default class LayerOne {
   }
 
   set amp(value) {
-    this.gain.gain.value = value;
+    this.vca.gain.value = value;
   }
 
   get amp() {
-    return this.gain.gain.value;
+    return this.vca.gain.value;
   }
 
   start() {
