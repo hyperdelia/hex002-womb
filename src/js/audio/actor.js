@@ -32,14 +32,8 @@ export default class Actor {
       position.z
     );
 
-    this.audioStream.src = url;
-    this.audioStream.play();
-
-    // Hack to avoid "MediaElementAudioSource outputs zeroes
-    // due to CORS access restrictions"
-    setTimeout(() => {
-      this.audioStream.connect(this.resonanceSource.input);
-    }, 10);
+    this.audioStream.connect(this.resonanceSource.input);
+    this.audioStream.start(url);
   }
 
   stop() {
@@ -47,6 +41,5 @@ export default class Actor {
 
     this.audioStream.stop();
     this.audioStream.disconnect();
-    this.audioStream.src = null;
   }
 }

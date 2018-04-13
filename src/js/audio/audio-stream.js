@@ -12,41 +12,43 @@ export default class AudioStream extends AudioBase {
   constructor(context) {
     super(context);
 
+    this.output = context.createGain();
+    this.isPlaying = false;
+  }
+
+  createNodes() {
     this.audioTag = document.createElement('audio');
     this.audioTag.controls = false;
     this.audioTag.crossOrigin = 'anonymous';
     this.audioTag.loop = true;
-    this.audioTag.preload = 'none';
-    this.audioTag.src = null;
 
     this.audioNode = this.context.createMediaElementSource(this.audioTag);
-
-    this.isPlaying = false;
+    this.audioNode.connect(this.output);
   }
 
-  set src(url) {
-    this.audioTag.src = url;
-  }
-
-  get src() {
-    return this.audioTag.src;
-  }
-
-  connect(aNode) {
-    this.audioNode.connect(aNode);
-  }
-
-  disconnect() {
+  removeNodes() {
+    this.audioTag.remove();
     this.audioNode.disconnect();
   }
 
-  play() {
+  connect(node) {
+    this.output.connect(node);
+  }
+
+  disconnect() {
+    this.output.disconnect();
+  }
+
+  start(url) {
     if (this.isPlaying) {
       return;
     }
 
     this.isPlaying = true;
 
+    this.createNodes();
+
+    this.audioTag.src = url;
     this.audioTag.play();
   }
 
@@ -59,5 +61,7 @@ export default class AudioStream extends AudioBase {
 
     this.audioTag.pause();
     this.audioTag.currentTime = 0;
+
+    this.removeNodes();
   }
 }
