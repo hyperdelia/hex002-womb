@@ -3,7 +3,7 @@ import AudioStream from '../audio/audio-stream';
 export default class LayerOne {
   constructor(context, options = {}) {
     this.audioStream = new AudioStream(context);
-    this.audioStream.src = options.url;
+    this.url = options.url;
 
     this.vca = context.createGain();
     this.vca.gain.value = 0.1;
@@ -21,7 +21,7 @@ export default class LayerOne {
   }
 
   start() {
-    this.audioStream.play();
+    this.audioStream.start(this.url);
   }
 
   stop() {
