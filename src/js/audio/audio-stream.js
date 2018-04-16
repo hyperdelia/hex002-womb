@@ -14,6 +14,7 @@ export default class AudioStream extends AudioBase {
 
     this.output = context.createGain();
     this.isPlaying = false;
+    this.canPause = false;
   }
 
   createNodes() {
@@ -49,7 +50,15 @@ export default class AudioStream extends AudioBase {
     this.createNodes();
 
     this.audioTag.src = url;
-    this.audioTag.play();
+    const playPromise = this.audioTag.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        this.canPause = true;
+      });
+    } else {
+      this.canPause = true;
+    }
   }
 
   stop() {
@@ -57,11 +66,14 @@ export default class AudioStream extends AudioBase {
       return;
     }
 
+    if (this.canPause) {
+      this.audioTag.pause();
+      this.audioTag.currentTime = 0;
+
+      this.removeNodes();
+    }
+
     this.isPlaying = false;
-
-    this.audioTag.pause();
-    this.audioTag.currentTime = 0;
-
-    this.removeNodes();
+    this.canPause = false;
   }
 }
