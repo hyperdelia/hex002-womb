@@ -83,8 +83,11 @@ export default class Visuals {
 
     // Add mobile with shapes to scenery
     const mobile = new Mobile({
-      count: 10,
+      density: 0.2,
+      origin: this.controls.position,
+      stars,
     });
+
     this.scene.add(mobile);
 
     // Add grid for orientation while testing
