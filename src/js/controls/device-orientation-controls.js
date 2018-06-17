@@ -97,6 +97,10 @@ export default class DeviceOrientationControls {
     this.camera.position.set(x, y, z);
   }
 
+  get position() {
+    return this.camera.position;
+  }
+
   get playerWorldPosition() {
     return this.camera.getWorldPosition(new Vector3());
   }

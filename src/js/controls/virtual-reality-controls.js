@@ -15,6 +15,8 @@ export default class VirtualRealityControls {
 
   setPosition(x, y, z) {} // eslint-disable-line no-unused-vars
 
+  get position() {}
+
   get playerWorldPosition() {}
 
   get playerWorldMatrix() {}

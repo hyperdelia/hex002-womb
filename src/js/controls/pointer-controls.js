@@ -135,6 +135,10 @@ export default class PointerControls {
     this.yawObject.position.set(x, y, z);
   }
 
+  get position() {
+    return this.yawObject.position;
+  }
+
   get sceneObject() {
     return this.yawObject;
   }
