@@ -12,6 +12,7 @@ import Stats from 'stats.js';
 import { arrayToVector3 } from '../utils';
 
 import Controls from '../controls';
+import Mobile from './mobile';
 import Starfield from './starfield';
 
 const GRID_HELPER_SIZE = 500;
@@ -79,6 +80,12 @@ export default class Visuals {
     });
 
     this.scene.add(starfield);
+
+    // Add mobile with shapes to scenery
+    const mobile = new Mobile({
+      count: 10,
+    });
+    this.scene.add(mobile);
 
     // Add grid for orientation while testing
     if (this.options.isDebugMode) {
