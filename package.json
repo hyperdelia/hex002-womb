@@ -70,7 +70,7 @@
   "dependencies": {
     "ios-safe-audio-context": "^1.0.1",
     "normalize.css": "^8.0.0",
-    "resonance-audio": "adzialocha/resonance-audio-web-sdk.git#e7d34e0",
+    "resonance-audio": "davidgranstrom/resonance-audio-web-sdk.git#04e95b2f",
     "stats.js": "^0.17.0",
     "three": "^0.91.0"
   }
