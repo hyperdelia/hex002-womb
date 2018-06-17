@@ -8,29 +8,53 @@ import {
   Vector3,
 } from 'three';
 
-const DIVISIONS = 50;
+import randomRange from '../utils/random-range';
+
+const CURVE_DIVISIONS = 70;
+const CURVE_TENSION = 0.3;
+const SHAPE_RANDOMNESS = 0.7;
 
 export default class MobileShape extends Mesh {
   constructor() {
-    const points = [
-      new Vector3(-6, -10, 0),
-      new Vector3(-6, 2, 0),
-      new Vector3(-6, 12, 0),
-      new Vector3(6, 2, 0),
-      new Vector3(6, -10, 0),
+    // Path for a simple rectangle shape
+    const rectangle = [
+      new Vector3(1, 0, 0),
+      new Vector3(1, 1, 0),
+      new Vector3(1, 2, 0),
+      new Vector3(0, 2, 0),
+      new Vector3(-1, 2, 0),
+      new Vector3(-1, 1, 0),
+      new Vector3(-1, 0, 0),
+      new Vector3(-1, -1, 0),
+      new Vector3(-1, -2, 0),
+      new Vector3(0, -2, 0),
+      new Vector3(1, -2, 0),
+      new Vector3(1, -1, 0),
     ];
 
+    // Randomize path a little bit
+    const points = rectangle.map(point => {
+      point.x *= randomRange(1 - SHAPE_RANDOMNESS, 1);
+      point.y *= randomRange(1 - SHAPE_RANDOMNESS, 1);
+      return point;
+    });
+
+    // Draw lines between these points
     const curve = new CatmullRomCurve3(points);
+    curve.closed = true;
+    curve.tension = CURVE_TENSION;
 
+    // Make a geometry out of this shape
     const shape = new Shape();
-    shape.setFromPoints(curve.getPoints(DIVISIONS));
-
+    shape.setFromPoints(curve.getPoints(CURVE_DIVISIONS));
     const geometry = new ShapeGeometry(shape);
 
+    // Give it a texture
     const material = new MeshNormalMaterial({
       side: DoubleSide,
     });
 
+    // Create mesh
     super(geometry, material);
   }
 }
