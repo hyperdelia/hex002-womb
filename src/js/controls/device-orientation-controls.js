@@ -17,6 +17,7 @@ import {
 
 const PARAMETERS = {
   alphaOffset: 0, // radians
+  smoothing: 0.07,
 };
 
 export default class DeviceOrientationControls {
@@ -32,52 +33,45 @@ export default class DeviceOrientationControls {
     this.deviceOrientation = {};
     this.screenOrientation = 0;
 
-    this.setObjectQuaternion = this.objectQuaternion();
-
     this.registerEvents();
-  }
-
-  // The angles alpha, beta and gamma form a set of intrinsic Tait-Bryan angles of type Z-X'-Y''
-  objectQuaternion() {
-    const zee = new Vector3(0, 0, 1);
-    const euler = new Euler();
-    const q0 = new Quaternion();
-    const q1 = new Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5)); // - PI/2 around the x-axis
-
-    return (quaternion, alpha, beta, gamma, orient) => {
-      euler.set(beta, alpha, - gamma, 'YXZ'); // 'ZXY' for the device, but 'YXZ' for us
-      quaternion.setFromEuler(euler); // orient the device
-      quaternion.multiply(q1); // camera looks out the back of the device, not the top
-      quaternion.multiply(q0.setFromAxisAngle(zee, -orient)); // adjust for screen orientation
-    };
+    this.updateScreenOrientation();
   }
 
   start() {
     this.isEnabled = true;
   }
 
-  onOrientationChange() {
+  registerEvents() {
+    const onOrientationChange = () => {
+      this.updateScreenOrientation();
+    };
+
+    const onDeviceOrientation = event => {
+      this.deviceOrientation = event;
+    };
+
+    window.addEventListener('orientationchange', onOrientationChange, false);
+    window.addEventListener('deviceorientation', onDeviceOrientation, false);
+  }
+
+  updateScreenOrientation() {
     this.screenOrientation = window.orientation || 0;
   }
 
-  onDeviceOrientationChange(event) {
-    this.deviceOrientation = event;
-  }
+  calculateQuaternion(alpha, beta, gamma, orient) {
+    const zee = new Vector3(0, 0, 1);
+    const q0 = new Quaternion();
+    const q1 = new Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5));
 
-  registerEvents() {
-    // Run once on load
-    this.onOrientationChange();
+    const euler = new Euler();
+    euler.set(beta, alpha, -gamma, 'YXZ');
 
-    window.addEventListener(
-      'orientationchange',
-      this.onOrientationChange.bind(this),
-      false
-    );
-    window.addEventListener(
-      'deviceorientation',
-      this.onDeviceOrientationChange.bind(this),
-      false
-    );
+    const quaternion = new Quaternion();
+    quaternion.setFromEuler(euler);
+    quaternion.multiply(q1);
+    quaternion.multiply(q0.setFromAxisAngle(zee, -orient));
+
+    return quaternion;
   }
 
   update() {
@@ -85,23 +79,18 @@ export default class DeviceOrientationControls {
       return;
     }
 
+    const { screenOrientation } = this;
     const { degToRad } = ThreeMath;
-    const { alphaOffset } = PARAMETERS;
+    const { alphaOffset, smoothing } = PARAMETERS;
+    const { alpha: a, beta: b, gamma: g } = this.deviceOrientation;
 
-    const device = this.deviceOrientation;
+    const alpha = a ? (degToRad(a) + alphaOffset) : 0;
+    const beta = b ? degToRad(b) : 0;
+    const gamma = g ? degToRad(g) : 0;
+    const orient = screenOrientation ? degToRad(screenOrientation) : 0;
+    const rotation = this.calculateQuaternion(alpha, beta, gamma, orient);
 
-    const alpha = device.alpha ? degToRad(device.alpha) + alphaOffset : 0; // Z
-    const beta = device.beta ? degToRad(device.beta) : 0; // X'
-    const gamma = device.gamma ? degToRad(device.gamma) : 0; // Y''
-    const orient = this.screenOrientation ? degToRad(this.screenOrientation) : 0; // O
-
-    this.setObjectQuaternion(
-      this.camera.quaternion,
-      alpha,
-      beta,
-      gamma,
-      orient
-    );
+    this.camera.quaternion.slerp(rotation, smoothing);
   }
 
   setPosition(x, y, z) {
@@ -109,7 +98,7 @@ export default class DeviceOrientationControls {
   }
 
   get playerWorldPosition() {
-    return this.camera.getWorldPosition();
+    return this.camera.getWorldPosition(new Vector3());
   }
 
   get playerWorldMatrix() {
