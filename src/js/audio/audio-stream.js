@@ -12,42 +12,53 @@ export default class AudioStream extends AudioBase {
   constructor(context) {
     super(context);
 
+    this.output = context.createGain();
+    this.isPlaying = false;
+    this.canPause = false;
+  }
+
+  createNodes() {
     this.audioTag = document.createElement('audio');
     this.audioTag.controls = false;
     this.audioTag.crossOrigin = 'anonymous';
     this.audioTag.loop = true;
-    this.audioTag.preload = 'none';
-    this.audioTag.src = null;
 
     this.audioNode = this.context.createMediaElementSource(this.audioTag);
-
-    this.isPlaying = false;
+    this.audioNode.connect(this.output);
   }
 
-  set src(url) {
-    this.audioTag.src = url;
-  }
-
-  get src() {
-    return this.audioTag.src;
-  }
-
-  connect(aNode) {
-    this.audioNode.connect(aNode);
-  }
-
-  disconnect() {
+  removeNodes() {
+    this.audioTag.remove();
     this.audioNode.disconnect();
   }
 
-  play() {
+  connect(node) {
+    this.output.connect(node);
+  }
+
+  disconnect() {
+    this.output.disconnect();
+  }
+
+  start(url) {
     if (this.isPlaying) {
       return;
     }
 
     this.isPlaying = true;
 
-    this.audioTag.play();
+    this.createNodes();
+
+    this.audioTag.src = url;
+    const playPromise = this.audioTag.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        this.canPause = true;
+      });
+    } else {
+      this.canPause = true;
+    }
   }
 
   stop() {
@@ -55,9 +66,14 @@ export default class AudioStream extends AudioBase {
       return;
     }
 
-    this.isPlaying = false;
+    if (this.canPause) {
+      this.audioTag.pause();
+      this.audioTag.currentTime = 0;
 
-    this.audioTag.pause();
-    this.audioTag.currentTime = 0;
+      this.removeNodes();
+    }
+
+    this.isPlaying = false;
+    this.canPause = false;
   }
 }
