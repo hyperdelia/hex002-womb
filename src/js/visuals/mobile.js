@@ -38,4 +38,10 @@ export default class Mobile extends Object3D {
       return acc;
     }, []);
   }
+
+  animate() {
+    this.shapes.forEach(shape => {
+      shape.animate();
+    });
+  }
 }

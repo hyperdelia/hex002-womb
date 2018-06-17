@@ -75,7 +75,7 @@ export default class Visuals {
     const starfield = new Starfield({
       color: new Color('white'),
       magnitude: 1,
-      size: 50,
+      size: 2,
       stars,
     });
 
@@ -83,11 +83,12 @@ export default class Visuals {
 
     // Add mobile with shapes to scenery
     const mobile = new Mobile({
-      density: 0.2,
+      density: 0.3,
       origin: this.controls.position,
       stars,
     });
 
+    this.mobile = mobile;
     this.scene.add(mobile);
 
     // Add grid for orientation while testing
@@ -118,6 +119,8 @@ export default class Visuals {
     requestAnimationFrame(() => {
       this.animate();
     });
+
+    this.mobile.animate();
 
     this.render();
 

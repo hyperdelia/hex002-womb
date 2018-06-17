@@ -10,9 +10,12 @@ import {
 
 import randomRange from '../utils/random-range';
 
+const CHANGE_PROPABILITY = 0.2;
 const CURVE_DIVISIONS = 70;
 const CURVE_TENSION = 0.3;
 const SHAPE_RANDOMNESS = 0.7;
+const MIN_SPEED = 0.0007;
+const MAX_SPEED = 0.001;
 
 export default class MobileShape extends Mesh {
   constructor() {
@@ -56,5 +59,22 @@ export default class MobileShape extends Mesh {
 
     // Create mesh
     super(geometry, material);
+
+    // Give it an initial rotation, speed and direction
+    this.rotateY(randomRange(0, Math.PI * 2));
+    this.randomSpin();
+  }
+
+  randomSpin() {
+    this.speed = randomRange(MIN_SPEED, MAX_SPEED);
+    this.direction = (Math.random() < 0.5) ? false : true;
+  }
+
+  animate() {
+    this.rotateY(this.direction ? this.speed : -this.speed);
+
+    if (Math.random() < CHANGE_PROPABILITY) {
+      this.randomSpin();
+    }
   }
 }
