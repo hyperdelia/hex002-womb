@@ -1,12 +1,10 @@
 import createAudioContext from 'ios-safe-audio-context';
 
 import Audio from '../audio';
-import Composition from '../composition';
 import Core from '../core';
 import Visuals from '../visuals';
 
-import samples from '../../composition/samples.json';
-import stars from '../../composition/stars.json';
+import preload from '../utils/preload';
 
 export default class Session {
   constructor(options) {
@@ -52,18 +50,17 @@ export default class Session {
       width,
     });
 
-    this.visuals.createScenery({
-      stars,
-    });
-
     window.addEventListener('resize', () => {
       this.visuals.resize(window.innerWidth, window.innerHeight);
     });
 
-    // Create composition
-    this.composition = new Composition({
-      samples,
-      stars,
+    return preload().then(assets => {
+      const { stars, textures } = assets;
+
+      this.visuals.createScenery({
+        stars,
+        textures,
+      });
     });
   }
 
@@ -82,7 +79,6 @@ export default class Session {
     });
 
     core.start();
-
     this.visuals.start();
   }
 }
