@@ -53,7 +53,7 @@ export default class Audio {
 
     this.layerOne = new LayerOne(this.context, {
       scene: this.scene,
-      url: 'http://localhost:8080/synth-acn.wav',
+      url: '',
     });
   }
 
@@ -104,7 +104,6 @@ export default class Audio {
   }
 
   start() {
-    console.log('starting layerOne');
-    this.layerOne.start();
+    // this.layerOne.start();
   }
 }
