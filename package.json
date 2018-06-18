@@ -6,7 +6,6 @@
   "scripts": {
     "build": "yarn clear && webpack --mode production",
     "clear": "rimraf dist",
-    "docs": "esdoc",
     "lint": "yarn lint:scss && yarn lint:js",
     "lint:js": "eslint ./src/js",
     "lint:scss": "stylelint ./src/scss",
@@ -47,8 +46,6 @@
     "browser-sync": "^2.23.6",
     "browser-sync-webpack-plugin": "^2.0.1",
     "css-loader": "^0.28.9",
-    "esdoc": "^1.0.4",
-    "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^4.17.0",
     "eslint-loader": "^2.0.0",
     "extract-text-webpack-plugin": "v4.0.0-alpha.0",
