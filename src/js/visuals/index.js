@@ -81,19 +81,19 @@ export default class Visuals {
       color: new Color('white'),
       size: 2,
       stars,
+      textures: data.textures.stars,
     });
 
     this.scene.add(starfield);
 
     // Add mobile with shapes to scenery
-    const { textures } = data;
     const mobile = new Mobile({
       density: 0.007,
       maxDistance: 1000,
       origin: this.controls.position,
       size: 30,
       stars,
-      textures,
+      textures: data.textures.mobile,
     });
 
     this.mobile = mobile;
