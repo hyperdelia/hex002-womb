@@ -13,8 +13,9 @@ const ROOM_MATERIAL = 'transparent';
 const SOURCE_MAX_DISTANCE = 75;
 
 export default class Audio {
-  constructor(context) {
+  constructor(context, samples, statusCallback) {
     this.context = context;
+    this.samples = samples;
 
     this.scene = new ResonanceAudio(this.context);
     this.scene.output.connect(this.context.destination);
@@ -53,14 +54,16 @@ export default class Audio {
 
     this.layerOne = new LayerOne(this.context, {
       scene: this.scene,
-      url: '',
+      samples,
+      statusCallback,
     });
   }
 
   updateListener(matrix) {
-    this.scene.setListenerFromMatrix(
-      normalizeDimension(ROOM_DIMENSION, matrix)
-    );
+    const vector = normalizeDimension(ROOM_DIMENSION, matrix);
+
+    this.scene.setListenerFromMatrix(vector);
+    this.layerOne.position = vector;
   }
 
   addVoices(voices) {
@@ -101,9 +104,5 @@ export default class Audio {
         actor.stop();
       }
     });
-  }
-
-  start() {
-    // this.layerOne.start();
   }
 }

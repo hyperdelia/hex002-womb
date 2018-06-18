@@ -66,12 +66,16 @@ export default class Session {
     });
   }
 
-  start() {
+  start(statusCallback) {
     const { samples, visuals } = this;
 
     // Create audio context
     const context = createAudioContext();
-    const audio = new Audio(context);
+    const audio = new Audio(
+      context,
+      samples,
+      statusCallback
+    );
 
     // Create core handler
     const core = new Core({
@@ -82,6 +86,5 @@ export default class Session {
 
     core.start();
     this.visuals.start();
-    audio.start();
   }
 }
