@@ -66,7 +66,9 @@ export default class Visuals {
     }
   }
 
-  createScenery(stars, textures) {
+  createScenery(data) {
+    const { stars } = data;
+
     this.stars = stars;
 
     // Add objects to scenery
