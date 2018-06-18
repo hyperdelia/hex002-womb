@@ -72,14 +72,24 @@ export default class LayerOne {
   fadeIn() {
     this.streams.forEach(obj => {
       const vca = obj.gain;
-      vca.gain.linearRampToValueAtTime(MAX_LEVEL, FADE_TIME);
+      const now = this.context.currentTime;
+
+      vca.gain.linearRampToValueAtTime(
+        MAX_LEVEL,
+        now + FADE_TIME
+      );
     });
   }
 
   fadeOut() {
     this.streams.forEach(obj => {
       const vca = obj.gain;
-      vca.gain.linearRampToValueAtTime(0.0, FADE_TIME);
+      const now = this.context.currentTime;
+
+      vca.gain.linearRampToValueAtTime(
+        0.0,
+        now + FADE_TIME
+      );
     });
   }
 
@@ -140,6 +150,8 @@ export default class LayerOne {
     if (!this.isPlaying) {
       return;
     }
+
+    this.fadeOut();
 
     this.streams.forEach(obj => {
       obj.tag.pause();
