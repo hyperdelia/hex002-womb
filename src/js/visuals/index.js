@@ -12,6 +12,7 @@ import Stats from 'stats.js';
 import { arrayToVector3 } from '../utils';
 
 import Controls from '../controls';
+import Mobile from './mobile';
 import Starfield from './starfield';
 
 const GRID_HELPER_SIZE = 500;
@@ -74,11 +75,21 @@ export default class Visuals {
     const starfield = new Starfield({
       color: new Color('white'),
       magnitude: 1,
-      size: 50,
+      size: 2,
       stars,
     });
 
     this.scene.add(starfield);
+
+    // Add mobile with shapes to scenery
+    const mobile = new Mobile({
+      density: 0.3,
+      origin: this.controls.position,
+      stars,
+    });
+
+    this.mobile = mobile;
+    this.scene.add(mobile);
 
     // Add grid for orientation while testing
     if (this.options.isDebugMode) {
@@ -108,6 +119,8 @@ export default class Visuals {
     requestAnimationFrame(() => {
       this.animate();
     });
+
+    this.mobile.animate();
 
     this.render();
 

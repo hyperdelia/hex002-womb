@@ -24,11 +24,14 @@ identifyPlatform()
       },
     });
 
-    checkRequirements()
+    const checkup = checkRequirements()
       .then(() => {
         session.prepare();
-      })
-      .catch(error => {
+      });
+
+    if (!isDebugMode) {
+      checkup.catch(error => {
         view.showError(error);
       });
+    }
   });
