@@ -4,15 +4,15 @@ import {
 
 import MobileShape from './mobile-shape';
 
-const SCALE_FACTOR = 10;
-
 export default class Mobile extends Object3D {
   constructor(options) {
     super();
 
     const {
       density,
-      origin, 
+      maxDistance,
+      origin,
+      size,
       stars,
     } = options;
 
@@ -27,10 +27,13 @@ export default class Mobile extends Object3D {
       shape.position.set(...star.p);
 
       // Calculate distance from origin and scale it accordingly
+      let factor = size;
       const distance = shape.position.distanceTo(origin);
-      const factor = Math.max(Math.log(distance / SCALE_FACTOR), 1);
+      if (distance < maxDistance) { 
+        factor = ((Math.sin((distance - (maxDistance / 2)) * Math.PI / maxDistance + 1) / 2)) * size;
+      }
       shape.scale.set(factor, factor, factor);
-      
+
       // Add it
       this.add(shape);
       acc.push(shape);
