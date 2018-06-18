@@ -4,6 +4,9 @@ import {
   STATUS_READY,
 } from '../audio/status-events';
 
+const FADE_TIME = 10;
+const MAX_LEVEL = 0.5;
+
 export default class LayerOne {
   constructor(context, options = {}) {
     this.context = context;
@@ -54,14 +57,14 @@ export default class LayerOne {
   fadeIn() {
     this.streams.forEach(obj => {
       const vca = obj.gain;
-      vca.gain.linearRampToValueAtTime(0.5, 10);
+      vca.gain.linearRampToValueAtTime(MAX_LEVEL, FADE_TIME);
     });
   }
 
   fadeOut() {
     this.streams.forEach(obj => {
       const vca = obj.gain;
-      vca.gain.linearRampToValueAtTime(0, 10);
+      vca.gain.linearRampToValueAtTime(0.0, FADE_TIME);
     });
   }
 
