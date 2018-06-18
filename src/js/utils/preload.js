@@ -2,14 +2,14 @@ import {
   TextureLoader,
 } from 'three';
 
-const rootUrl = 'https://world.inanimate.world';
+const ROOT_URL = 'https://world.inanimate.world';
 
 export default function preload() {
-  return fetch(rootUrl + '/index.json')
+  return fetch(ROOT_URL + '/index.json')
     .then(response => response.json())
     .then(data => {
       const samples = Object.keys(data.samples).reduce((acc, key) => {
-        acc[key] = data.samples[key].map(url => rootUrl + url);
+        acc[key] = data.samples[key].map(url => ROOT_URL + url);
         return acc;
       }, {});
 
@@ -18,7 +18,7 @@ export default function preload() {
 
         return new Promise((resolve, reject) => {
           loader.load(
-            rootUrl + url,
+            ROOT_URL + url,
             (texture) => { resolve(texture); },
             undefined,
             (e) => { reject(e); }
@@ -26,7 +26,7 @@ export default function preload() {
         });
       });
 
-      const starRequest = fetch(rootUrl + data.stars)
+      const starRequest = fetch(ROOT_URL + data.stars)
         .then(response => response.json())
         .catch(e => console.error(e));
 
