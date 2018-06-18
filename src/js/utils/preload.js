@@ -2,38 +2,49 @@ import {
   TextureLoader,
 } from 'three';
 
-const assetsUrl = 'http://world.inanimate.world';
+const rootUrl = 'https://world.inanimate.world';
 
 export default function preload() {
-  const data = fetch(assetsUrl)
-    .then(response => response.json)
+  return fetch(rootUrl + '/index.json')
+    .then(response => response.json())
+    .then(data => {
+      const samples = Object.keys(data.samples).reduce((acc, key) => {
+        acc[key] = data.samples[key].map(url => rootUrl + url);
+        return acc;
+      }, {});
+
+      const textureRequest = data.textures.map(url => {
+        const loader = new TextureLoader();
+
+        return new Promise((resolve, reject) => {
+          loader.load(
+            rootUrl + url,
+            (texture) => { resolve(texture); },
+            undefined,
+            (e) => { reject(e); }
+          );
+        });
+      });
+
+      console.log('data.stars', data.stars);
+
+      const starRequest = fetch(rootUrl + data.stars)
+        .then(response => response.json())
+        .catch(e => console.error(e));
+
+      return Promise.all([
+        starRequest,
+        Promise.all(textureRequest),
+      ])
+        .then(result => {
+          const [stars, textures] = result;
+
+          return {
+            stars,
+            textures,
+            samples,
+          };
+        });
+    })
     .catch(e => console.error(e));
-
-  const samples = data.samples;
-
-  const textures = data.textures.map(url => {
-    const loader = new TextureLoader();
-
-    return new Promise((resolve, reject) => {
-      loader.load(
-        url,
-        (texture) => { resolve(texture); },
-        undefined,
-        (e) => { reject(e); }
-      );
-    });
-  });
-
-  const stars = fetch(data.stars)
-    .then(response => response.json)
-    .catch(e => console.error(e));
-
-  return Promise.all([ stars, textures ])
-    .then(() => {
-      return {
-        stars,
-        textures,
-        samples,
-      };
-    });
 }
