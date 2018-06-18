@@ -2,6 +2,8 @@ import {
   Object3D,
 } from 'three';
 
+import { randomItem } from '../utils';
+
 import MobileShape from './mobile-shape';
 
 export default class Mobile extends Object3D {
@@ -14,6 +16,7 @@ export default class Mobile extends Object3D {
       origin,
       size,
       stars,
+      textures,
     } = options;
 
     // Generate random mobile shapes
@@ -23,7 +26,9 @@ export default class Mobile extends Object3D {
       }
 
       // Place a shape at star position
-      const shape = new MobileShape();
+      const shape = new MobileShape({
+        texture: randomItem(textures),
+      });
       shape.position.set(...star.p);
 
       // Calculate distance from origin and scale it accordingly

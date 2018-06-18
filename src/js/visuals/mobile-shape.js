@@ -2,9 +2,10 @@ import {
   CatmullRomCurve3,
   DoubleSide,
   Mesh,
-  MeshNormalMaterial,
+  MeshBasicMaterial,
   Shape,
   ShapeGeometry,
+  MirroredRepeatWrapping,
   Vector3,
 } from 'three';
 
@@ -18,9 +19,12 @@ const SIZE_MAX = 10;
 const SIZE_MIN = 1;
 const SPEED_MAX = 0.001;
 const SPEED_MIN = 0.0007;
+const TEXTURE_SIZE = 0.1;
 
 export default class MobileShape extends Mesh {
-  constructor() {
+  constructor(options) {
+    const { texture } = options;
+
     // Pick a random height and weight
     const width = randomRange(SIZE_MIN, SIZE_MAX);
     const height = randomRange(SIZE_MIN, SIZE_MAX);
@@ -59,8 +63,13 @@ export default class MobileShape extends Mesh {
     const geometry = new ShapeGeometry(shape);
 
     // Give it a texture
-    const material = new MeshNormalMaterial({
+    texture.wrapS = MirroredRepeatWrapping;
+    texture.wrapT = MirroredRepeatWrapping;
+    texture.repeat.set(TEXTURE_SIZE, TEXTURE_SIZE);
+    
+    const material = new MeshBasicMaterial({
       side: DoubleSide,
+      map: texture,
     });
 
     // Create mesh
