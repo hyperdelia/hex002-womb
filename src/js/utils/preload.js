@@ -26,8 +26,6 @@ export default function preload() {
         });
       });
 
-      console.log('data.stars', data.stars);
-
       const starRequest = fetch(rootUrl + data.stars)
         .then(response => response.json())
         .catch(e => console.error(e));

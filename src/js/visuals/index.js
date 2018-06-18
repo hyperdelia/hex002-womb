@@ -83,7 +83,7 @@ export default class Visuals {
 
     // Add mobile with shapes to scenery
     const mobile = new Mobile({
-      density: 0.3,
+      density: 0.007,
       origin: this.controls.position,
       stars,
     });
