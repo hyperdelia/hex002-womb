@@ -11,12 +11,11 @@ export default class Starfield extends Object3D {
   constructor(options) {
     super();
 
-    const { stars, size, color, magnitude } = options;
+    const { stars, size, color } = options;
 
     // Prepare positions and colors for BufferGeometry
     const convertedPositions = stars.reduce((acc, star) => {
-      const [ x, y, z ] = star.p;
-      acc.push(x * magnitude, y * magnitude, z * magnitude);
+      acc.push(...star.p);
       return acc;
     }, []);
 

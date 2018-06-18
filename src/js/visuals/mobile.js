@@ -2,9 +2,9 @@ import {
   Object3D,
 } from 'three';
 
-import MobileShape from './mobile-shape';
+import { randomItem } from '../utils';
 
-const SCALE_FACTOR = 10;
+import MobileShape from './mobile-shape';
 
 export default class Mobile extends Object3D {
   constructor(options) {
@@ -12,8 +12,11 @@ export default class Mobile extends Object3D {
 
     const {
       density,
-      origin, 
+      maxDistance,
+      origin,
+      size,
       stars,
+      textures,
     } = options;
 
     // Generate random mobile shapes
@@ -23,14 +26,19 @@ export default class Mobile extends Object3D {
       }
 
       // Place a shape at star position
-      const shape = new MobileShape();
+      const shape = new MobileShape({
+        texture: randomItem(textures),
+      });
       shape.position.set(...star.p);
 
       // Calculate distance from origin and scale it accordingly
+      let factor = size;
       const distance = shape.position.distanceTo(origin);
-      const factor = Math.max(Math.log(distance / SCALE_FACTOR), 1);
+      if (distance < maxDistance) { 
+        factor = ((Math.sin((distance - (maxDistance / 2)) * Math.PI / maxDistance + 1) / 2)) * size;
+      }
       shape.scale.set(factor, factor, factor);
-      
+
       // Add it
       this.add(shape);
       acc.push(shape);
