@@ -10,12 +10,12 @@ import {
 
 import randomRange from '../utils/random-range';
 
-const CHANGE_PROPABILITY = 0.2;
+const CHANGE_PROPABILITY = 0.0005;
 const CURVE_DIVISIONS = 70;
 const CURVE_TENSION = 0.3;
 const SHAPE_RANDOMNESS = 0.7;
 const MIN_SPEED = 0.0007;
-const MAX_SPEED = 0.001;
+const MAX_SPEED = 0.003;
 
 export default class MobileShape extends Mesh {
   constructor() {
