@@ -68,7 +68,7 @@ export default class Audio {
       if (!actor.isPlaying) {
         const voice = voices[index];
         const { id } = voice.star;
-        const [ x, y, z ] = voice.star.p;
+        const { x, y, z } = voice.star.position;
 
         actor.start(
           voice.sampleUrl,

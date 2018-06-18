@@ -9,8 +9,6 @@ import {
 
 import Stats from 'stats.js';
 
-import { arrayToVector3 } from '../utils';
-
 import Controls from '../controls';
 import Mobile from './mobile';
 import Starfield from './starfield';
@@ -83,7 +81,7 @@ export default class Visuals {
 
     // Add mobile with shapes to scenery
     const mobile = new Mobile({
-      density: 0.3,
+      density: 0.007,
       origin: this.controls.position,
       stars,
     });
@@ -138,12 +136,14 @@ export default class Visuals {
   get distances() {
     const { playerWorldPosition } = this.controls;
 
-    return this.stars.map(star => {
-      const { p: position } = star;
-      const distance = playerWorldPosition.distanceTo(arrayToVector3(position));
+    return this.mobile.shapes.map(mobileShape => {
+      const distance = playerWorldPosition.distanceTo(mobileShape.position);
 
       return {
-        star,
+        star: {
+          id: mobileShape.uuid,
+          position: mobileShape.position,
+        },
         distance,
       };
     });

@@ -25,8 +25,9 @@ identifyPlatform()
     });
 
     const checkup = checkRequirements()
+      .then(() => session.prepare())
       .then(() => {
-        session.prepare();
+        view.isLoading = false;
       });
 
     if (!isDebugMode) {

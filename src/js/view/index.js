@@ -16,6 +16,21 @@ export default class View {
     this.elements.view.classList.add(`view--is-${options.platform}`);
 
     this.registerEvents();
+    this.isLoading = true;
+  }
+
+  get isLoading() {
+    return this._isLoading;
+  }
+
+  set isLoading(bool) {
+    this._isLoading = bool;
+
+    if (this._isLoading) {
+      this.elements.view.classList.add('view--is-loading');
+    } else {
+      this.elements.view.classList.remove('view--is-loading');
+    }
   }
 
   registerEvents() {

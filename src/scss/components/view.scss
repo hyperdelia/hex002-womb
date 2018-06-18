@@ -50,3 +50,18 @@
     display: none;
   }
 }
+
+.view__spinner {
+  display: none;
+}
+
+.view--is-loading {
+  .view__spinner {
+    display: block;
+  }
+
+  .view__start-button {
+    display: none;
+  }
+}
+
