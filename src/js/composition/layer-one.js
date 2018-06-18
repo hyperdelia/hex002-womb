@@ -54,6 +54,21 @@ export default class LayerOne {
     });
   }
 
+  set amp(value) {
+    this.streams.forEach(obj => obj.gain.gain.value = value);
+  }
+
+  get amp() {
+    return this.streams.map(obj => obj.gain.gain.value);
+  }
+
+  set position(vector) {
+    this.streams.forEach(obj => {
+      const { x, y, z } = vector;
+      obj.resonanceSource.setPosition(x, y, z);
+    });
+  }
+
   fadeIn() {
     this.streams.forEach(obj => {
       const vca = obj.gain;
@@ -106,21 +121,6 @@ export default class LayerOne {
       tag,
       node,
     };
-  }
-
-  set amp(value) {
-    this.streams.forEach(obj => obj.gain.gain.value = value);
-  }
-
-  get amp() {
-    return this.streams.map(obj => obj.gain.gain.value);
-  }
-
-  set position(vector) {
-    this.streams.forEach(obj => {
-      const { x, y, z } = vector;
-      obj.resonanceSource.setPosition(x, y, z);
-    });
   }
 
   start() {
