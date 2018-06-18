@@ -14,6 +14,7 @@ import Mobile from './mobile';
 import Starfield from './starfield';
 
 const GRID_HELPER_SIZE = 500;
+const STARFIELD_MAGNITUDE = 6.5;
 
 export default class Visuals {
   constructor(options) {
@@ -65,14 +66,19 @@ export default class Visuals {
   }
 
   createScenery(data) {
-    const { stars } = data;
+    // Resize starfield
+    const stars = data.stars.map(star => {
+      star.p = star.p.map(position => {
+        return position * STARFIELD_MAGNITUDE;  
+      });
+      return star;
+    });
 
     this.stars = stars;
 
     // Add objects to scenery
     const starfield = new Starfield({
       color: new Color('white'),
-      magnitude: 1,
       size: 2,
       stars,
     });
