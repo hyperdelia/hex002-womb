@@ -9,12 +9,12 @@ export default class Core {
   constructor(options) {
     const {
       audio,
-      composition,
+      samples,
       visuals,
     } = options;
 
     this.audio = audio;
-    this.composition = composition;
+    this.samples = samples;
     this.visuals = visuals;
 
     this.interval = null;
@@ -55,7 +55,7 @@ export default class Core {
     // Find new voices to be added to scene
     const addVoices = voices.reduce((acc, voice) => {
       if (!activeStarIds.includes(voice.star.id)) {
-        voice.sampleUrl = randomItem(this.composition.samples.stars);
+        voice.sampleUrl = randomItem(this.samples.mobile);
         this.voices.push(voice);
         acc.push(voice);
       }

@@ -10,8 +10,8 @@ export default class Session {
   constructor(options) {
     this.options = options;
 
-    this.composition = null;
     this.visuals = null;
+    this.samples = null;
   }
 
   prepare() {
@@ -55,17 +55,19 @@ export default class Session {
     });
 
     return preload().then(assets => {
-      const { stars, textures } = assets;
+      const { stars, textures, samples } = assets;
 
       this.visuals.createScenery({
         stars,
         textures,
       });
+
+      this.samples = samples;
     });
   }
 
   start() {
-    const { composition, visuals } = this;
+    const { samples, visuals } = this;
 
     // Create audio context
     const context = createAudioContext();
@@ -74,7 +76,7 @@ export default class Session {
     // Create core handler
     const core = new Core({
       audio,
-      composition,
+      samples,
       visuals,
     });
 
