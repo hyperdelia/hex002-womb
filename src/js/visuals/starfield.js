@@ -7,46 +7,71 @@ import {
   VertexColors,
 } from 'three';
 
+import { randomRange } from '../utils';
+
+function shuffleAndGroup(stars, groupNum) {
+  const groups = [];
+
+  for (let i = 0; i < groupNum; i += 1) {
+    groups.push([]);
+  }
+
+  stars.forEach(star => {
+    groups[Math.floor(Math.random() * groups.length)].push(star);
+  });
+
+  return groups;
+}
+
 export default class Starfield extends Object3D {
   constructor(options) {
     super();
 
-    const { stars, size, color } = options;
+    const { stars, textures, size, color } = options;
 
-    // Prepare positions and colors for BufferGeometry
-    const convertedPositions = stars.reduce((acc, star) => {
-      acc.push(...star.p);
-      return acc;
-    }, []);
+    // Group stars in separate starfields for individual textures
+    const starGroups = shuffleAndGroup(stars, textures.length);
 
-    const convertedColors = stars.reduce(acc => {
-      acc.push(color.r, color.g, color.b);
-      return acc;
-    }, []);
+    starGroups.forEach((starGroup, index) => {
+      // Prepare positions and colors for BufferGeometry
+      const convertedPositions = starGroup.reduce((acc, star) => {
+        acc.push(...star.p);
+        return acc;
+      }, []);
 
-    // Define buffer geometry
-    const geometry = new BufferGeometry();
+      const convertedColors = starGroup.reduce(acc => {
+        acc.push(color.r, color.g, color.b);
+        return acc;
+      }, []);
 
-    geometry.addAttribute('position', new Float32BufferAttribute(
-      convertedPositions,
-      3
-    ));
+      // Define buffer geometry
+      const geometry = new BufferGeometry();
 
-    geometry.addAttribute('color', new Float32BufferAttribute(
-      convertedColors,
-      3
-    ));
+      geometry.addAttribute('position', new Float32BufferAttribute(
+        convertedPositions,
+        3
+      ));
 
-    geometry.computeBoundingSphere();
+      geometry.addAttribute('color', new Float32BufferAttribute(
+        convertedColors,
+        3
+      ));
 
-    // Define material
-    const material = new PointsMaterial({
-      size,
-      vertexColors: VertexColors,
+      geometry.computeBoundingSphere();
+
+      // Define material
+      const texture = textures[index];
+      texture.transparent = true;
+
+      const material = new PointsMaterial({
+        size: randomRange(size / 2, size + (size / 2)),
+        vertexColors: VertexColors,
+        map: texture,
+      });
+
+      // Add starfield group to object
+      const points = new Points(geometry, material);
+      this.add(points);
     });
-
-    // Add starfield to object
-    const points = new Points(geometry, material);
-    this.add(points);
   }
 }

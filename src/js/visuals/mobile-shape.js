@@ -9,7 +9,7 @@ import {
   Vector3,
 } from 'three';
 
-import randomRange from '../utils/random-range';
+import { randomRange } from '../utils';
 
 const CHANGE_PROPABILITY = 0.0005;
 const CURVE_DIVISIONS = 70;

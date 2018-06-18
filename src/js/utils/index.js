@@ -31,3 +31,7 @@ export function normalizeDimension(roomSize, obj) {
 export function randomItem(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
+
+export function randomRange(min, max) {
+  return min + (Math.random() * (max - min));
+}
