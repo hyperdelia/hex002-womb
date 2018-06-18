@@ -60,13 +60,11 @@ export default class Starfield extends Object3D {
       geometry.computeBoundingSphere();
 
       // Define material
-      const texture = textures[index];
-      texture.transparent = true;
-
       const material = new PointsMaterial({
+        map: textures[index],
         size: randomRange(size / 2, size + (size / 2)),
+        transparent: true,
         vertexColors: VertexColors,
-        map: texture,
       });
 
       // Add starfield group to object
