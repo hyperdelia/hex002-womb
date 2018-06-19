@@ -99,7 +99,7 @@ export default class DeviceOrientationControls {
     return quaternion;
   }
 
-  update(delta) {
+  update() {
     if (!this.isEnabled) {
       return;
     }
