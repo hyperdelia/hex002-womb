@@ -73,7 +73,7 @@ export default class Session {
     const { samples, visuals } = this;
 
     if (this.isReady) {
-      this.visuals.resume();
+      this.visuals.start();
       this.core.start();
       return;
     }
