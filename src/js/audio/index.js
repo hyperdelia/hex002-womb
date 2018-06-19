@@ -113,8 +113,13 @@ export default class Audio {
 
   stop() {
     this.removeAllVoices();
+    this.layerOne.stop();
   }
 
   resume() {
+  }
+
+  start() {
+    this.layerOne.start();
   }
 }

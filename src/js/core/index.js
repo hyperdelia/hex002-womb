@@ -70,6 +70,8 @@ export default class Core {
       return;
     }
 
+    this.audio.start();
+
     this.interval = setInterval(() => {
       this.update();
     }, UPDATE_FREQUENCY);
