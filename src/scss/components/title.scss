@@ -1,4 +1,4 @@
-.womb-title {
+.title {
   width: 30rem;
   height: 7rem;
 
@@ -9,7 +9,7 @@
 }
 
 @include media-query() {
-  .womb-title {
+  .title {
     margin-bottom: 4rem;
   }
 }
