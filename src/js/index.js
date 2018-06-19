@@ -27,9 +27,6 @@ identifyPlatform()
       onStop: () => {
         session.stop();
       },
-      onStop: () => {
-        session.stop();
-      },
     });
 
     const checkup = checkRequirements()
