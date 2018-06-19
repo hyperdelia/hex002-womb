@@ -5,6 +5,15 @@ import Core from '../core';
 import Visuals from '../visuals';
 
 import preload from '../utils/preload';
+import {
+  STATUS_READY,
+} from '../audio/status-events';
+
+const statusCallback = (state) => {
+  if (state === STATUS_READY) {
+    console.log('layer one ready');
+  }
+};
 
 export default class Session {
   constructor(options) {
@@ -69,7 +78,7 @@ export default class Session {
     });
   }
 
-  start(statusCallback) {
+  start() {
     const { samples, visuals } = this;
 
     if (this.isReady) {
