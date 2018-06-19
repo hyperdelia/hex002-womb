@@ -71,8 +71,6 @@ export default class LayerOne {
         resonanceSource,
       });
     });
-
-    this.isPlaying = false;
   }
 
   set amp(value) {
@@ -88,11 +86,17 @@ export default class LayerOne {
   }
 
   fadeIn() {
+    if (this.timer) {
+      window.clearTimeout(this.timer);
+      this.timer = null;
+    }
+
     this.streams.forEach(obj => {
       const vca = obj.gain;
       const now = this.context.currentTime;
 
       vca.gain.cancelScheduledValues(now);
+      vca.gain.setValueAtTime(0.0, now);
       vca.gain.linearRampToValueAtTime(
         MAX_LEVEL,
         now + FADE_TIME
@@ -108,6 +112,7 @@ export default class LayerOne {
       const now = this.context.currentTime;
 
       vca.gain.cancelScheduledValues(now);
+      vca.gain.setValueAtTime(MAX_LEVEL, now);
       vca.gain.linearRampToValueAtTime(
         0.0,
         now + FADE_TIME
@@ -117,15 +122,26 @@ export default class LayerOne {
     });
 
     return new Promise(resolve => {
-      const checkValues = () => {
-        const currentVal = gains.reduce((acc, vca) => acc + vca.gain.value, 0);
+      let getCurrentValue = () => {
+        return gains.reduce((acc, vca) => acc + vca.gain.value, 0);
+      };
 
-        if (currentVal < 0.001) {
+      if (this.timer) {
+        window.clearTimeout(this.timer);
+        this.timer = null;
+      }
+
+      // workaround, gain.value is always zero in Firefox
+      if (getCurrentValue() === 0) {
+        this.timer = setTimeout(() => { resolve(); }, FADE_TIME * 1000.0);
+        return;
+      }
+
+      const checkValues = () => {
+        if (getCurrentValue() < 0.001) {
           resolve();
         } else {
-          setTimeout(() => {
-            checkValues();
-          }, 0.5 * 1000);
+          this.timer = setTimeout(() => { checkValues(); }, 0.5 * 1000);
         }
       };
 
@@ -152,10 +168,6 @@ export default class LayerOne {
   }
 
   start() {
-    if (this.isPlaying) {
-      return Promise.resolve();
-    }
-
     const promises = this.samples.map((url, index) => {
       const audioTag = this.streams[index].tag;
       return audioTag.play();
@@ -163,16 +175,11 @@ export default class LayerOne {
 
     return Promise.all(promises)
       .then(() => {
-        this.isPlaying = true;
         this.fadeIn();
       });
   }
 
   stop() {
-    if (!this.isPlaying) {
-      return Promise.resolve();
-    }
-
     const nextStartTime = this.getStartTime();
 
     return this.fadeOut().then(() => {
@@ -180,8 +187,6 @@ export default class LayerOne {
         obj.tag.pause();
         obj.tag.currentTime = nextStartTime;
       });
-
-      this.isPlaying = false;
     });
   }
 }
