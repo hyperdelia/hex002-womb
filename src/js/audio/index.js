@@ -4,6 +4,7 @@ import { normalizeDimension } from '../utils';
 
 import Actor from './actor';
 import AudioStream from './audio-stream';
+import LayerOne from './layer-one';
 
 const MAX_ACTOR_COUNT = 10;
 
@@ -12,8 +13,9 @@ const ROOM_MATERIAL = 'transparent';
 const SOURCE_MAX_DISTANCE = 75;
 
 export default class Audio {
-  constructor(context) {
+  constructor(context, samples, statusCallback) {
     this.context = context;
+    this.samples = samples;
 
     this.scene = new ResonanceAudio(this.context);
     this.scene.output.connect(this.context.destination);
@@ -49,6 +51,13 @@ export default class Audio {
 
       this.actors.push(actor);
     }
+
+    this.layerOne = new LayerOne(this.context, {
+      scene: this.scene,
+      roomDimension: ROOM_DIMENSION,
+      samples,
+      statusCallback,
+    });
   }
 
   updateListener(matrix) {
