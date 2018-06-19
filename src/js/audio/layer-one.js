@@ -140,6 +140,9 @@ export default class LayerOne {
       this.statusCallback(STATUS_READY);
 
       this.start().then(() => {
+        if (this.isPlaying) {
+          return;
+        }
         this.isPlaying = true;
         this.fadeIn();
       });
@@ -168,7 +171,7 @@ export default class LayerOne {
 
   start() {
     if (this.isPlaying) {
-      return;
+      return Promise.resolve();
     }
 
     const promises = this.samples.map((url, index) => {
@@ -189,6 +192,7 @@ export default class LayerOne {
         obj.tag.pause();
         obj.tag.currentTime = 0;
       });
+      this.isPlaying = false;
     });
   }
 }
