@@ -35,7 +35,18 @@ export default class View {
 
   registerEvents() {
     this.elements.start.addEventListener('click', () => {
-      this.onStart();
+      this.requestFullscreen();
+    });
+
+    [
+      'fullscreenchange',
+      'webkitfullscreenchange',
+      'mozfullscreenchange',
+      'MSFullscreenChange',
+    ].forEach(eventName => {
+      document.addEventListener(eventName, () => {
+        this.onFullscreenChange();
+      });
     });
   }
 
@@ -44,8 +55,38 @@ export default class View {
     this.options.onStart();
   }
 
+  onStop() {
+    this.elements.view.classList.remove('view--is-running');
+    this.options.onStop();
+  }
+
+  onFullscreenChange() {
+    if (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    ) {
+      this.onStart();
+    } else {
+      this.onStop();
+    }
+  }
+
   showError(error) {
     this.elements.view.classList.add('view--is-error');
     this.elements.error.innerText = error;
+
+    this.onStop();
+  }
+
+  requestFullscreen() {
+    document.body.requestFullScreen = (
+      document.body.requestFullScreen ||
+      document.body.mozRequestFullScreen ||
+      document.body.webkitRequestFullScreen
+    );
+
+    document.body.requestFullScreen();
   }
 }

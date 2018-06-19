@@ -11,7 +11,10 @@ export default class Session {
     this.options = options;
 
     this.visuals = null;
+    this.core = null;
     this.samples = null;
+
+    this.isReady = false;
   }
 
   prepare() {
@@ -66,25 +69,37 @@ export default class Session {
     });
   }
 
-  start(statusCallback) {
+  start() {
     const { samples, visuals } = this;
+
+    if (this.isReady) {
+      this.visuals.resume();
+      this.core.start();
+      return;
+    }
 
     // Create audio context
     const context = createAudioContext();
     const audio = new Audio(
       context,
       samples,
-      statusCallback
     );
 
     // Create core handler
-    const core = new Core({
+    this.core = new Core({
       audio,
       samples,
       visuals,
     });
 
-    core.start();
+    this.core.start();
     this.visuals.start();
+
+    this.isReady = true;
+  }
+
+  stop() {
+    this.core.stop();
+    this.visuals.stop();
   }
 }

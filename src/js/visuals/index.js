@@ -27,6 +27,7 @@ export default class Visuals {
     } = options;
 
     this.options = options;
+    this.isRunning = false;
 
     this.stars = [];
 
@@ -117,13 +118,21 @@ export default class Visuals {
   }
 
   start() {
+    this.isRunning = true;
     this.controls.start();
     this.animate();
   }
 
+  stop() {
+    this.isRunning = false;
+    this.controls.stop();
+  }
+
   animate() {
     requestAnimationFrame(() => {
-      this.animate();
+      if (this.isRunning) {
+        this.animate();
+      }
     });
 
     this.mobile.animate();

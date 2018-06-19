@@ -1,31 +1,27 @@
 import { Vector3 } from 'three';
-
 import { normalizeDimension } from '../utils';
-import {
-  STATUS_READY,
-} from '../audio/status-events';
 
 const FADE_TIME = 5;
-const MAX_LEVEL = 1;
+const MAX_LEVEL = 0.5;
 const POSITIONS = [
   new Vector3(
-    -5000,
-    5000,
+    -10000,
+    10000,
     0,
   ),
   new Vector3(
-    5000,
-    5000,
+    10000,
+    10000,
     0,
   ),
   new Vector3(
-    -5000,
-    -5000,
+    -10000,
+    -10000,
     0,
   ),
   new Vector3(
-    5000,
-    -5000,
+    10000,
+    -10000,
     0,
   ),
 ];
@@ -34,7 +30,6 @@ export default class LayerOne {
   constructor(context, options = {}) {
     this.context = context;
     this.samples = options.samples.interstellar;
-    this.statusCallback = options.statusCallback;
 
     const scene = options.scene;
     const startTime = this.getStartTime();
@@ -45,6 +40,7 @@ export default class LayerOne {
       const resonanceSource = scene.createSource({
         maxDistance: 99999,
         rolloff: 'linear',
+        sourceWidth: 0,
       });
 
       const { tag, node } = this.createAudioObject(
@@ -137,12 +133,6 @@ export default class LayerOne {
     });
   }
 
-  onReady(index) {
-    if ((this.samples.length - 1) === index) {
-      this.statusCallback(STATUS_READY);
-    }
-  }
-
   createAudioObject(index, url, startTime = 0) {
     const tag = document.createElement('audio');
 
@@ -152,8 +142,6 @@ export default class LayerOne {
     tag.controls = false;
     tag.crossOrigin = 'anonymous';
     tag.currentTime = startTime;
-
-    tag.addEventListener('canplay', () => { this.onReady(index); }, true);
 
     const node = this.context.createMediaElementSource(tag);
 

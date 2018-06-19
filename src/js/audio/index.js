@@ -13,7 +13,7 @@ const ROOM_MATERIAL = 'transparent';
 const SOURCE_MAX_DISTANCE = 300;
 
 export default class Audio {
-  constructor(context, samples, statusCallback) {
+  constructor(context, samples) {
     this.context = context;
     this.samples = samples;
 
@@ -56,7 +56,6 @@ export default class Audio {
       scene: this.scene,
       roomDimension: ROOM_DIMENSION,
       samples,
-      statusCallback,
     });
   }
 
@@ -103,5 +102,20 @@ export default class Audio {
         actor.stop();
       }
     });
+  }
+
+  removeAllVoices() {
+    this.actors.forEach(actor => {
+      actor.stop();
+    });
+  }
+
+  stop() {
+    this.removeAllVoices();
+    this.layerOne.stop();
+  }
+
+  start() {
+    this.layerOne.start();
   }
 }
