@@ -2,7 +2,7 @@ import { randomItem } from '../utils';
 
 import Voice from '../audio/voice';
 
-const ACTIVATION_DISTANCE_THRESHOLD = 100;
+const ACTIVATION_DISTANCE_THRESHOLD = 300;
 const UPDATE_FREQUENCY = 100;
 
 export default class Core {

@@ -10,7 +10,7 @@ const MAX_ACTOR_COUNT = 10;
 
 const ROOM_DIMENSION = 1;
 const ROOM_MATERIAL = 'transparent';
-const SOURCE_MAX_DISTANCE = 75;
+const SOURCE_MAX_DISTANCE = 300;
 
 export default class Audio {
   constructor(context, samples, statusCallback) {
@@ -98,7 +98,6 @@ export default class Audio {
 
   removeVoices(voices) {
     const oldStarIds = voices.map(voice => voice.star.id);
-
     this.actors.forEach(actor => {
       if (oldStarIds.includes(actor.starId)) {
         actor.stop();
