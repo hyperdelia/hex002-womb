@@ -72,8 +72,11 @@ module.exports = (env, options) => {
           }),
         },
         {
-          test: /\.(png|jpe?g|gif|wav|aiff?|mp3|m4a|ogg)$/,
+          test: /\.(png|ico|jpe?g|gif|wav|aiff?|mp3|m4a|ogg)$/,
           loader: 'file-loader',
+          options: {
+            name: '[name].[ext]'
+          },
         },
       ],
     },
