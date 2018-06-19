@@ -17,7 +17,7 @@ export default class Session {
     this.isReady = false;
   }
 
-  prepare() {
+  prepare(onError) {
     const {
       canvas,
       isDebugMode,
@@ -57,16 +57,18 @@ export default class Session {
       this.visuals.resize(window.innerWidth, window.innerHeight);
     });
 
-    return preload().then(assets => {
-      const { stars, textures, samples } = assets;
+    return preload()
+      .then(assets => {
+        const { stars, textures, samples } = assets;
 
-      this.visuals.createScenery({
-        stars,
-        textures,
-      });
+        this.visuals.createScenery({
+          stars,
+          textures,
+        });
 
-      this.samples = samples;
-    });
+        this.samples = samples;
+      })
+      .catch(onError);
   }
 
   start(onError) {

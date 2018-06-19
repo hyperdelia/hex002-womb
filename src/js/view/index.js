@@ -75,14 +75,23 @@ export default class View {
     }
   }
 
-  showError() {
-    const message = `Sorry, but it looks like this won't work on your browser. Please try it
-    with another one. We recommend the latest version of Chrome or Firefox ❤`;
-
+  showError(error) {
     this.elements.view.classList.add('view--is-error');
-    this.elements.error.innerText = message;
+    this.elements.error.innerText = error + ' ❤';
 
     this.onStop();
+  }
+
+  showConnectionError() {
+    this.showError(
+      'Sorry, something went wrong during loading. Please check your internet connection and reload the page to try again.'
+    );
+  }
+
+  showRequirementError() {
+    this.showError(
+      'Sorry, but it looks like this won\'t work on your browser. Please try it with another one. We recommend the latest version of Chrome or Firefox.'
+    );
   }
 
   requestFullscreen() {

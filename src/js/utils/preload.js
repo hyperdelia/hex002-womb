@@ -30,8 +30,7 @@ export default function preload() {
       }, {});
 
       const starsRequest = fetch(ROOT_URL + data.stars)
-        .then(response => response.json())
-        .catch(e => console.error(e));
+        .then(response => response.json());
 
       return Promise.all([
         starsRequest,
@@ -48,6 +47,5 @@ export default function preload() {
             samples,
           };
         });
-    })
-    .catch(e => console.error(e));
+    });
 }

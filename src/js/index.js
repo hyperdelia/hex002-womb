@@ -24,7 +24,7 @@ identifyPlatform()
       onStart: () => {
         session.start(
           () => {
-            view.showError();
+            view.showRequirementError();
           }
         );
       },
@@ -35,7 +35,11 @@ identifyPlatform()
 
     const checkup = checkRequirements()
       .then(() => {
-        session.prepare();
+        session.prepare(
+          () => {
+            view.showConnectionError();
+          }
+        );
       })
       .then(() => {
         view.isLoading = false;
@@ -43,7 +47,7 @@ identifyPlatform()
 
     if (!isDebugMode) {
       checkup.catch(() => {
-        view.showError();
+        view.showRequirementError();
       });
     }
   });
