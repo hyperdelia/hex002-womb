@@ -6,7 +6,7 @@ import Actor from './actor';
 import AudioStream from './audio-stream';
 import LayerOne from './layer-one';
 
-const MAX_ACTOR_COUNT = 10;
+const MAX_ACTOR_COUNT = 5;
 
 const ROOM_DIMENSION = 1;
 const ROOM_MATERIAL = 'transparent';
