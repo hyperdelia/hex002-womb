@@ -2,26 +2,26 @@ import { Vector3 } from 'three';
 import { normalizeDimension } from '../utils';
 
 const FADE_TIME = 5;
-const MAX_LEVEL = 1;
+const MAX_LEVEL = 0.5;
 const POSITIONS = [
   new Vector3(
-    -5000,
-    5000,
+    -10000,
+    10000,
     0,
   ),
   new Vector3(
-    5000,
-    5000,
+    10000,
+    10000,
     0,
   ),
   new Vector3(
-    -5000,
-    -5000,
+    -10000,
+    -10000,
     0,
   ),
   new Vector3(
-    5000,
-    -5000,
+    10000,
+    -10000,
     0,
   ),
 ];
@@ -40,6 +40,7 @@ export default class LayerOne {
       const resonanceSource = scene.createSource({
         maxDistance: 99999,
         rolloff: 'linear',
+        sourceWidth: 0,
       });
 
       const { tag, node } = this.createAudioObject(
