@@ -144,15 +144,6 @@ export default class LayerOne {
         this.fadeIn();
       });
     }
-    console.log(`layer-one player: ${index} ready`);
-  }
-
-  onLoaded() {
-    this.statusCallback(STATUS_PREFETCH);
-  }
-
-  onBuffer() {
-    this.statusCallback(STATUS_BUFFERING);
   }
 
   createAudioObject(index, url, startTime = 0) {
@@ -165,9 +156,7 @@ export default class LayerOne {
     tag.crossOrigin = 'anonymous';
     tag.currentTime = startTime;
 
-    // tag.addEventListener('seeked', () => { this.onBuffer(index); }, true);
     tag.addEventListener('canplay', () => { this.onReady(index); }, true);
-    // tag.addEventListener('loadstart', () => { this.onLoaded(index); }, true);
 
     const node = this.context.createMediaElementSource(tag);
 
