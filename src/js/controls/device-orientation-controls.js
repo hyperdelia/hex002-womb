@@ -18,6 +18,9 @@ import {
 const PARAMETERS = {
   alphaOffset: 0, // radians
   smoothing: 0.07,
+  moveSpeed: 0.005,
+  stopSpeed: 0.005,
+  maxSpeed: 0.25,
 };
 
 export default class DeviceOrientationControls {
@@ -25,10 +28,13 @@ export default class DeviceOrientationControls {
     this.options = options;
 
     this.isEnabled = false;
+    this.isMoving = false;
 
     this.camera = this.options.camera;
     this.camera.rotation.set(0, 0, 0);
     this.camera.rotation.reorder('YXZ');
+
+    this.velocity = 0;
 
     this.deviceOrientation = {};
     this.screenOrientation = 0;
@@ -39,6 +45,15 @@ export default class DeviceOrientationControls {
 
   start() {
     this.isEnabled = true;
+    this.startMoving();
+  }
+
+  startMoving() {
+    this.isMoving = true;
+  }
+
+  stopMoving() {
+    this.isMoving = false;
   }
 
   registerEvents() {
@@ -50,8 +65,18 @@ export default class DeviceOrientationControls {
       this.deviceOrientation = event;
     };
 
+    const onTouchStart = () => {
+      this.stopMoving();
+    };
+
+    const onTouchEnd = () => {
+      this.startMoving();
+    };
+
     window.addEventListener('orientationchange', onOrientationChange, false);
     window.addEventListener('deviceorientation', onDeviceOrientation, false);
+    window.addEventListener('touchstart', onTouchStart, false);
+    window.addEventListener('touchend', onTouchEnd, false);
   }
 
   updateScreenOrientation() {
@@ -74,7 +99,7 @@ export default class DeviceOrientationControls {
     return quaternion;
   }
 
-  update() {
+  update(delta) {
     if (!this.isEnabled) {
       return;
     }
@@ -82,6 +107,7 @@ export default class DeviceOrientationControls {
     const { screenOrientation } = this;
     const { degToRad } = ThreeMath;
     const { alphaOffset, smoothing } = PARAMETERS;
+    const { moveSpeed, stopSpeed, maxSpeed } = PARAMETERS;
     const { alpha: a, beta: b, gamma: g } = this.deviceOrientation;
 
     const alpha = a ? (degToRad(a) + alphaOffset) : 0;
@@ -91,6 +117,21 @@ export default class DeviceOrientationControls {
     const rotation = this.calculateQuaternion(alpha, beta, gamma, orient);
 
     this.camera.quaternion.slerp(rotation, smoothing);
+
+    if (this.isMoving) {
+      this.velocity += moveSpeed;
+      if (this.velocity >= maxSpeed) {
+        this.velocity = maxSpeed;
+      }
+    } else {
+      this.velocity -= stopSpeed;
+
+      if (this.velocity <= 0) {
+        this.velocity = 0;
+      }
+    }
+
+    this.camera.translateZ(-this.velocity);
   }
 
   setPosition(x, y, z) {
