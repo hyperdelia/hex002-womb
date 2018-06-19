@@ -27,7 +27,7 @@ export default class Starfield extends Object3D {
   constructor(options) {
     super();
 
-    const { stars, textures, size, color } = options;
+    const { stars, textures, size } = options;
 
     // Group stars in separate starfields for individual textures
     const starGroups = shuffleAndGroup(stars, textures.length);
@@ -40,7 +40,7 @@ export default class Starfield extends Object3D {
       }, []);
 
       const convertedColors = starGroup.reduce(acc => {
-        acc.push(color.r, color.g, color.b);
+        acc.push(0, 0, 0);
         return acc;
       }, []);
 

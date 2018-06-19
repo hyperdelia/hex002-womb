@@ -77,8 +77,7 @@ export default class Visuals {
 
     // Add objects to scenery
     const starfield = new Starfield({
-      color: new Color('white'),
-      size: 2,
+      size: 5,
       stars,
       textures: data.textures.stars,
     });

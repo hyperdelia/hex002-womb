@@ -11,14 +11,14 @@ import {
 
 import { randomRange } from '../utils';
 
-const CHANGE_PROPABILITY = 0.0005;
+const CHANGE_PROPABILITY = 0.00005;
 const CURVE_DIVISIONS = 70;
 const CURVE_TENSION = 0.3;
 const SHAPE_RANDOMNESS = 0.6;
-const SIZE_MAX = 10;
+const SIZE_MAX = 15;
 const SIZE_MIN = 1;
-const SPEED_MAX = 0.001;
-const SPEED_MIN = 0.0007;
+const SPEED_MAX = 0.0007;
+const SPEED_MIN = 0.00008;
 const TEXTURE_SIZE = 0.1;
 
 export default class MobileShape extends Mesh {
