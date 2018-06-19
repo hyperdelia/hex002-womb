@@ -2,8 +2,6 @@ import { Vector3 } from 'three';
 
 import { normalizeDimension } from '../utils';
 import {
-  STATUS_BUFFERING,
-  STATUS_PREFETCH,
   STATUS_READY,
 } from '../audio/status-events';
 
