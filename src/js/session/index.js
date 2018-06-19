@@ -69,7 +69,7 @@ export default class Session {
     });
   }
 
-  start() {
+  start(onError) {
     const { samples, visuals } = this;
 
     if (this.isReady) {
@@ -83,6 +83,7 @@ export default class Session {
     const audio = new Audio(
       context,
       samples,
+      onError,
     );
 
     // Create core handler

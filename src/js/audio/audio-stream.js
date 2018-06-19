@@ -53,12 +53,14 @@ export default class AudioStream extends AudioBase {
     const playPromise = this.audioTag.play();
 
     if (playPromise !== undefined) {
-      playPromise.then(() => {
-        this.canPause = true;
-      });
-    } else {
-      this.canPause = true;
+      return playPromise
+        .then(() => {
+          this.canPause = true;
+        });
     }
+
+    this.canPause = true;
+    return Promise.resolve();
   }
 
   stop() {

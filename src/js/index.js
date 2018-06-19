@@ -22,7 +22,11 @@ identifyPlatform()
     const view = new View({
       platform,
       onStart: () => {
-        session.start();
+        session.start(
+          () => {
+            view.showError();
+          }
+        );
       },
       onStop: () => {
         session.stop();
@@ -38,8 +42,8 @@ identifyPlatform()
       });
 
     if (!isDebugMode) {
-      checkup.catch(error => {
-        view.showError(error);
+      checkup.catch(() => {
+        view.showError();
       });
     }
   });

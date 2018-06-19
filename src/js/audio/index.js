@@ -13,9 +13,10 @@ const ROOM_MATERIAL = 'transparent';
 const SOURCE_MAX_DISTANCE = 300;
 
 export default class Audio {
-  constructor(context, samples) {
+  constructor(context, samples, onError) {
     this.context = context;
     this.samples = samples;
+    this.onError = onError;
 
     this.scene = new ResonanceAudio(this.context);
     this.scene.output.connect(this.context.destination);
@@ -82,7 +83,7 @@ export default class Audio {
           voice.sampleUrl,
           id,
           normalizeDimension(ROOM_DIMENSION, { x, y, z })
-        );
+        ).catch(this.onError);
 
         index += 1;
       }
@@ -116,6 +117,7 @@ export default class Audio {
   }
 
   start() {
-    this.layerOne.start();
+    this.layerOne.start()
+      .catch(this.onError);
   }
 }

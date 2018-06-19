@@ -33,7 +33,7 @@ export default class Actor {
     );
 
     this.audioStream.connect(this.resonanceSource.input);
-    this.audioStream.start(url);
+    return this.audioStream.start(url);
   }
 
   stop() {

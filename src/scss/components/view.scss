@@ -29,6 +29,14 @@
 
 .view__error {
   display: none;
+
+  padding: 2rem;
+
+  color: white;
+
+  background-color: $womb-orange;
+
+  line-height: 1.5;
 }
 
 .view__visuals {

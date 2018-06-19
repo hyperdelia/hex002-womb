@@ -161,10 +161,11 @@ export default class LayerOne {
       return audioTag.play();
     });
 
-    return Promise.all(promises).then(() => {
-      this.isPlaying = true;
-      this.fadeIn();
-    });
+    return Promise.all(promises)
+      .then(() => {
+        this.isPlaying = true;
+        this.fadeIn();
+      });
   }
 
   stop() {

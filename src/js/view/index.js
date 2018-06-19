@@ -1,3 +1,5 @@
+import modernizrTest from '../utils/modernizr-test';
+
 const ELEMENT_IDS = [
   'error',
   'start',
@@ -73,14 +75,22 @@ export default class View {
     }
   }
 
-  showError(error) {
+  showError() {
+    const message = `Sorry, but it looks like this won't work on your browser. Please try it
+    with another one. We recommend the latest version of Chrome or Firefox ❤`;
+
     this.elements.view.classList.add('view--is-error');
-    this.elements.error.innerText = error;
+    this.elements.error.innerText = message;
 
     this.onStop();
   }
 
   requestFullscreen() {
+    if (modernizrTest(['fullscreen'])) {
+      this.onStart();
+      return;
+    }
+
     document.body.requestFullScreen = (
       document.body.requestFullScreen ||
       document.body.mozRequestFullScreen ||
