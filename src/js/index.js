@@ -18,15 +18,12 @@ const isDebugMode = window.location.href.includes('debug');
 const statusCallback = (state) => {
   switch (state) {
     case STATUS_READY: {
-      console.log('layer-one ready');
       break;
     }
     case STATUS_PREFETCH: {
-      console.log('fetching audio');
       break;
     }
     case STATUS_BUFFERING: {
-      console.log('buffering..');
       break;
     }
   }
