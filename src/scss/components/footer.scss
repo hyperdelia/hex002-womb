@@ -1,0 +1,22 @@
+.footer {
+  display: flex;
+
+  width: 100%;
+
+  justify-content: space-between;
+}
+
+.footer__section {
+  display: flex;
+
+  width: 33.3%;
+
+  color: $black;
+
+  font-size: $font-size-small;
+
+  text-align: center;
+
+  align-items: flex-end;
+  justify-content: center;
+}

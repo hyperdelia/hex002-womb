@@ -3,17 +3,51 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-    <title>HEX 002</title>
+    <title>Kajsa Lindgren - WOMB</title>
   </head>
   <body>
-    <div class="view" id="view">
+    <section class="view" id="view">
       <div class="view__container">
-        <p class="view__spinner">Loading..</p>
-        <p class="view__error" id="error"></p>
-        <button class="button view__start-button" id="start">Start</button>
+        <header>
+          <div class="womb-title"></div>
+        </header>
+
+        <main class="main">
+          <p class="intro">
+            »WOMB« is lucid underwater music composed by Kajsa Lindgren and was released 15/06/18 on <a target="_blank" href="https://hyperdelia.bandcamp.com">Hyperdelia</a>. This is a virtual experience of »WOMB«, turn your speakers on and take a dip.
+          </p>
+
+          <p class="intro">
+            »WOMB« is a musical narration for abstracted ears and bodies – engulfing a listener simultaneously in subaquatic sonic environments, distant dreams of childhoods, memories and voices from the unknown: where time and space fold into each other. <a href="https://about.inanimate.world" target="_blank">Read more about »WOMB«</a>.
+          </p>
+
+          <p class="view__error" id="error"></p>
+          <button class="button view__spinner" disabled>Loading ...</button>
+          <button class="button view__start-button" id="start">Start</button>
+
+          <p class="note">
+            Please note: This web installation is best experienced on modern desktop or mobile devices and headphones.
+          </p>
+        </main>
+
+        <footer class="footer">
+          <div class="footer__section">
+            <div class="logo logo--kulturbryggan"></div>
+          </div>
+
+          <div class="footer__section">
+            <div class="logo logo--hyperdelia">
+              <a href="https://hyperdelia.com" class="logo__link"></a>
+            </div>
+          </div>
+
+          <div class="footer__section">
+            <p>&copy; 2018 HYPERDELIA.COM</p>
+          </div>
+        </footer>
       </div>
 
       <canvas class="visuals view__visuals" id="visuals"></canvas>
-    </div>
+    </section>
   </body>
 </html>

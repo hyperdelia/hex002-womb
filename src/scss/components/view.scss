@@ -20,8 +20,11 @@
 
   display: flex;
 
+  padding: 4rem;
+
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .view__error {
@@ -31,11 +34,11 @@
 .view__visuals {
   opacity: 0;
 
-  transition: opacity 2s ease-out;
+  transition: opacity 4s ease-in-out;
 }
 
 .view--is-running {
-  .view__start-button {
+  .view__container {
     display: none;
   }
 
@@ -64,11 +67,10 @@
 
 .view--is-loading {
   .view__spinner {
-    display: block;
+    display: inline-block;
   }
 
   .view__start-button {
     display: none;
   }
 }
-
