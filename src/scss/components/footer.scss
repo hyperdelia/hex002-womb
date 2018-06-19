@@ -1,0 +1,38 @@
+.footer {
+  display: flex;
+
+  width: 100%;
+
+  justify-content: space-between;
+}
+
+.footer__section {
+  display: flex;
+
+  width: 33.3%;
+
+  color: $black;
+
+  font-size: $font-size-small;
+
+  text-align: center;
+
+  align-items: flex-end;
+  justify-content: center;
+}
+
+@include media-query() {
+  .footer {
+    margin-top: 4rem;
+
+    flex-direction: column;
+  }
+
+  .footer__section {
+    width: 100%;
+
+    + .footer__section {
+      margin-top: 2rem;
+    }
+  }
+}

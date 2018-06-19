@@ -25,9 +25,9 @@ input[type="submit"] {
   cursor: pointer;
 
   &[disabled] {
-    color: $text-color;
+    border-color: $button-disabled-color;
 
-    background-color: $button-disabled-color;
+    color: $button-disabled-color;
 
     cursor: default;
   }

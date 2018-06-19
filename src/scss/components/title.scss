@@ -1,0 +1,15 @@
+.title {
+  width: 30rem;
+  height: 7rem;
+
+  background-image: url("../img/womb.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+@include media-query() {
+  .title {
+    margin-bottom: 4rem;
+  }
+}

@@ -1,0 +1,13 @@
+.intro {
+  padding-bottom: 1.5rem;
+
+  color: $gray;
+
+  line-height: 1.8;
+}
+
+@include media-query() {
+  .intro {
+    padding-bottom: 2.5rem;
+  }
+}

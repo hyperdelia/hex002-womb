@@ -1,0 +1,27 @@
+.logo {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.logo__link {
+  display: block;
+
+  height: 100%;
+
+  border: 0;
+}
+
+.logo--hyperdelia {
+  width: 9rem;
+  height: 9rem;
+
+  background-image: url("../img/hyperdelia.png");
+}
+
+.logo--kulturbryggan {
+  width: 17rem;
+  height: 3rem;
+
+  background-image: url("../img/kulturbryggan.png");
+}

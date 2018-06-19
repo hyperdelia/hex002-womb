@@ -1,5 +1,12 @@
-// .view {
-// }
+.view {
+  position: relative;
+
+  height: 100%;
+
+  background-image: url("../img/background.jpg");
+  background-position: center;
+  background-size: cover;
+}
 
 .view__container {
   position: absolute;
@@ -13,8 +20,11 @@
 
   display: flex;
 
+  padding: 2rem;
+
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .view__error {
@@ -24,11 +34,30 @@
 .view__visuals {
   opacity: 0;
 
-  transition: opacity 2s ease-out;
+  transition: opacity 4s ease-in-out;
+}
+
+.view__spinner {
+  display: none;
+}
+
+@include media-query() {
+  .view {
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    padding-top: 4rem;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .view__container {
+    bottom: auto;
+  }
 }
 
 .view--is-running {
-  .view__start-button {
+  .view__container {
     display: none;
   }
 
@@ -51,17 +80,12 @@
   }
 }
 
-.view__spinner {
-  display: none;
-}
-
 .view--is-loading {
   .view__spinner {
-    display: block;
+    display: inline-block;
   }
 
   .view__start-button {
     display: none;
   }
 }
-

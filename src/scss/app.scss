@@ -1,5 +1,6 @@
 // vendors
 @import "~normalize.css";
+@import url("https://fonts.googleapis.com/css?family=Kreon");
 
 // variables
 @import "variables";
@@ -8,7 +9,17 @@
 @import "base/buttons";
 @import "base/global";
 @import "base/layout";
+@import "base/links";
+
+// mixins
+@import "mixins/media-query";
 
 // components
+@import "components/footer";
+@import "components/intro";
+@import "components/logo";
+@import "components/main";
+@import "components/note";
+@import "components/title";
 @import "components/view";
 @import "components/visuals";

@@ -1,5 +1,7 @@
 // color definitions
 $black: #000;
+$gray: #333;
+$gray-light: #999;
 $white: #fff;
 
 $womb-orange: #d45543;
@@ -8,25 +10,33 @@ $womb-orange: #d45543;
 $font-weight-regular: 300;
 $font-weight-bold: 900;
 
+// font size definitions
+$font-size-regular: 1.6rem;
+$font-size-small: 1.4rem;
+
 // main colors
 $body-color: $white;
 $text-color: $womb-orange;
 
 // main fonts
-$font-base-family: "Georgia", serif;
-$font-base-size: 3.2em;
+$font-base-family: "Kreon", "Georgia", serif;
+$font-base-size: $font-size-regular;
 $font-base-weight: $font-weight-regular;
 
 $base-line-height: 1.2;
 
 // buttons
-$button-background-color: $white;
+$button-background-color: transparent;
 $button-border-color: $womb-orange;
 $button-color: $womb-orange;
-$button-disabled-color: $white;
+$button-disabled-color: $gray-light;
 
 // z-index
 $z-index: (
   visuals: 1,
   view: 100,
 );
+
+// breakpoints
+$breakpoint-width: 700px;
+$breakpoint-height: 620px;
