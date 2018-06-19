@@ -34,7 +34,6 @@ export default class Visuals {
 
     // Create scene
     this.scene = new Scene();
-    this.scene.background = new Color('black');
 
     // Create camera / player and set initial position
     this.camera = new PerspectiveCamera(27, width / height, 5, 3500);
@@ -52,7 +51,7 @@ export default class Visuals {
     this.controls.setPosition(0, 0, 0);
 
     // Initialise the renderer
-    this.renderer = new WebGLRenderer({ canvas });
+    this.renderer = new WebGLRenderer({ canvas, alpha: true });
     this.renderer.setPixelRatio(devicePixelRatio);
     this.resize(width, height);
 
