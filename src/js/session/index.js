@@ -74,7 +74,7 @@ export default class Session {
 
     if (this.isReady) {
       this.visuals.resume();
-      this.core.resume();
+      this.core.start();
       return;
     }
 

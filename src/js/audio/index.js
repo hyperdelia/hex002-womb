@@ -115,9 +115,6 @@ export default class Audio {
     this.layerOne.stop();
   }
 
-  resume() {
-  }
-
   start() {
     this.layerOne.start();
   }

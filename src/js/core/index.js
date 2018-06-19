@@ -83,10 +83,4 @@ export default class Core {
     clearInterval(this.interval);
     this.interval = null;
   }
-
-  resume() {
-    this.audio.resume();
-
-    this.start();
-  }
 }

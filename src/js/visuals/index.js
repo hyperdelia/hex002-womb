@@ -128,10 +128,6 @@ export default class Visuals {
     this.controls.stop();
   }
 
-  resume() {
-    this.start();
-  }
-
   animate() {
     requestAnimationFrame(() => {
       if (this.isRunning) {
