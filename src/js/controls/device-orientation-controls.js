@@ -48,6 +48,10 @@ export default class DeviceOrientationControls {
     this.startMoving();
   }
 
+  stop() {
+    // empty
+  }
+
   startMoving() {
     this.isMoving = true;
   }
