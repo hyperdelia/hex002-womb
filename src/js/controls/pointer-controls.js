@@ -19,6 +19,7 @@ export default class PointerControls {
 
     this.isEnabled = false;
     this.isMoving = false;
+    this.interval = undefined;
 
     this.pointerPosition = {
       x: 0,
@@ -70,10 +71,17 @@ export default class PointerControls {
     this.isEnabled = true;
     this.startMoving();
 
-    window.setInterval(() => {
+    this.interval = window.setInterval(() => {
       const { x, y } = this.pointerPosition;
       this.movePointer(x, y);
     }, MOVE_INTERVAL);
+  }
+
+  stop() {
+    this.isEnabled = false;
+    this.stopMoving();
+
+    window.clearInterval(this.interval);
   }
 
   /**

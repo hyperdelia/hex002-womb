@@ -76,7 +76,15 @@ export default class Core {
   }
 
   stop() {
+    this.audio.stop();
+
     clearInterval(this.interval);
     this.interval = null;
+  }
+
+  resume() {
+    this.audio.resume();
+
+    this.start();
   }
 }

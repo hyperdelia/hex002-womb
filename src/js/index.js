@@ -44,6 +44,9 @@ identifyPlatform()
       onStart: () => {
         session.start(statusCallback);
       },
+      onStop: () => {
+        session.stop();
+      },
     });
 
     const checkup = checkRequirements()
