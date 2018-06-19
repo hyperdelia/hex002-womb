@@ -39,15 +39,21 @@ export default class LayerOne {
     this.statusCallback = options.statusCallback;
 
     const scene = options.scene;
+    const startTime = Math.floor(Math.random() * 2160.0); // totalLength - 2min
 
     this.streams = [];
+
     this.samples.forEach((url, index) => {
       const resonanceSource = scene.createSource({
         maxDistance: 99999,
         rolloff: 'linear',
       });
 
-      const { tag, node } = this.createAudioObject(index, url);
+      const { tag, node } = this.createAudioObject(
+        index,
+        url,
+        startTime
+      );
       const gain = context.createGain();
 
       const positions = normalizeDimension(
@@ -149,7 +155,7 @@ export default class LayerOne {
     this.statusCallback(STATUS_BUFFERING);
   }
 
-  createAudioObject(index, url) {
+  createAudioObject(index, url, startTime = 0) {
     const tag = document.createElement('audio');
 
     tag.src = url;
@@ -157,8 +163,7 @@ export default class LayerOne {
     tag.preload = 'auto';
     tag.controls = false;
     tag.crossOrigin = 'anonymous';
-    // TODO(david): randomize startTime
-    tag.currentTime = 0 * 60;
+    tag.currentTime = startTime;
 
     // tag.addEventListener('seeked', () => { this.onBuffer(index); }, true);
     tag.addEventListener('canplay', () => { this.onReady(index); }, true);
