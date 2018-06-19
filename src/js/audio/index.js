@@ -104,4 +104,17 @@ export default class Audio {
       }
     });
   }
+
+  removeAllVoices() {
+    this.actors.forEach(actor => {
+      actor.stop();
+    });
+  }
+
+  stop() {
+    this.removeAllVoices();
+  }
+
+  resume() {
+  }
 }
