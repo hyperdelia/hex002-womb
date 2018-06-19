@@ -5,7 +5,7 @@ Kajsa Lindgren - WOMB (2018, HEX 002, Hyperdelia)
 ## Setup
 
 ```
-yarn install
+yarn
 ```
 
 ## Development
@@ -18,14 +18,8 @@ yarn lint:js
 yarn lint:scss
 ```
 
-## Production
+## Deployment 
 
 ```
 yarn build
-```
-
-## Documentation
-
-```
-yarn docs
 ```
