@@ -5,3 +5,9 @@
 
   line-height: 1.8;
 }
+
+@include media-query() {
+  .intro {
+    padding-bottom: 2.5rem;
+  }
+}

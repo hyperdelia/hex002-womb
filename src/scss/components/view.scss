@@ -20,7 +20,7 @@
 
   display: flex;
 
-  padding: 4rem;
+  padding: 2rem;
 
   align-items: center;
   flex-direction: column;
@@ -35,6 +35,25 @@
   opacity: 0;
 
   transition: opacity 4s ease-in-out;
+}
+
+.view__spinner {
+  display: none;
+}
+
+@include media-query() {
+  .view {
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    padding-top: 4rem;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .view__container {
+    bottom: auto;
+  }
 }
 
 .view--is-running {
@@ -59,10 +78,6 @@
   .view__start-button {
     display: none;
   }
-}
-
-.view__spinner {
-  display: none;
 }
 
 .view--is-loading {

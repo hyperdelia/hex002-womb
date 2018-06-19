@@ -11,6 +11,9 @@
 @import "base/layout";
 @import "base/links";
 
+// mixins
+@import "mixins/media-query";
+
 // components
 @import "components/footer";
 @import "components/intro";

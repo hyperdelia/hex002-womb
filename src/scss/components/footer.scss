@@ -20,3 +20,19 @@
   align-items: flex-end;
   justify-content: center;
 }
+
+@include media-query() {
+  .footer {
+    margin-top: 4rem;
+
+    flex-direction: column;
+  }
+
+  .footer__section {
+    width: 100%;
+
+    + .footer__section {
+      margin-top: 2rem;
+    }
+  }
+}

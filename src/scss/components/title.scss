@@ -7,3 +7,9 @@
   background-position: center;
   background-size: contain;
 }
+
+@include media-query() {
+  .womb-title {
+    margin-bottom: 4rem;
+  }
+}
