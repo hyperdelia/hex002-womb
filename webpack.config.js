@@ -3,6 +3,7 @@ const path = require('path');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const ASSETS_NAME = 'app';
 
@@ -98,6 +99,17 @@ module.exports = (env, options) => {
         filename: `${ASSETS_NAME}-[hash].css`,
       }),
     ],
+    optimization: {
+      minimizer: [
+        new UglifyJsPlugin({
+          uglifyOptions: {
+            mangle: {
+              safari10: true,
+            },
+          },
+        }),
+      ],
+    },
     devtool: isProduction ? false : 'source-map',
     devServer: {
       hot: false,
