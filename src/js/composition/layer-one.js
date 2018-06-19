@@ -1,11 +1,36 @@
+import { Vector3 } from 'three';
+
+import { normalizeDimension } from '../utils';
 import {
   STATUS_BUFFERING,
   STATUS_PREFETCH,
   STATUS_READY,
 } from '../audio/status-events';
 
-const FADE_TIME = 10;
-const MAX_LEVEL = 0.5;
+const FADE_TIME = 5;
+const MAX_LEVEL = 1;
+const POSITIONS = [
+  new Vector3(
+    -5000,
+    5000,
+    0,
+  ),
+  new Vector3(
+    5000,
+    5000,
+    0,
+  ),
+  new Vector3(
+    -5000,
+    -5000,
+    0,
+  ),
+  new Vector3(
+    5000,
+    -5000,
+    0,
+  ),
+];
 
 export default class LayerOne {
   constructor(context, options = {}) {
@@ -13,35 +38,29 @@ export default class LayerOne {
     this.samples = options.samples.interstellar;
     this.statusCallback = options.statusCallback;
 
-    this.isPlaying = false;
-
     const scene = options.scene;
 
-    const maxDistance = 75;
-    const position = {
-      x: 0,
-      y: 0,
-      z: 0,
-    };
-
     this.streams = [];
-
     this.samples.forEach((url, index) => {
       const resonanceSource = scene.createSource({
-        maxDistance,
+        maxDistance: 99999,
         rolloff: 'linear',
       });
 
       const { tag, node } = this.createAudioObject(index, url);
       const gain = context.createGain();
 
-      resonanceSource.setPosition(
-        position.x,
-        position.y,
-        position.z
+      const positions = normalizeDimension(
+        this.roomDimension, POSITIONS[index]
       );
 
-      gain.gain.value = 0;
+      resonanceSource.setPosition(
+        positions.x,
+        positions.y,
+        positions.z
+      );
+
+      gain.gain.value = 0.0;
       node.connect(gain);
       gain.connect(resonanceSource.input);
 
@@ -52,6 +71,8 @@ export default class LayerOne {
         resonanceSource,
       });
     });
+
+    this.isPlaying = false;
   }
 
   set amp(value) {
@@ -62,18 +83,12 @@ export default class LayerOne {
     return this.streams.map(obj => obj.gain.gain.value);
   }
 
-  set position(vector) {
-    this.streams.forEach(obj => {
-      const { x, y, z } = vector;
-      obj.resonanceSource.setPosition(x, y, z);
-    });
-  }
-
   fadeIn() {
     this.streams.forEach(obj => {
       const vca = obj.gain;
       const now = this.context.currentTime;
 
+      vca.gain.cancelScheduledValues(now);
       vca.gain.linearRampToValueAtTime(
         MAX_LEVEL,
         now + FADE_TIME
@@ -82,20 +97,42 @@ export default class LayerOne {
   }
 
   fadeOut() {
+    const gains = [];
+
     this.streams.forEach(obj => {
       const vca = obj.gain;
       const now = this.context.currentTime;
 
+      vca.gain.cancelScheduledValues(now);
       vca.gain.linearRampToValueAtTime(
         0.0,
         now + FADE_TIME
       );
+
+      gains.push(vca);
+    });
+
+    return new Promise(resolve => {
+      const checkValues = () => {
+        const currentVal = gains.reduce((acc, vca) => acc + vca.gain.value, 0);
+
+        if (currentVal < 0.001) {
+          resolve();
+        } else {
+          setTimeout(() => {
+            checkValues();
+          }, 0.5 * 1000);
+        }
+      };
+
+      checkValues();
     });
   }
 
   onReady(index) {
     if ((this.samples.length - 1) === index) {
       this.statusCallback(STATUS_READY);
+
       this.start().then(() => {
         this.isPlaying = true;
         this.fadeIn();
@@ -120,10 +157,12 @@ export default class LayerOne {
     tag.preload = 'auto';
     tag.controls = false;
     tag.crossOrigin = 'anonymous';
+    // TODO(david): randomize startTime
+    tag.currentTime = 0 * 60;
 
-    tag.addEventListener('seeked', () => { this.onBuffer(index); }, true);
+    // tag.addEventListener('seeked', () => { this.onBuffer(index); }, true);
     tag.addEventListener('canplay', () => { this.onReady(index); }, true);
-    tag.addEventListener('loadstart', () => { this.onLoaded(index); }, true);
+    // tag.addEventListener('loadstart', () => { this.onLoaded(index); }, true);
 
     const node = this.context.createMediaElementSource(tag);
 
@@ -151,11 +190,11 @@ export default class LayerOne {
       return;
     }
 
-    this.fadeOut();
-
-    this.streams.forEach(obj => {
-      obj.tag.pause();
-      obj.tag.currentTime = 0;
+    this.fadeOut().then(() => {
+      this.streams.forEach(obj => {
+        obj.tag.pause();
+        obj.tag.currentTime = 0;
+      });
     });
   }
 }

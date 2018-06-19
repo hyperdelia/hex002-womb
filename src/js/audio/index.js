@@ -54,16 +54,16 @@ export default class Audio {
 
     this.layerOne = new LayerOne(this.context, {
       scene: this.scene,
+      roomDimension: ROOM_DIMENSION,
       samples,
       statusCallback,
     });
   }
 
   updateListener(matrix) {
-    const vector = normalizeDimension(ROOM_DIMENSION, matrix);
-
-    this.scene.setListenerFromMatrix(vector);
-    this.layerOne.position = vector;
+    this.scene.setListenerFromMatrix(
+      normalizeDimension(ROOM_DIMENSION, matrix)
+    );
   }
 
   addVoices(voices) {
