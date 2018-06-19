@@ -37,7 +37,7 @@ export default class LayerOne {
     this.statusCallback = options.statusCallback;
 
     const scene = options.scene;
-    const startTime = Math.floor(Math.random() * 2160.0); // totalLength - 2min
+    const startTime = this.getStartTime();
 
     this.streams = [];
 
@@ -85,6 +85,10 @@ export default class LayerOne {
 
   get amp() {
     return this.streams.map(obj => obj.gain.gain.value);
+  }
+
+  getStartTime() {
+    return Math.floor(Math.random() * 2160.0); // totalLength - 2min
   }
 
   fadeIn() {
@@ -136,14 +140,6 @@ export default class LayerOne {
   onReady(index) {
     if ((this.samples.length - 1) === index) {
       this.statusCallback(STATUS_READY);
-
-      this.start().then(() => {
-        if (this.isPlaying) {
-          return;
-        }
-        this.isPlaying = true;
-        this.fadeIn();
-      });
     }
   }
 
@@ -177,19 +173,25 @@ export default class LayerOne {
       return audioTag.play();
     });
 
-    return Promise.all(promises);
+    return Promise.all(promises).then(() => {
+      this.isPlaying = true;
+      this.fadeIn();
+    });
   }
 
   stop() {
     if (!this.isPlaying) {
-      return;
+      return Promise.resolve();
     }
 
-    this.fadeOut().then(() => {
+    const nextStartTime = this.getStartTime();
+
+    return this.fadeOut().then(() => {
       this.streams.forEach(obj => {
         obj.tag.pause();
-        obj.tag.currentTime = 0;
+        obj.tag.currentTime = nextStartTime;
       });
+
       this.isPlaying = false;
     });
   }
