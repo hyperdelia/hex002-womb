@@ -1,5 +1,12 @@
-// .view {
-// }
+.view {
+  position: relative;
+
+  height: 100%;
+
+  background-image: url("../img/background.jpg");
+  background-position: center;
+  background-size: cover;
+}
 
 .view__container {
   position: absolute;
