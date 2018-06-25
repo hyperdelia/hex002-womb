@@ -83,11 +83,12 @@ export default class Session {
 
     // Create audio context
     const context = createAudioContext();
-    const audio = new Audio(
+    const audio = new Audio({
       context,
       samples,
       onError,
-    );
+      platform: this.options.platform,
+    });
 
     // Create core handler
     this.core = new Core({

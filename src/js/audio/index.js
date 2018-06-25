@@ -6,17 +6,29 @@ import Actor from './actor';
 import AudioStream from './audio-stream';
 import LayerOne from './layer-one';
 
-const MAX_ACTOR_COUNT = 5;
+// will change for mobile
+let MAX_ACTOR_COUNT = 5;
 
 const ROOM_DIMENSION = 1;
 const ROOM_MATERIAL = 'transparent';
 const SOURCE_MAX_DISTANCE = 300;
 
 export default class Audio {
-  constructor(context, samples, onError) {
+  constructor(options) {
+    const {
+      context,
+      samples,
+      onError,
+      platform,
+    } = options;
+
     this.context = context;
     this.samples = samples;
     this.onError = onError;
+
+    if (platform === 'mobile') {
+      MAX_ACTOR_COUNT = 3;
+    }
 
     this.scene = new ResonanceAudio(this.context);
     this.scene.output.connect(this.context.destination);
