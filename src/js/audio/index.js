@@ -83,7 +83,7 @@ export default class Audio {
           voice.sampleUrl,
           id,
           normalizeDimension(ROOM_DIMENSION, { x, y, z })
-        ).catch(this.onError);
+        ).catch(err => { this.onError(err); });
 
         index += 1;
       }

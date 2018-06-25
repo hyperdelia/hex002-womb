@@ -23,8 +23,8 @@ identifyPlatform()
       platform,
       onStart: () => {
         session.start(
-          () => {
-            view.showRequirementError();
+          (error) => {
+            view.showRequirementError(error);
           }
         );
       },
