@@ -51,6 +51,7 @@ export default class Session {
       height,
       isDebugMode,
       width,
+      platform,
     });
 
     window.addEventListener('resize', () => {
