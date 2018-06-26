@@ -1,6 +1,6 @@
 import HLS from 'hls.js';
-
 import { Vector3 } from 'three';
+
 import { normalizeDimension } from '../utils';
 
 const FADE_TIME = 5;
