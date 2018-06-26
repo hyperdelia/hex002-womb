@@ -71,7 +71,7 @@
     "hls.js": "^0.10.1",
     "ios-safe-audio-context": "^1.0.1",
     "normalize.css": "^8.0.0",
-    "resonance-audio": "davidgranstrom/resonance-audio-web-sdk.git#04e95b2f",
+    "resonance-audio": "davidgranstrom/resonance-audio-web-sdk.git#b2b0a89",
     "stats.js": "^0.17.0",
     "three": "0.93.0"
   }

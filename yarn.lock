@@ -6048,9 +6048,9 @@ resolve-url@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
 
-resonance-audio@davidgranstrom/resonance-audio-web-sdk.git#04e95b2f:
+resonance-audio@davidgranstrom/resonance-audio-web-sdk.git#b2b0a89:
   version "1.0.0"
-  resolved "https://codeload.github.com/davidgranstrom/resonance-audio-web-sdk/tar.gz/04e95b2f330003be4cda50831e6159de6f70ca12"
+  resolved "https://codeload.github.com/davidgranstrom/resonance-audio-web-sdk/tar.gz/b2b0a89e7a3fd974c270a3fcc0df0c4b77f26a57"
   dependencies:
     omnitone "^1.0.5"
 
