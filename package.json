@@ -68,6 +68,7 @@
     "webpack-dev-server": "^3.1.1"
   },
   "dependencies": {
+    "hls.js": "^0.10.1",
     "ios-safe-audio-context": "^1.0.1",
     "normalize.css": "^8.0.0",
     "resonance-audio": "davidgranstrom/resonance-audio-web-sdk.git#04e95b2f",
