@@ -17,7 +17,7 @@ export default class Session {
     this.isReady = false;
   }
 
-  prepare(onError) {
+  prepare() {
     const {
       canvas,
       isDebugMode,
@@ -68,8 +68,7 @@ export default class Session {
         });
 
         this.samples = samples;
-      })
-      .catch(onError);
+      });
   }
 
   start(onError) {
