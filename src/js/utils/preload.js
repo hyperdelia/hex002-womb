@@ -24,10 +24,10 @@ export default function preload() {
   return fetch(ROOT_URL + '/index.json')
     .then(response => response.json())
     .then(data => {
-      const samples = Object.keys(data.samples).reduce((acc, key) => {
-        acc[key] = data.samples[key].map(url => ROOT_URL + url);
-        return acc;
-      }, {});
+      const samples = {
+        mobile: data.samples.mobile.map(url => ROOT_URL + url),
+        interstellar: ROOT_URL + data.samples.interstellar,
+      };
 
       const starsRequest = fetch(ROOT_URL + data.stars)
         .then(response => response.json());

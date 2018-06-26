@@ -1,4 +1,6 @@
+import HLS from 'hls.js';
 import { Vector3 } from 'three';
+
 import { normalizeDimension } from '../utils';
 
 const FADE_TIME = 5;
@@ -6,22 +8,12 @@ const MAX_LEVEL = 0.5;
 const POSITIONS = [
   new Vector3(
     -10000,
-    10000,
+    0,
     0,
   ),
   new Vector3(
     10000,
-    10000,
     0,
-  ),
-  new Vector3(
-    -10000,
-    -10000,
-    0,
-  ),
-  new Vector3(
-    10000,
-    -10000,
     0,
   ),
 ];
@@ -29,48 +21,83 @@ const POSITIONS = [
 export default class LayerOne {
   constructor(context, options = {}) {
     this.context = context;
-    this.samples = options.samples.interstellar;
+    this.options = options;
+  }
 
-    const scene = options.scene;
-    const startTime = this.getStartTime();
+  load() {
+    if (!this.loadPromise) {
+      const startTime = this.getStartTime();
 
-    this.streams = [];
+      const { samples } = this.options;
+      const url = samples.interstellar;
 
-    this.samples.forEach((url, index) => {
-      const resonanceSource = scene.createSource({
-        maxDistance: 99999,
-        rolloff: 'linear',
-        sourceWidth: 0,
-      });
+      this.loadPromise = this.createAudioObject(url, startTime)
+        .then(result => {
+          const { tag, node } = result;
 
-      const { tag, node } = this.createAudioObject(
-        index,
-        url,
-        startTime
-      );
-      const gain = context.createGain();
+          this.tag = tag;
+          this.node = node;
 
-      const positions = normalizeDimension(
-        this.roomDimension, POSITIONS[index]
-      );
+          return {
+            tag,
+            node,
+          };
+        });
+    }
 
-      resonanceSource.setPosition(
-        positions.x,
-        positions.y,
-        positions.z
-      );
+    return this.loadPromise;
+  }
 
-      gain.gain.value = 0.0;
-      node.connect(gain);
-      gain.connect(resonanceSource.input);
+  splitChannels(object) {
+    if (!this.splitPromise) {
+      const numChannels = 2;
+      const {
+        roomDimension,
+        scene,
+      } = this.options;
 
-      this.streams.push({
-        tag,
-        node,
-        gain,
-        resonanceSource,
-      });
-    });
+      const { tag, node } = object;
+
+      const splitter = this.context.createChannelSplitter(numChannels);
+      node.connect(splitter);
+
+      this.streams = [];
+
+      for (let index = 0; index < numChannels; index += 1) {
+        const resonanceSource = scene.createSource({
+          maxDistance: 99999,
+          rolloff: 'linear',
+          sourceWidth: 0,
+        });
+
+        const positionVector = normalizeDimension(
+          roomDimension, POSITIONS[index]
+        );
+
+        resonanceSource.setPosition(
+          positionVector.x,
+          positionVector.y,
+          positionVector.z
+        );
+
+        const gain = this.context.createGain();
+
+        gain.gain.value = 0.0;
+        splitter.connect(gain, index);
+        gain.connect(resonanceSource.input);
+
+        this.streams.push({
+          tag,
+          node,
+          gain,
+          resonanceSource,
+        });
+      }
+
+      this.splitPromise = Promise.resolve(object);
+    }
+
+    return this.splitPromise;
   }
 
   set amp(value) {
@@ -122,9 +149,7 @@ export default class LayerOne {
     });
 
     return new Promise(resolve => {
-      let getCurrentValue = () => {
-        return gains.reduce((acc, vca) => acc + vca.gain.value, 0);
-      };
+      const getCurrentValue = () => gains.reduce((acc, vca) => acc + vca.gain.value, 0);
 
       if (this.timer) {
         window.clearTimeout(this.timer);
@@ -149,10 +174,9 @@ export default class LayerOne {
     });
   }
 
-  createAudioObject(index, url, startTime = 0) {
+  createAudioObject(url, startTime = 0) {
     const tag = document.createElement('audio');
 
-    tag.src = url;
     tag.loop = true;
     tag.preload = 'auto';
     tag.controls = false;
@@ -161,21 +185,35 @@ export default class LayerOne {
 
     const node = this.context.createMediaElementSource(tag);
 
-    return {
-      tag,
-      node,
-    };
+    return new Promise((resolve, reject) => {
+      if (HLS.isSupported()) {
+        const hls = new HLS();
+
+        hls.loadSource(url);
+        hls.attachMedia(tag);
+        hls.on(HLS.Events.MANIFEST_PARSED, () => {
+          resolve({ tag, node });
+        });
+      } else if (tag.canPlayType('application/vnd.apple.mpegurl')) {
+        tag.src = url;
+        tag.addEventListener('loadedmetadata', () => {
+          resolve({ tag, node });
+        });
+      } else {
+        reject();
+      }
+    });
   }
 
   start() {
-    const promises = this.samples.map((url, index) => {
-      const audioTag = this.streams[index].tag;
-      return audioTag.play();
-    });
-
-    return Promise.all(promises)
-      .then(() => {
-        this.fadeIn();
+    return this.load()
+      .then(result => this.splitChannels(result))
+      .then(result => {
+        const { tag } = result;
+        return tag.play()
+          .then(() => {
+            this.fadeIn();
+          });
       });
   }
 
@@ -183,10 +221,8 @@ export default class LayerOne {
     const nextStartTime = this.getStartTime();
 
     return this.fadeOut().then(() => {
-      this.streams.forEach(obj => {
-        obj.tag.pause();
-        obj.tag.currentTime = nextStartTime;
-      });
+      this.tag.pause();
+      this.tag.currentTime = nextStartTime;
     });
   }
 }
