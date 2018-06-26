@@ -30,9 +30,6 @@ export default class Session {
       case 'mobile':
         controlsName = 'deviceOrientation';
         break;
-      case 'vr':
-        controlsName = 'virtualReality';
-        break;
       default:
         controlsName = 'pointer';
     }
