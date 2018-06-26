@@ -103,9 +103,7 @@ module.exports = (env, options) => {
       minimizer: [
         new UglifyJsPlugin({
           uglifyOptions: {
-            mangle: {
-              safari10: true,
-            },
+            safari10: true,
           },
         }),
       ],
