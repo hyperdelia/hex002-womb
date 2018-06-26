@@ -10,9 +10,9 @@ function preloadTextures(urls) {
     return new Promise((resolve, reject) => {
       loader.load(
         ROOT_URL + url,
-        (texture) => { resolve(texture); },
+        texture => { resolve(texture); },
         undefined,
-        (e) => { reject(e); }
+        error => { reject(error); }
       );
     });
   });

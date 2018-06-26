@@ -22,11 +22,9 @@ identifyPlatform()
     const view = new View({
       platform,
       onStart: () => {
-        session.start(
-          () => {
-            view.showRequirementError();
-          }
-        );
+        session.start(error => {
+          view.showRequirementError(error);
+        });
       },
       onStop: () => {
         session.stop();
@@ -35,14 +33,13 @@ identifyPlatform()
 
     const checkup = checkRequirements()
       .then(() => {
-        session.prepare(
-          () => {
+        session.prepare()
+          .then(() => {
+            view.isLoading = false;
+          })
+          .catch(() => {
             view.showConnectionError();
-          }
-        );
-      })
-      .then(() => {
-        view.isLoading = false;
+          });
       });
 
     if (!isDebugMode) {

@@ -17,7 +17,7 @@ export default class Session {
     this.isReady = false;
   }
 
-  prepare(onError) {
+  prepare() {
     const {
       canvas,
       isDebugMode,
@@ -51,6 +51,7 @@ export default class Session {
       height,
       isDebugMode,
       width,
+      platform,
     });
 
     window.addEventListener('resize', () => {
@@ -67,8 +68,7 @@ export default class Session {
         });
 
         this.samples = samples;
-      })
-      .catch(onError);
+      });
   }
 
   start(onError) {
@@ -82,11 +82,12 @@ export default class Session {
 
     // Create audio context
     const context = createAudioContext();
-    const audio = new Audio(
+    const audio = new Audio({
       context,
       samples,
       onError,
-    );
+      platform: this.options.platform,
+    });
 
     // Create core handler
     this.core = new Core({

@@ -6,14 +6,24 @@ import Actor from './actor';
 import AudioStream from './audio-stream';
 import LayerOne from './layer-one';
 
-const MAX_ACTOR_COUNT = 5;
+const MAX_ACTOR_COUNT = {
+  desktop: 5,
+  mobile: 3,
+};
 
 const ROOM_DIMENSION = 1;
 const ROOM_MATERIAL = 'transparent';
 const SOURCE_MAX_DISTANCE = 300;
 
 export default class Audio {
-  constructor(context, samples, onError) {
+  constructor(options) {
+    const {
+      context,
+      samples,
+      onError,
+      platform,
+    } = options;
+
     this.context = context;
     this.samples = samples;
     this.onError = onError;
@@ -38,7 +48,7 @@ export default class Audio {
 
     this.actors = [];
 
-    for (let i = 0; i < MAX_ACTOR_COUNT; i += 1) {
+    for (let i = 0; i < MAX_ACTOR_COUNT[platform]; i += 1) {
       const resonanceSource = this.scene.createSource({
         maxDistance: SOURCE_MAX_DISTANCE,
         rolloff: 'linear',
@@ -83,7 +93,7 @@ export default class Audio {
           voice.sampleUrl,
           id,
           normalizeDimension(ROOM_DIMENSION, { x, y, z })
-        ).catch(this.onError);
+        ).catch(err => { this.onError(err); });
 
         index += 1;
       }

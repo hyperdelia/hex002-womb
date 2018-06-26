@@ -75,9 +75,9 @@ export default class View {
     }
   }
 
-  showError(error) {
+  showError(message) {
     this.elements.view.classList.add('view--is-error');
-    this.elements.error.innerText = error + ' ❤';
+    this.elements.error.innerText = message + ' ❤';
 
     this.onStop();
   }
@@ -88,7 +88,12 @@ export default class View {
     );
   }
 
-  showRequirementError() {
+  showRequirementError(error) {
+    // Don't stop if we get an error loading an audio file
+    if (error !== undefined && error.name && error.name === 'AbortError') {
+      return;
+    }
+
     this.showError(
       'Sorry, but it looks like this won\'t work on your browser. Please try it with another one. We recommend the latest version of Chrome or Firefox.'
     );
