@@ -47,7 +47,7 @@
     "browser-sync": "^2.23.6",
     "browser-sync-webpack-plugin": "^2.0.1",
     "css-loader": "^0.28.9",
-    "eslint": "^4.17.0",
+    "eslint": "5.0.1",
     "eslint-loader": "^2.0.0",
     "extract-text-webpack-plugin": "v4.0.0-alpha.0",
     "file-loader": "^1.1.6",
@@ -57,22 +57,22 @@
     "postcss-loader": "^2.1.0",
     "postcss-modules": "^1.1.0",
     "rimraf": "^2.6.2",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.20.2",
+    "sass-loader": "7.0.3",
+    "style-loader": "0.21.0",
     "stylelint": "^9.2.0",
     "stylelint-config-standard": "^18.2.0",
     "stylelint-order": "^0.8.1",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^4.4.1",
-    "webpack-cli": "^2.0.13",
+    "webpack-cli": "3.0.8",
     "webpack-dev-server": "^3.1.1"
   },
   "dependencies": {
     "hls.js": "^0.10.1",
     "ios-safe-audio-context": "^1.0.1",
     "normalize.css": "^8.0.0",
-    "resonance-audio": "davidgranstrom/resonance-audio-web-sdk.git#04e95b2f",
+    "resonance-audio": "davidgranstrom/resonance-audio-web-sdk.git#b2b0a89",
     "stats.js": "^0.17.0",
-    "three": "^0.91.0"
+    "three": "0.93.0"
   }
 }
