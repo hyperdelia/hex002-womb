@@ -85,7 +85,7 @@ export default class Visuals {
 
     this.scene.add(starfield);
 
-    const density = this.options.platform === 'mobile' ? 0.0035 : 0.007;
+    const density = this.options.platform === 'mobile' ? 0.003 : 0.0055;
 
     // Add mobile with shapes to scenery
     const mobile = new Mobile({
