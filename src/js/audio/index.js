@@ -13,7 +13,7 @@ const MAX_ACTOR_COUNT = {
 
 const ROOM_DIMENSION = 1;
 const ROOM_MATERIAL = 'transparent';
-const SOURCE_MAX_DISTANCE = 300;
+const SOURCE_MAX_DISTANCE = 600;
 
 export default class Audio {
   constructor(options) {
@@ -47,10 +47,11 @@ export default class Audio {
     this.scene.setRoomProperties(roomDimensions, roomMaterials);
 
     this.actors = [];
+    this.actorsMaxDistance = SOURCE_MAX_DISTANCE;
 
     for (let i = 0; i < MAX_ACTOR_COUNT[platform]; i += 1) {
       const resonanceSource = this.scene.createSource({
-        maxDistance: SOURCE_MAX_DISTANCE,
+        maxDistance: this.actorsMaxDistance,
         rolloff: 'linear',
       });
 
@@ -88,7 +89,6 @@ export default class Audio {
         const voice = voices[index];
         const { id } = voice.star;
         const { x, y, z } = voice.star.position;
-
         actor.start(
           voice.sampleUrl,
           id,
@@ -101,7 +101,7 @@ export default class Audio {
       return index > voices.length - 1;
     });
 
-    if (index < (voices.length - 1)) {
+    if (index < voices.length) {
       console.warn('Too few available actors.');
     }
   }

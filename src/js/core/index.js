@@ -2,8 +2,7 @@ import { randomItem } from '../utils';
 
 import Voice from '../audio/voice';
 
-const ACTIVATION_DISTANCE_THRESHOLD = 300;
-const UPDATE_FREQUENCY = 100;
+const UPDATE_FREQUENCY = 250;
 
 export default class Core {
   constructor(options) {
@@ -14,7 +13,7 @@ export default class Core {
     } = options;
 
     this.audio = audio;
-    this.samples = samples;
+    this.samples = samples.mobile;
     this.visuals = visuals;
 
     this.interval = null;
@@ -24,14 +23,13 @@ export default class Core {
   update() {
     // Check for stars which are close enough to be played
     const voices = this.visuals.distances.reduce((acc, obj) => {
-      if (obj.distance < ACTIVATION_DISTANCE_THRESHOLD) {
+      if (obj.distance < this.audio.actorsMaxDistance / 2) {
         acc.push(new Voice(obj));
       }
-
       return acc;
-    }, []);
+    }, []).sort((a, b) => a.distance - b.distance);
 
-    this.updateVoices(voices);
+    this.updateVoices(voices.slice(0, this.audio.actors.length));
 
     // Update the player / listener position
     this.audio.updateListener(this.visuals.playerWorldMatrix);
@@ -40,29 +38,33 @@ export default class Core {
   updateVoices(voices) {
     const starIds = voices.map(voice => voice.star.id);
     const activeStarIds = this.voices.map(voice => voice.star.id);
-
+    
     // Find voices which are not used anymore
-    const removeVoices = this.voices.reduce((acc, voice, index) => {
-      if (!starIds.includes(voice.star.id)) {
-        this.voices.splice(index, 1);
-        acc.push(voice);
-      }
-      return acc;
-    }, []);
+    const removeVoices = this.voices.filter(voice => {
+      return !starIds.includes(voice.star.id);
+    });
 
-    this.audio.removeVoices(removeVoices);
+    this.voices = this.voices.filter(voice => {
+      return starIds.includes(voice.star.id);
+    });
+
+    if (removeVoices.length > 0) {
+      this.audio.removeVoices(removeVoices);
+    }
 
     // Find new voices to be added to scene
     const addVoices = voices.reduce((acc, voice) => {
       if (!activeStarIds.includes(voice.star.id)) {
-        voice.sampleUrl = randomItem(this.samples.mobile);
+        voice.sampleUrl = randomItem(this.samples);
         this.voices.push(voice);
         acc.push(voice);
       }
       return acc;
     }, []);
 
-    this.audio.addVoices(addVoices);
+    if (addVoices.length > 0) {
+      this.audio.addVoices(addVoices);
+    }
   }
 
   start() {

@@ -33,15 +33,19 @@ export default class Mobile extends Object3D {
 
       // Calculate distance from origin and scale it accordingly
       let factor = size;
+      let chance = 1;
       const distance = shape.position.distanceTo(origin);
       if (distance < maxDistance) { 
         factor = ((Math.sin((distance - (maxDistance / 2)) * Math.PI / maxDistance + 1) / 2)) * size;
+        chance = Math.min(1, distance / maxDistance);
       }
       shape.scale.set(factor, factor, factor);
 
-      // Add it
-      this.add(shape);
-      acc.push(shape);
+      // Add it when chances are high
+      if (Math.random() < chance) {
+        this.add(shape);
+        acc.push(shape);
+      }
       
       return acc;
     }, []);

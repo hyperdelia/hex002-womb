@@ -3,20 +3,9 @@ import { Vector3 } from 'three';
 
 import { normalizeDimension } from '../utils';
 
+const DISTANCE = 10000;
 const FADE_TIME = 5;
 const MAX_LEVEL = 0.5;
-const POSITIONS = [
-  new Vector3(
-    -10000,
-    0,
-    0,
-  ),
-  new Vector3(
-    10000,
-    0,
-    0,
-  ),
-];
 
 export default class LayerOne {
   constructor(context, options = {}) {
@@ -51,6 +40,11 @@ export default class LayerOne {
   splitChannels(object) {
     if (!this.splitPromise) {
       const numChannels = 2;
+      const positions = [
+        new Vector3(-DISTANCE, 0, 0),
+        new Vector3(DISTANCE, 0, 0),
+      ];
+
       const {
         roomDimension,
         scene,
@@ -71,7 +65,8 @@ export default class LayerOne {
         });
 
         const positionVector = normalizeDimension(
-          roomDimension, POSITIONS[index]
+          roomDimension,
+          positions[index]
         );
 
         resonanceSource.setPosition(
