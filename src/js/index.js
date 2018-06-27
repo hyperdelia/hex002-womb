@@ -1,6 +1,6 @@
-import '../scss/app.scss';
 import '../img/favicon.ico';
-import '../img/womb.jpg';
+import '../img/womb-page.png';
+import '../scss/app.scss';
 
 import Session from './session';
 import View from './view';
